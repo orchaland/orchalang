@@ -1,0 +1,20 @@
+title: check order
+domain: bank
+description: check an order from a customer
+authors: Ben Orcha, H. A. Alpha
+version: 1.0
+
+/**
+* A comment
+*/
+receive order from customer
+checkOrder with order.value
+
+// Another comment
+when "checkOrder terminates"
+
+/*
+ * Another comment
+ */
+ 
+send checkOrder.result to bank

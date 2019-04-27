@@ -1,0 +1,35 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'groovy'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'jacoco'
+
+	group = 'org.orcha'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+	repositories {
+		mavenCentral()
+	}
+	
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+		}
+	}
+
+}
+

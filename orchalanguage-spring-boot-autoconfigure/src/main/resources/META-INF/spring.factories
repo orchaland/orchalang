@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+MeAutoConfiguration,\
+orcha.lang.compiler.referenceimpl.springIntegration.SpringIntegrationAutoConfiguration

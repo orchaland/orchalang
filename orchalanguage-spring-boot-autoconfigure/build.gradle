@@ -1,0 +1,30 @@
+apply plugin: 'org.springframework.boot'
+
+sourceSets {
+	main {
+		java {
+			srcDirs = [ 'src/main/java' ]
+			srcDir 'src/main/orcha'
+		}
+	}
+	test {
+		java {
+			srcDirs = [ 'src/test/java' ]
+			srcDir 'src/test/orcha'
+		}
+		resources {
+			srcDirs = ["src/test/resources"]
+		}
+	}
+}
+
+springBoot {
+	mainClassName = "orcha.lang.compiler.OrchaCompiler"
+}
+
+
+dependencies {
+	compile project(':orchalanguage')
+	compile "org.springframework.boot:spring-boot-autoconfigure"
+	annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+}

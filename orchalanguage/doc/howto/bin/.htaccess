@@ -1,0 +1,4 @@
+AuthName "Page d'administration protégée"
+AuthType Basic
+AuthUserFile "http://orchalang.com/howto/bin/.htpasswd"
+Require valid-user
