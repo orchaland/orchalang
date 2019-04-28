@@ -6,29 +6,22 @@ public abstract class Instruction {
 	int id;
 	int lineNumber;				// the line number into the Orcha source file
 
-	public enum Command{
-		RECEIVE,
-		COMPUTE,
-		WHEN,
-		SEND
-	}
+	String command;
 
-	Command command;
-
-	public Instruction(String instruction, int id, int lineNumber, Command command) {
+	public Instruction(String instruction, int id, int lineNumber, String command) {
 		this.instruction = instruction;
 		this.id = id;
 		this.lineNumber = lineNumber;
-		this.command = command;
+		this.command = command.toLowerCase();
 	}
 	
-	public Instruction(String instruction, Command command) {
+	public Instruction(String instruction, String command) {
 		this.instruction = instruction;
-		this.command = command;
+		this.command = command.toLowerCase();
 	}
 
-	public Instruction(Command command){
-		this.command = command;
+	public Instruction(String command){
+		this.command = command.toLowerCase();
 	}
 
 	public abstract void analysis() throws OrchaCompilationException;
@@ -45,7 +38,7 @@ public abstract class Instruction {
 		return lineNumber;
 	}
 
-	public Command getCommand() {
+	public String getCommand() {
 		return command;
 	}
 

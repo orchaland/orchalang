@@ -13,11 +13,11 @@ public class ComputeInstruction extends Instruction{
 	List<String> parameters = new ArrayList<String>();
 	
     public ComputeInstruction(String computeInstruction) {
-		super(computeInstruction.trim(), Command.COMPUTE);
+		super(computeInstruction.trim(), "compute");
 	}
 
 	public ComputeInstruction(String computeInstruction, int id, int lineNumber) {
-        super(computeInstruction.trim(), id, lineNumber, Command.COMPUTE);
+        super(computeInstruction.trim(), id, lineNumber, "compute");
     }
 
     @Override

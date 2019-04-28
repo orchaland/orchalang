@@ -82,15 +82,15 @@ public class WhenInstruction extends Instruction{
 	String aggregationExpression = "";
 
 	public WhenInstruction(){
-		super(Command.WHEN);
+		super("when");
 	}
 
 	public WhenInstruction(String whenInstruction, int instructionID, int lineNumber){
-		super(whenInstruction.trim(), instructionID, lineNumber, Command.WHEN);
+		super(whenInstruction.trim(), instructionID, lineNumber, "when");
 	}
 
 	public WhenInstruction(String whenInstruction) {
-		super(whenInstruction.trim(), Command.WHEN);
+		super(whenInstruction.trim(), "when");
 	}
 
 	public void analysis() throws OrchaCompilationException {

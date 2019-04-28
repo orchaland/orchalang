@@ -160,7 +160,7 @@ public class SemanticAnalysisTest {
             // 4 nodes + 1 fictitious node
             Assert.assertTrue(integrationNodes.size() == 5);
 
-            List<IntegrationNode> receives = integrationNodes.stream().filter(node -> node.getInstruction().getCommand() == Instruction.Command.RECEIVE).collect(Collectors.toList());
+            List<IntegrationNode> receives = integrationNodes.stream().filter(node -> node.getInstruction().getCommand().equals("receive")).collect(Collectors.toList());
             Assert.assertNotNull(receives);
             Assert.assertTrue(receives.size() == 3);
 
@@ -270,7 +270,7 @@ public class SemanticAnalysisTest {
             // 4 nodes + 1 fictitious node
             Assert.assertTrue(integrationNodes.size() == 5);
 
-            List<IntegrationNode> receives = integrationNodes.stream().filter(node -> node.getInstruction().getCommand() == Instruction.Command.RECEIVE).collect(Collectors.toList());
+            List<IntegrationNode> receives = integrationNodes.stream().filter(node -> node.getInstruction().getCommand().equals("receive")).collect(Collectors.toList());
             Assert.assertNotNull(receives);
             Assert.assertTrue(receives.size() == 3);
 

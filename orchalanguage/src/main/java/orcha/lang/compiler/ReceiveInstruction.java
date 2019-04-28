@@ -11,15 +11,15 @@ public class ReceiveInstruction extends Instruction{
 	String condition;
 
 	public ReceiveInstruction(){
-		super(Command.RECEIVE);
+		super("receive");
 	}
 
     public ReceiveInstruction(String receiveInstruction) {
-    	super(receiveInstruction.trim(), Command.RECEIVE);
+    	super(receiveInstruction.trim(), "receive");
 	}
 
 	public ReceiveInstruction(String receiveInstruction, int id, int lineNumber) {
-        super(receiveInstruction.trim(), id, lineNumber, Command.RECEIVE);
+        super(receiveInstruction.trim(), id, lineNumber, "receive");
     }
 
     @Override

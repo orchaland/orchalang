@@ -103,13 +103,13 @@ public class TranspileToSpringIntegration implements Transpiler {
         for (IntegrationNode node: graphOfInstructions) {
 
             switch (node.getInstruction().getCommand()){
-                case RECEIVE:
+                case "receive":
                     break;
-                case COMPUTE:
+                case "compute":
                     break;
-                case WHEN:
+                case "when":
                     break;
-                case SEND:
+                case "send":
                     break;
                 default:
 

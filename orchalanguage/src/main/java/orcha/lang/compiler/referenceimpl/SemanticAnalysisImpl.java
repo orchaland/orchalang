@@ -25,19 +25,19 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
         List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
 
         // Group instructions by receive instruction, compute, when and sendf
-        Map<Instruction.Command, List<Instruction>> instructionsByCommand = instructions.stream()
+        Map<String, List<Instruction>> instructionsByCommand = instructions.stream()
                 .collect(Collectors.groupingBy(Instruction::getCommand));
 
-        List<Instruction> receives = instructionsByCommand.get(Instruction.Command.RECEIVE);
+        List<Instruction> receives = instructionsByCommand.get("receive");
         exception = this.receiveAnalysis(receives, orchaProgram, exception);
 
-        List<Instruction> computes = instructionsByCommand.get(Instruction.Command.COMPUTE);
+        List<Instruction> computes = instructionsByCommand.get("compute");
         exception = this.computeAnalysis(computes, orchaProgram, exception);
 
-        List<Instruction> whens = instructionsByCommand.get(Instruction.Command.WHEN);
+        List<Instruction> whens = instructionsByCommand.get("when");
         exception = this.whenAnalysis(whens, orchaProgram, exception);
 
-        List<Instruction> sends = instructionsByCommand.get(Instruction.Command.SEND);
+        List<Instruction> sends = instructionsByCommand.get("send");
         this.sendAnalysis(sends, orchaProgram, exception);
 
         if (exception == true) {
@@ -67,21 +67,21 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 }
 
                 switch (afterReceive.getCommand()) {
-                    case COMPUTE:
+                    case "compute":
                         if (((ComputeInstruction) afterReceive).getParameters().contains(receive.getEvent()) == false) {
                             exception = true;
                             String message = "compute instruction following a receive does not contain a with as excepted: with should contain " + receive.getEvent();
                             log.error("Error at line " + afterReceive.getLineNumber() + " for the instruction (" + afterReceive.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction()));
                         }
                         break;
-                    case SEND:
+                    case "send":
                         if (((SendInstruction) afterReceive).getData().equals(receive.getEvent()) == false) {
                             exception = true;
                             String message = "send instruction does not contain the received event: " + receive.getEvent() + ".";
                             log.error("Error at line " + afterReceive.getLineNumber() + " for the instruction (" + afterReceive.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction()));
                         }
                         break;
-                    case WHEN:
+                    case "when":
                         WhenInstruction whenInstruction = (WhenInstruction) afterReceive;
                         WhenInstruction.ApplicationOrEventInExpression applicationOrEventInExpression = whenInstruction.getApplicationsOrEvents().stream().filter(event -> event.getName().equals(receive.getEvent())).findAny().orElse(null);
                         if (applicationOrEventInExpression == null) {
@@ -104,7 +104,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
             // look for all the receive instructions on the same event: multiple lines with "receive event ..."
             Map<String, List<Instruction>> receivesWithTheSameEvent = instructions.stream()
-                    .filter(instruction -> instruction.getCommand() == Instruction.Command.RECEIVE)
+                    .filter(instruction -> instruction.getCommand().equals("receive"))
                     .collect(Collectors.groupingBy(instruction -> ((ReceiveInstruction) instruction).getEvent()));
 
             Set<String> events = receivesWithTheSameEvent.keySet();
@@ -213,7 +213,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                 if (afterCompute != null) {
                     switch (afterCompute.getCommand()) {
-                        case WHEN:
+                        case "when":
                             WhenInstruction.ApplicationOrEventInExpression applicationOrEventInExpression = ((WhenInstruction) afterCompute).getApplicationsOrEvents().stream()
                                     .filter(application -> application.getName()
                                             .equals(compute.getApplication()))
@@ -264,7 +264,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                     // Look the corresponding compute instruction like: compute appli...
                     IntegrationNode computeNode = orchaProgram.getIntegrationGraph().stream()
-                            .filter(node -> node.getInstruction().getCommand() == Instruction.Command.COMPUTE && ((ComputeInstruction) node.getInstruction()).getApplication().equals(applicationOrEventName))
+                            .filter(node -> node.getInstruction().getCommand().equals("compute") && ((ComputeInstruction) node.getInstruction()).getApplication().equals(applicationOrEventName))
                             .findFirst()
                             .orElse(null);
 
@@ -272,7 +272,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                         // Look for an event like: receive event...
                         IntegrationNode receiveNode = orchaProgram.getIntegrationGraph().stream()
-                                .filter(node -> node.getInstruction().getCommand() == Instruction.Command.RECEIVE && ((ReceiveInstruction) node.getInstruction()).getEvent().equals(applicationOrEventName))
+                                .filter(node -> node.getInstruction().getCommand().equals("receive") && ((ReceiveInstruction) node.getInstruction()).getEvent().equals(applicationOrEventName))
                                 .findFirst()
                                 .orElse(null);
 
@@ -301,7 +301,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                 if (afterWhen != null) {
                     switch (afterWhen.getCommand()) {
-                        case SEND:
+                        case "send":
                             // data in "send data..." should match with "when
                             SendInstruction send = (SendInstruction) afterWhen;
                             boolean dataFound = when.getApplicationsOrEvents().stream().anyMatch(applicationOrEventInExpression -> applicationOrEventInExpression.getName().equals(send.getData()));
@@ -311,7 +311,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                                 log.error("Error at line " + send.getLineNumber() + " for the instruction (" + send.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
                             }
                             break;
-                        case COMPUTE:
+                        case "compute":
                             break;
                         default:
                             exception = true;

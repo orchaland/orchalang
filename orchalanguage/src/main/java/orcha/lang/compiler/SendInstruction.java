@@ -13,11 +13,11 @@ public class SendInstruction extends Instruction{
 	List<String> destinations = new ArrayList<String>();
 	
     public SendInstruction(String sendInstruction) {
-		super(sendInstruction.trim(), Command.SEND);
+		super(sendInstruction.trim(), "send");
 	}
 
 	public SendInstruction(String sendInstruction, int id, int lineNumber) {
-        super(sendInstruction.trim(), id, lineNumber, Command.SEND);
+        super(sendInstruction.trim(), id, lineNumber, "send");
     }
 
     @Override
