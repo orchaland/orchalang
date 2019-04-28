@@ -31,7 +31,6 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
         List<IntegrationNode> graphOfInstructions = new ArrayList<IntegrationNode>();
         OrchaMetadata orchaMetadata = new OrchaMetadata();
         int lineNumber = 1;
-        int instructionID = 1;
 
         for(String lineOfCode: linesOfCode){
 
@@ -42,25 +41,21 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
                 if (lineOfCode.toLowerCase().startsWith("receive")) {
 
-                    Instruction orchaInstruction = new ReceiveInstruction(lineOfCode, instructionID, lineNumber);
+                    Instruction orchaInstruction = new ReceiveInstruction(lineOfCode, lineNumber);
                     graphOfInstructions.add(new IntegrationNode(orchaInstruction));
-                    instructionID++;
 
                 } else if (lineOfCode.toLowerCase().startsWith("compute")) {
 
-                    Instruction orchaInstruction = new ComputeInstruction(lineOfCode, instructionID, lineNumber);
+                    Instruction orchaInstruction = new ComputeInstruction(lineOfCode, lineNumber);
                     graphOfInstructions.add(new IntegrationNode(orchaInstruction));
-                    instructionID++;
 
                 } else if (lineOfCode.toLowerCase().startsWith("when")) {
 
                     try{
                         Instruction orchaInstruction = whenInstructionFactory.getObject();
-                        orchaInstruction.setId(instructionID);
                         orchaInstruction.setLineNumber(lineNumber);
                         orchaInstruction.setInstruction(lineOfCode);
                         graphOfInstructions.add(new IntegrationNode(orchaInstruction));
-                        instructionID++;
 
                     } catch (Exception e){
                         throw new OrchaCompilationException(e.getMessage());
@@ -69,9 +64,8 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
                 } else if (lineOfCode.toLowerCase().startsWith("send")) {
 
-                    Instruction orchaInstruction = new SendInstruction(lineOfCode, instructionID, lineNumber);
+                    Instruction orchaInstruction = new SendInstruction(lineOfCode, lineNumber);
                     graphOfInstructions.add(new IntegrationNode(orchaInstruction));
-                    instructionID++;
 
                 } else if (lineOfCode.toLowerCase().startsWith("title")) {
 

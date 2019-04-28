@@ -16,8 +16,8 @@ public class ComputeInstruction extends Instruction{
 		super(computeInstruction.trim(), "compute");
 	}
 
-	public ComputeInstruction(String computeInstruction, int id, int lineNumber) {
-        super(computeInstruction.trim(), id, lineNumber, "compute");
+	public ComputeInstruction(String computeInstruction, int lineNumber) {
+        super(computeInstruction.trim(), lineNumber, "compute");
     }
 
     @Override

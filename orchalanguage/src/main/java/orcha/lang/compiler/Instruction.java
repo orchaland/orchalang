@@ -2,15 +2,13 @@ package orcha.lang.compiler;
 
 public abstract class Instruction {
 
-	protected String instruction;			// the line of code
-	int id;
-	int lineNumber;				// the line number into the Orcha source file
+	protected String instruction;		// the line of code
+	int lineNumber;						// the line number into the Orcha source file
 
 	String command;
 
-	public Instruction(String instruction, int id, int lineNumber, String command) {
+	public Instruction(String instruction, int lineNumber, String command) {
 		this.instruction = instruction;
-		this.id = id;
 		this.lineNumber = lineNumber;
 		this.command = command.toLowerCase();
 	}
@@ -30,20 +28,12 @@ public abstract class Instruction {
 		return instruction;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public int getLineNumber() {
 		return lineNumber;
 	}
 
 	public String getCommand() {
 		return command;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public void setLineNumber(int lineNumber) {

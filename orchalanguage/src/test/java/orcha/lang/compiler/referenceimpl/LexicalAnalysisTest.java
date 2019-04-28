@@ -47,13 +47,11 @@ public class LexicalAnalysisTest {
             Assert.assertNotNull(graphOfInstructions.get(0).getInstruction());
             Assert.assertTrue(graphOfInstructions.get(0).getInstruction().getCommand().equals("receive"));
             Assert.assertTrue(graphOfInstructions.get(0).getInstruction().getLineNumber() == 3);
-            Assert.assertTrue(graphOfInstructions.get(0).getInstruction().getId() == 1);
             Assert.assertTrue(graphOfInstructions.get(0).getInstruction().getInstruction().equals("receive order from customer"));
 
             Assert.assertNotNull(graphOfInstructions.get(1).getInstruction());
             Assert.assertTrue(graphOfInstructions.get(1).getInstruction().getCommand().equals("when"));
             Assert.assertTrue(graphOfInstructions.get(1).getInstruction().getLineNumber() == 4);
-            Assert.assertTrue(graphOfInstructions.get(1).getInstruction().getId() == 2);
             Assert.assertTrue(graphOfInstructions.get(1).getInstruction().getInstruction().equals("when \"something terminates\""));
 
         }catch(OrchaCompilationException e){

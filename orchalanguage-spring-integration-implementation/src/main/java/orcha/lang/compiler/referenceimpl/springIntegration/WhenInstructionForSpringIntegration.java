@@ -13,8 +13,8 @@ public class WhenInstructionForSpringIntegration extends WhenInstruction {
 		super(whenInstruction);
 	}
 	
-	public WhenInstructionForSpringIntegration(String whenInstruction, int instructionID, int lineNumber) {
-		super(whenInstruction, instructionID, lineNumber);
+	public WhenInstructionForSpringIntegration(String whenInstruction, int lineNumber) {
+		super(whenInstruction, lineNumber);
 	}
 	
 	public String convert(ApplicationOrEventInExpression application) {

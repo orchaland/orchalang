@@ -58,7 +58,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 ReceiveInstruction receive = (ReceiveInstruction) r;
 
                 // search for the instruction right after the receive
-                Instruction afterReceive = instructions.stream().filter(instruction -> instruction.getId() == receive.getId() + 1).findFirst().orElse(null);
+                Instruction afterReceive = instructions.stream().filter(instruction -> instruction.getLineNumber() > receive.getLineNumber()).findFirst().orElse(null);
 
                 if (afterReceive == null) {
                     exception = true;
@@ -208,8 +208,8 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                 ComputeInstruction compute = (ComputeInstruction) c;
 
-                // search for the instruction right after the receive
-                Instruction afterCompute = instructions.stream().filter(instruction -> instruction.getId() == compute.getId() + 1).findFirst().orElse(null);
+                // search for the instruction right after the compute
+                Instruction afterCompute = instructions.stream().filter(instruction -> instruction.getLineNumber() > compute.getLineNumber()).findFirst().orElse(null);
 
                 if (afterCompute != null) {
                     switch (afterCompute.getCommand()) {
@@ -297,7 +297,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
 
                 // search for the instruction right after the when
-                Instruction afterWhen = instructions.stream().filter(instruc -> instruc.getId() == when.getId() + 1).findFirst().orElse(null);
+                Instruction afterWhen = instructions.stream().filter(instruc -> instruc.getLineNumber() > when.getLineNumber()).findFirst().orElse(null);
 
                 if (afterWhen != null) {
                     switch (afterWhen.getCommand()) {

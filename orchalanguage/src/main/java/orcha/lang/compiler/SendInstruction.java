@@ -16,8 +16,8 @@ public class SendInstruction extends Instruction{
 		super(sendInstruction.trim(), "send");
 	}
 
-	public SendInstruction(String sendInstruction, int id, int lineNumber) {
-        super(sendInstruction.trim(), id, lineNumber, "send");
+	public SendInstruction(String sendInstruction, int lineNumber) {
+        super(sendInstruction.trim(), lineNumber, "send");
     }
 
     @Override

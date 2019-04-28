@@ -18,8 +18,8 @@ public class ReceiveInstruction extends Instruction{
     	super(receiveInstruction.trim(), "receive");
 	}
 
-	public ReceiveInstruction(String receiveInstruction, int id, int lineNumber) {
-        super(receiveInstruction.trim(), id, lineNumber, "receive");
+	public ReceiveInstruction(String receiveInstruction, int lineNumber) {
+        super(receiveInstruction.trim(), lineNumber, "receive");
     }
 
     @Override

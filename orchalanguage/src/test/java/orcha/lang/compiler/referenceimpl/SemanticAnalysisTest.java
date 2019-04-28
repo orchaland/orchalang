@@ -27,49 +27,42 @@ public class SemanticAnalysisTest {
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive order from customer");
-            instruction1.setId(1);
             instruction1.setLineNumber(1);
             instruction1.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction1));
 
             Instruction instruction2 = new ComputeInstruction("compute checkOrder with order");
-            instruction2.setId(2);
             instruction2.setLineNumber(2);
             instruction2.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction2));
 
             Instruction instruction3 = new ReceiveInstruction("receive travelInfo from travelAgency");
-            instruction3.setId(3);
             instruction3.setLineNumber(3);
             instruction3.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction3));
 
             Instruction instruction4 = new SendInstruction("send travelInfo to customer");
-            instruction4.setId(4);
             instruction4.setLineNumber(4);
             instruction4.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction4));
 
             Instruction instruction5 = new ReceiveInstruction("receive event from file");
-            instruction5.setId(5);
             instruction5.setLineNumber(5);
             instruction5.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction5));
 
             Instruction instruction6 = new WhenInstruction("when \"event receives\"");
-            instruction6.setId(6);
             instruction6.setLineNumber(6);
             instruction6.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction6));
 
             Instruction instruction7 = new SendInstruction("send event to fileSystem");
-            instruction7.setId(7);
             instruction7.setLineNumber(7);
             instruction7.analysis();
 
@@ -121,14 +114,12 @@ public class SemanticAnalysisTest {
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive order from customer");
-            instruction1.setId(1);
             instruction1.setLineNumber(1);
             instruction1.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction1));
 
             Instruction instruction2 = new ComputeInstruction("compute checkOrder with order");
-            instruction2.setId(2);
             instruction2.setLineNumber(2);
             instruction2.analysis();
 
@@ -136,14 +127,12 @@ public class SemanticAnalysisTest {
 
 
             Instruction instruction3 = new ReceiveInstruction("receive order from customer");
-            instruction3.setId(3);
             instruction3.setLineNumber(3);
             instruction3.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction3));
 
             Instruction instruction4 = new ComputeInstruction("compute sendOrder with order");
-            instruction4.setId(4);
             instruction4.setLineNumber(4);
             instruction4.analysis();
 
@@ -231,14 +220,12 @@ public class SemanticAnalysisTest {
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive order from customer condition name==\"Ben\"");
-            instruction1.setId(1);
             instruction1.setLineNumber(1);
             instruction1.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction1));
 
             Instruction instruction2 = new ComputeInstruction("compute checkOrder with order");
-            instruction2.setId(2);
             instruction2.setLineNumber(2);
             instruction2.analysis();
 
@@ -246,14 +233,12 @@ public class SemanticAnalysisTest {
 
 
             Instruction instruction3 = new ReceiveInstruction("receive order from customer condition name==\"Ben\"");
-            instruction3.setId(3);
             instruction3.setLineNumber(3);
             instruction3.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction3));
 
             Instruction instruction4 = new ComputeInstruction("compute sendOrder with order");
-            instruction4.setId(4);
             instruction4.setLineNumber(4);
             instruction4.analysis();
 
@@ -334,7 +319,6 @@ public class SemanticAnalysisTest {
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
-            instruction1.setId(1);
             instruction1.setLineNumber(1);
             instruction1.analysis();
 
@@ -342,7 +326,6 @@ public class SemanticAnalysisTest {
 
 
             Instruction instruction2 = new ComputeInstruction("compute checkOrder with travelInfo");
-            instruction2.setId(2);
             instruction2.setLineNumber(2);
             instruction2.analysis();
 
@@ -350,7 +333,6 @@ public class SemanticAnalysisTest {
 
 
             Instruction instruction3 = new WhenInstruction("when \"(checkOrder terminates) and (travelInfo receives)\"");
-            instruction3.setId(3);
             instruction3.setLineNumber(3);
             instruction3.analysis();
 
@@ -358,7 +340,6 @@ public class SemanticAnalysisTest {
 
 
             Instruction instruction4 = new SendInstruction("send checkOrder to customer");
-            instruction4.setId(4);
             instruction4.setLineNumber(4);
             instruction4.analysis();
 
@@ -405,7 +386,6 @@ public class SemanticAnalysisTest {
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new SendInstruction("send data to output");
-            instruction1.setId(1);
             instruction1.setLineNumber(1);
             instruction1.analysis();
 

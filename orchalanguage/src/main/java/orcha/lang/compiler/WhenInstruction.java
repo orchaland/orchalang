@@ -85,8 +85,8 @@ public class WhenInstruction extends Instruction{
 		super("when");
 	}
 
-	public WhenInstruction(String whenInstruction, int instructionID, int lineNumber){
-		super(whenInstruction.trim(), instructionID, lineNumber, "when");
+	public WhenInstruction(String whenInstruction, int lineNumber){
+		super(whenInstruction.trim(), lineNumber, "when");
 	}
 
 	public WhenInstruction(String whenInstruction) {
