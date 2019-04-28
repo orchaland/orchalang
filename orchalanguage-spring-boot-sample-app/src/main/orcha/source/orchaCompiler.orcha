@@ -1,0 +1,13 @@
+title "orcha compiler"
+author "Ben Orcha"
+
+receive orchaProgram from orchaProgramSource
+preprocessing with orchaProgram
+when "preprocessing terminates"
+lexicalAnalysis with preprocessing.result
+when "lexicalAnalysis terminates"
+syntaxAnalysis with lexicalAnalysis.result
+when "syntaxAnalysis terminates"
+semanticAnalysis with syntaxAnalysis.result
+when "semanticAnalysis terminates"
+send semanticAnalysis.result to orchaProgramDestination
