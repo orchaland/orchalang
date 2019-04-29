@@ -25,6 +25,7 @@ plugins {
 
 dependencies {
 	compile project(':orchalanguage')
+	compile project(':orchalanguage-spring-integration-implementation')
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'

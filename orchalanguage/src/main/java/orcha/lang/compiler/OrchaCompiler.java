@@ -3,6 +3,7 @@ package orcha.lang.compiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -19,6 +20,7 @@ public class OrchaCompiler {
     Preprocessing preprocessing;
 
     @Autowired
+    @Qualifier("lexicalAnalysisForOrchaCompiler")
     LexicalAnalysis lexicalAnalysis;
 
     @Autowired

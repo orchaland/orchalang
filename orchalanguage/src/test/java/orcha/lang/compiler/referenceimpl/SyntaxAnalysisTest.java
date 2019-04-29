@@ -1,7 +1,6 @@
 package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
-import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration;
 import orcha.lang.compiler.syntax.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -208,7 +207,7 @@ public class SyntaxAnalysisTest {
         receiveInstruction.analysis();
     }
 
-    @Test
+    /*@Test
 	public void when() {
 
 		String expression = null;
@@ -323,7 +322,7 @@ public class SyntaxAnalysisTest {
         } catch (Exception e) {
 			Assert.fail("Syntax error in: " + expression);
 		}
-	}
+	}*/
 
     @Test(expected = OrchaCompilationException.class)
     public void whenError() throws OrchaCompilationException {

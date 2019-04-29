@@ -1,4 +1,4 @@
-package com.example.demo
+package orcha.lang.compiler
 
 import orcha.lang.compiler.OrchaCompiler
 import orcha.lang.compiler.syntax.ReceiveInstruction

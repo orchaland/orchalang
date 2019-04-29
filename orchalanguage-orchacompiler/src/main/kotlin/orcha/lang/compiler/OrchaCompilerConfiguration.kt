@@ -1,9 +1,9 @@
-package com.example.demo
+package orcha.lang.compiler
 
-import orcha.lang.compiler.*
 import orcha.lang.compiler.referenceimpl.*
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
 import orcha.lang.compiler.syntax.WhenInstruction
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,7 +17,7 @@ class OrchaCompilerConfiguration{
         return OrchaCompiler()
     }
 
-    @Bean(name = ["whenInstruction"])
+    /*@Bean(name = ["whenInstruction"])
     fun whenInstructionFactory(): WhenInstructionFactory {
         return WhenInstructionFactory()
     }
@@ -26,29 +26,30 @@ class OrchaCompilerConfiguration{
     @Throws(Exception::class)
     fun whenInstruction(): WhenInstruction? {
         return whenInstructionFactory().getObject()
-    }
+    }*/
 
     @Value("\${orcha.pathToBinaryCode:build/resources/main}")
     internal var pathToBinaryCode: String? = null
 
     @Bean
-    internal fun preprocessingForTest(): Preprocessing {
+    internal fun preprocessing(): Preprocessing {
         return PreprocessingImpl()
     }
 
     @Bean
     @DependsOn("whenInstruction")
-    internal fun lexicalAnalysisForTest(): LexicalAnalysis {
+    @Qualifier("lexicalAnalysisForOrchaCompiler")
+    internal fun lexicalAnalysis(): LexicalAnalysis {
         return LexicalAnalysisImpl()
     }
 
     @Bean
-    internal fun syntaxAnalysisForTest(): SyntaxAnalysis {
+    internal fun syntaxAnalysis(): SyntaxAnalysis {
         return SyntaxAnalysisImpl()
     }
 
     @Bean
-    internal fun semanticAnalysisForTest(): SemanticAnalysis {
+    internal fun semanticAnalysis(): SemanticAnalysis {
         return SemanticAnalysisImpl()
     }
 

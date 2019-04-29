@@ -1,10 +1,10 @@
 package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
-import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory;
 import orcha.lang.compiler.syntax.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,10 +17,12 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
     private static Logger log = LoggerFactory.getLogger(LexicalAnalysisImpl.class);
 
     @Resource(name = "&whenInstruction")
-    WhenInstructionFactory whenInstructionFactory;
+    AbstractFactoryBean whenInstructionFactory;
 
     @Override
     public OrchaProgram analysis(List<String> linesOfCode) throws OrchaCompilationException {
+
+        log.info("Lexical analysis of the orcha program");
 
         List<IntegrationNode> graphOfInstructions = new ArrayList<IntegrationNode>();
         OrchaMetadata orchaMetadata = new OrchaMetadata();
@@ -32,6 +34,8 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
             if(lineOfCode.equals("") == true) {}
             else {
+
+                log.info("Lexical analysis of the instruction: " + lineOfCode);
 
                 if (lineOfCode.toLowerCase().startsWith("receive")) {
 
@@ -46,7 +50,7 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
                 } else if (lineOfCode.toLowerCase().startsWith("when")) {
 
                     try{
-                        Instruction orchaInstruction = whenInstructionFactory.getObject();
+                        Instruction orchaInstruction = (Instruction)whenInstructionFactory.getObject();
                         orchaInstruction.setLineNumber(lineNumber);
                         orchaInstruction.setInstruction(lineOfCode);
                         graphOfInstructions.add(new IntegrationNode(orchaInstruction));
@@ -95,6 +99,8 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
             lineNumber++;
 
         }
+
+        log.info("Lexical analysis of the orcha program complete successfully");
 
         return new OrchaProgram(graphOfInstructions, orchaMetadata);
     }
