@@ -9,6 +9,7 @@
 * Receive: [receive syntax](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/syntax/ReceiveInstruction.java)
 * Compure: [compute syntax](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/syntax/ComputeInstruction.java)
 
+* [instructions usage](
 ## compiler
 
 * [Reference implementation](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/OrchaCompiler.java)
