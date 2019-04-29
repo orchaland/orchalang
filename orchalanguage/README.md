@@ -15,6 +15,10 @@
 
 ## compiler
 
+The compiler transpile an Orcha program into a adjacency graph of [integration patterns](https://www.enterpriseintegrationpatterns.com/):
+* An Orcha compute instruction for instance if transpiled into a [service activator](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingAdapter.html)
+* An Orcha when instruction is transpiled into an [aggregator](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Aggregator.html)
+
 * [Reference implementation](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/OrchaCompiler.java)
 
 ## compilation stages
