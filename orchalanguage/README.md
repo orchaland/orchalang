@@ -29,10 +29,10 @@ This [reference implentation](https://github.com/orchaland/orchalang/tree/master
 * [lexical analysis](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/referenceimpl/LexicalAnalysisImpl.java)
 * [preprocessing usage](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/test/java/orcha/lang/compiler/referenceimpl/PreprocessingTest.java)
 
-## implementation details
+## Customizing the instructions
 
 Each instruction can be easily customized by inheritance is sub projects.
-For instance the [when instruction](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/syntax/WhenInstruction.java) is [adapted to Spring integration](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionForSpringIntegration.java).
+For instance the [when instruction](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/syntax/WhenInstruction.java) from this project is [adapted to the Spring integration sub project](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionForSpringIntegration.java).
 This adaptation can be reached automatically by the current implementation if:
 * a [factory](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionFactory.java) is provided.
 * a bean with the name whenInstruction is defined into a [configuration file](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/SpringIntegrationAutoConfiguration.java).
