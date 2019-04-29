@@ -1,6 +1,8 @@
 package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
+import orcha.lang.compiler.syntax.Instruction;
+import orcha.lang.compiler.syntax.TitleInstruction;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,7 @@ public class LexicalAnalysisTest {
 
             List<String> linesOfCode = new ArrayList<String>(
                     Arrays.asList(
-                            "title \"title\"",
+                            "title: title",
                             "",
                             "receive order from customer",
                             "when \"something terminates\""));
@@ -38,7 +40,13 @@ public class LexicalAnalysisTest {
             Assert.assertNotNull(orchaSmartContract.getIntegrationGraph());
             Assert.assertNotNull(orchaSmartContract.getOrchaMetadata());
 
-            //Assert.assertEquals(orchaSmartContract.getOrchaMetadata().getTitle(), "title");
+            OrchaMetadata orchaMetadata = orchaSmartContract.getOrchaMetadata();
+            List<Instruction> metadata = orchaMetadata.getMetadata();
+            Assert.assertNotNull(metadata);
+            Assert.assertEquals(metadata.size(), 1);
+            Instruction instruction = metadata.get(0);
+            Assert.assertTrue(instruction instanceof TitleInstruction);
+            
 
             List<IntegrationNode> graphOfInstructions = orchaSmartContract.getIntegrationGraph();
 
