@@ -1,6 +1,15 @@
 package orcha.lang.compiler;
 
+import orcha.lang.compiler.syntax.Instruction;
+import orcha.lang.compiler.syntax.TitleInstruction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class OrchaMetadata {
+
+    List<Instruction> metadata = new ArrayList<Instruction>();
 
     String title;
     String description;
@@ -8,12 +17,20 @@ public class OrchaMetadata {
     String author;
     String version;
 
-    public String getTitle() {
-        return title;
+    public void add(Instruction instruction) {
+        metadata.add(instruction);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public List<Instruction> getMetadata() {
+        return metadata;
+    }
+
+    public String getTitle() {
+        TitleInstruction titleInstruction = (TitleInstruction) metadata.stream().filter(instruction -> instruction instanceof TitleInstruction).findAny().orElse(null);
+        if(titleInstruction != null){
+            return titleInstruction.getTitle();
+        }
+        return null;
     }
 
     public String getDescription() {
@@ -58,4 +75,5 @@ public class OrchaMetadata {
                 ", version='" + version + '\'' +
                 '}';
     }
+
 }

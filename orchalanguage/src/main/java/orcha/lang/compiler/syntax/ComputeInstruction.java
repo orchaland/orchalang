@@ -1,12 +1,13 @@
-package orcha.lang.compiler;
+package orcha.lang.compiler.syntax;
+
+import orcha.lang.compiler.OrchaCompilationException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ComputeInstruction extends Instruction{
+public class ComputeInstruction extends Instruction {
 
 	String computeSyntax = "compute (?<application>.*?)( with (?<parameters>.*))?";
 	String application;	
@@ -24,7 +25,7 @@ public class ComputeInstruction extends Instruction{
     public void analysis() throws OrchaCompilationException {
 
 		Pattern pattern = Pattern.compile(computeSyntax);
-		Matcher result = pattern.matcher(instruction.replaceAll("\\s\\s+", " "));
+		Matcher result = pattern.matcher(instruction.replaceAll("\\s\\s+", " ").trim());
 		if(result.matches() == false) {
 			throw new OrchaCompilationException("Syntax error at instruction: " + instruction);
 		}

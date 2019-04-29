@@ -1,5 +1,7 @@
 package orcha.lang.compiler;
 
+import orcha.lang.compiler.syntax.Instruction;
+
 import java.util.ArrayList;
 import java.util.List;
 

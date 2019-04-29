@@ -1,12 +1,13 @@
-package orcha.lang.compiler;
+package orcha.lang.compiler.syntax;
+
+import orcha.lang.compiler.OrchaCompilationException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SendInstruction extends Instruction{
+public class SendInstruction extends Instruction {
 
 	String sendSyntax = "send (?<data>.*?) to (?<destinations>.*?)";
 	String data;	
@@ -24,7 +25,7 @@ public class SendInstruction extends Instruction{
     public void analysis() throws OrchaCompilationException {
 
 		Pattern pattern = Pattern.compile(sendSyntax);
-		Matcher result = pattern.matcher(instruction.replaceAll("\\s\\s+", " "));
+		Matcher result = pattern.matcher(instruction.replaceAll("\\s\\s+", " ").trim());
 		if(result.matches() == false) {
 			throw new OrchaCompilationException("Syntax error at instruction: " + instruction);
 		}

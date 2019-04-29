@@ -2,18 +2,12 @@ package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory;
-import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration;
+import orcha.lang.compiler.syntax.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +55,6 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
                         throw new OrchaCompilationException(e.getMessage());
                     }
 
-
                 } else if (lineOfCode.toLowerCase().startsWith("send")) {
 
                     Instruction orchaInstruction = new SendInstruction(lineOfCode, lineNumber);
@@ -69,7 +62,8 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
                 } else if (lineOfCode.toLowerCase().startsWith("title")) {
 
-                    orchaMetadata.setTitle(lineOfCode.substring("title".length()).trim());
+                    Instruction titleInstruction = new TitleInstruction(lineOfCode, lineNumber);
+                    orchaMetadata.add(titleInstruction);
 
                 } else if (lineOfCode.toLowerCase().startsWith("domain")) {
 
@@ -91,9 +85,6 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
                     throw new OrchaCompilationException("Syntax error", lineNumber, lineOfCode);
                 }
 
-                if (orchaMetadata.getTitle() == null) {
-                    throw new OrchaCompilationException("title metadata is missing");
-                }
             }
             lineNumber++;
 

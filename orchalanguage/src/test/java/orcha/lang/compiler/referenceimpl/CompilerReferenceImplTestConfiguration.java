@@ -2,6 +2,7 @@ package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory;
+import orcha.lang.compiler.syntax.WhenInstruction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;

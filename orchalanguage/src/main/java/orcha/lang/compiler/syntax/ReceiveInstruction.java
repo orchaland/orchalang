@@ -1,9 +1,11 @@
-package orcha.lang.compiler;
+package orcha.lang.compiler.syntax;
+
+import orcha.lang.compiler.OrchaCompilationException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ReceiveInstruction extends Instruction{
+public class ReceiveInstruction extends Instruction {
 
 	String receiveSyntax = "receive (?<event>.*?) from (?<source>\\w+)( condition (?<condition>.*))?";
 	String event;
@@ -26,7 +28,7 @@ public class ReceiveInstruction extends Instruction{
     public void analysis() throws OrchaCompilationException {
 
 		Pattern pattern = Pattern.compile(receiveSyntax);
-		Matcher result = pattern.matcher(instruction.replaceAll("\\s\\s+", " "));
+		Matcher result = pattern.matcher(instruction.replaceAll("\\s\\s+", " ").trim());
 		if(result.matches() == false) {
 			throw new OrchaCompilationException("Syntax error at instruction: " + instruction);
 		}

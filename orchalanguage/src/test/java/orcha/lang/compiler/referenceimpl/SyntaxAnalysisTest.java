@@ -2,6 +2,7 @@ package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration;
+import orcha.lang.compiler.syntax.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,42 @@ public class SyntaxAnalysisTest {
 	@Test
 	public void contextLoads() {
 	}
-	
+
+	@Test
+	public void title() {
+
+		String expression = null;
+
+		try {
+
+			expression = "title: un titre";
+			TitleInstruction titleInstruction = new TitleInstruction(expression);
+			titleInstruction.analysis();
+
+			String titre = titleInstruction.getTitle();
+			Assert.assertNotNull(titre);
+			Assert.assertEquals(titre, "un titre");
+
+		} catch (OrchaCompilationException e) {
+			Assert.fail("Syntax error in: " + expression);
+		}
+
+		try {
+
+			expression = "title 	 :	  un titre	 ";
+			TitleInstruction titleInstruction = new TitleInstruction(expression);
+			titleInstruction.analysis();
+
+			String titre = titleInstruction.getTitle();
+			Assert.assertNotNull(titre);
+			Assert.assertEquals(titre, "un titre");
+
+		} catch (OrchaCompilationException e) {
+			Assert.fail("Syntax error in: " + expression);
+		}
+
+	}
+
 	@Test
 	public void receive() {
 

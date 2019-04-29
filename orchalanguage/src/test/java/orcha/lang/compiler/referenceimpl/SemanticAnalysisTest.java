@@ -1,6 +1,7 @@
 package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
+import orcha.lang.compiler.syntax.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,56 +25,73 @@ public class SemanticAnalysisTest {
 
         try{
 
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+            orchaMetadata.add(titleInstruction);
+
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive order from customer");
-            instruction1.setLineNumber(1);
+            instruction1.setLineNumber(2);
             instruction1.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction1));
 
             Instruction instruction2 = new ComputeInstruction("compute checkOrder with order");
-            instruction2.setLineNumber(2);
+            instruction2.setLineNumber(3);
             instruction2.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction2));
 
             Instruction instruction3 = new ReceiveInstruction("receive travelInfo from travelAgency");
-            instruction3.setLineNumber(3);
+            instruction3.setLineNumber(4);
             instruction3.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction3));
 
             Instruction instruction4 = new SendInstruction("send travelInfo to customer");
-            instruction4.setLineNumber(4);
+            instruction4.setLineNumber(5);
             instruction4.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction4));
 
             Instruction instruction5 = new ReceiveInstruction("receive event from file");
-            instruction5.setLineNumber(5);
+            instruction5.setLineNumber(6);
             instruction5.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction5));
 
             Instruction instruction6 = new WhenInstruction("when \"event receives\"");
-            instruction6.setLineNumber(6);
+            instruction6.setLineNumber(7);
             instruction6.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction6));
 
             Instruction instruction7 = new SendInstruction("send event to fileSystem");
-            instruction7.setLineNumber(7);
+            instruction7.setLineNumber(8);
             instruction7.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction7));
 
-            OrchaProgram orchaSmartContract = new OrchaProgram();
-            orchaSmartContract.setIntegrationGraph(integrationNodes);
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
 
-            orchaSmartContract = semanticAnalysisForTest.analysis(orchaSmartContract);
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
 
-            integrationNodes = orchaSmartContract.getIntegrationGraph();
+            integrationNodes = orchaProgram.getIntegrationGraph();
+
+
+
+            orchaMetadata = orchaProgram.getOrchaMetadata();
+            List<Instruction> metadata = orchaMetadata.getMetadata();
+            TitleInstruction title = (TitleInstruction) metadata.stream().filter(instruction -> instruction instanceof TitleInstruction).findAny().orElse(null);
+            Assert.assertNotNull(title);
+            Assert.assertEquals(title.getTitle(), "check order");
+
+
 
             Assert.assertTrue(integrationNodes.size() == 7);
 
@@ -106,34 +124,70 @@ public class SemanticAnalysisTest {
 
     }
 
+    @Test(expected = OrchaCompilationException.class)
+    public void titleMissing() throws OrchaCompilationException {
+
+        OrchaMetadata orchaMetadata = new OrchaMetadata();
+
+        List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
+
+        Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
+        instruction1.setLineNumber(1);
+        instruction1.analysis();
+
+        integrationNodes.add(new IntegrationNode(instruction1));
+
+        Instruction instruction2 = new SendInstruction("send travelInfo to customer");
+        instruction2.setLineNumber(2);
+        instruction2.analysis();
+
+        integrationNodes.add(new IntegrationNode(instruction2));
+
+        OrchaProgram orchaProgram = new OrchaProgram();
+        orchaProgram.setIntegrationGraph(integrationNodes);
+        orchaProgram.setOrchaMetadata(orchaMetadata);
+
+        orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
+
+    }
+
+
     @Test
     public void receivesInstructionWithTheSameEvent() {
 
         try {
 
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+            orchaMetadata.add(titleInstruction);
+
+
+
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive order from customer");
-            instruction1.setLineNumber(1);
+            instruction1.setLineNumber(2);
             instruction1.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction1));
 
             Instruction instruction2 = new ComputeInstruction("compute checkOrder with order");
-            instruction2.setLineNumber(2);
+            instruction2.setLineNumber(3);
             instruction2.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction2));
 
 
             Instruction instruction3 = new ReceiveInstruction("receive order from customer");
-            instruction3.setLineNumber(3);
+            instruction3.setLineNumber(4);
             instruction3.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction3));
 
             Instruction instruction4 = new ComputeInstruction("compute sendOrder with order");
-            instruction4.setLineNumber(4);
+            instruction4.setLineNumber(5);
             instruction4.analysis();
 
             integrationNodes.add(new IntegrationNode(instruction4));
@@ -141,6 +195,7 @@ public class SemanticAnalysisTest {
 
             OrchaProgram orchaProgram = new OrchaProgram();
             orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
 
             orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
 
@@ -217,6 +272,13 @@ public class SemanticAnalysisTest {
 
         try{
 
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+            orchaMetadata.add(titleInstruction);
+
+
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive order from customer condition name==\"Ben\"");
@@ -247,6 +309,7 @@ public class SemanticAnalysisTest {
 
             OrchaProgram orchaProgram = new OrchaProgram();
             orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
 
             orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
 
@@ -316,6 +379,13 @@ public class SemanticAnalysisTest {
 
         try{
 
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+            orchaMetadata.add(titleInstruction);
+
+
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
@@ -346,12 +416,13 @@ public class SemanticAnalysisTest {
             integrationNodes.add(new IntegrationNode(instruction4));
 
 
-            OrchaProgram orchaSmartContract = new OrchaProgram();
-            orchaSmartContract.setIntegrationGraph(integrationNodes);
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
 
-            orchaSmartContract = semanticAnalysisForTest.analysis(orchaSmartContract);
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
 
-            integrationNodes = orchaSmartContract.getIntegrationGraph();
+            integrationNodes = orchaProgram.getIntegrationGraph();
 
             Assert.assertTrue(integrationNodes.size() == 5);
 
@@ -383,6 +454,14 @@ public class SemanticAnalysisTest {
 
         try{
 
+            Instruction titleInstruction = new TitleInstruction("title: check data");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+            orchaMetadata.add(titleInstruction);
+
+
+
             List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
 
             Instruction instruction1 = new SendInstruction("send data to output");
@@ -391,12 +470,13 @@ public class SemanticAnalysisTest {
 
             integrationNodes.add(new IntegrationNode(instruction1));
 
-            OrchaProgram orchaSmartContract = new OrchaProgram();
-            orchaSmartContract.setIntegrationGraph(integrationNodes);
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
 
-            orchaSmartContract = semanticAnalysisForTest.analysis(orchaSmartContract);
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
 
-            integrationNodes = orchaSmartContract.getIntegrationGraph();
+            integrationNodes = orchaProgram.getIntegrationGraph();
 
             Assert.assertTrue(integrationNodes.size() == 1);
 

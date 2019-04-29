@@ -1,13 +1,14 @@
 package orcha.lang.compiler.referenceimpl;
 
-import orcha.lang.compiler.*;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import orcha.lang.compiler.*;
+import orcha.lang.compiler.syntax.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,10 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
     @Override
     public OrchaProgram analysis(OrchaProgram orchaProgram) throws OrchaCompilationException {
 
-        boolean exception = false;
+        List<OrchaCompilationException> exceptions = new ArrayList<OrchaCompilationException>();
+
+        OrchaMetadata metadata = orchaProgram.getOrchaMetadata();
+        this.metadataAnalysis(metadata, exceptions);
 
         // The complete list of instructions in the orcha program
         List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
@@ -29,25 +33,55 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 .collect(Collectors.groupingBy(Instruction::getCommand));
 
         List<Instruction> receives = instructionsByCommand.get("receive");
-        exception = this.receiveAnalysis(receives, orchaProgram, exception);
+        this.receiveAnalysis(receives, orchaProgram, exceptions);
 
         List<Instruction> computes = instructionsByCommand.get("compute");
-        exception = this.computeAnalysis(computes, orchaProgram, exception);
+        this.computeAnalysis(computes, orchaProgram, exceptions);
 
         List<Instruction> whens = instructionsByCommand.get("when");
-        exception = this.whenAnalysis(whens, orchaProgram, exception);
+        this.whenAnalysis(whens, orchaProgram, exceptions);
 
         List<Instruction> sends = instructionsByCommand.get("send");
-        this.sendAnalysis(sends, orchaProgram, exception);
+        this.sendAnalysis(sends, orchaProgram, exceptions);
 
-        if (exception == true) {
+        if (exceptions.size() > 0) {
             throw new OrchaCompilationException("Semantic analysis error.");
         }
 
         return orchaProgram;
     }
 
-    private boolean receiveAnalysis(List<Instruction> receives, OrchaProgram orchaProgram, boolean exception) {
+    private void metadataAnalysis(OrchaMetadata orchaMetadata, List<OrchaCompilationException> exceptions){
+
+        List<Instruction> metadata = orchaMetadata.getMetadata();
+        if(metadata == null){
+            String message = "title is missing";
+            OrchaCompilationException exception = new OrchaCompilationException(message);
+            log.error("Error cause by: " + message, exception);
+            exceptions.add(exception);
+            return;
+        }
+
+        TitleInstruction titleInstruction = (TitleInstruction) metadata.stream().filter(instruction -> instruction instanceof TitleInstruction).findAny().orElse(null);
+        if(titleInstruction == null){
+            String message = "title is missing";
+            OrchaCompilationException exception = new OrchaCompilationException(message);
+            log.error("Error cause by: " + message, exception);
+            exceptions.add(exception);
+            return;
+        }
+
+        String title = titleInstruction.getTitle();
+        if(title == null){
+            String message = "title is missing";
+            OrchaCompilationException exception = new OrchaCompilationException(message, titleInstruction.getLineNumber(), titleInstruction.getInstruction());
+            log.error("Error at line " + titleInstruction.getLineNumber() + " for the instruction (" + titleInstruction.getInstruction() + ") cause by: " + message, exception);
+            exceptions.add(exception);
+        }
+
+    }
+
+    private void receiveAnalysis(List<Instruction> receives, OrchaProgram orchaProgram, List<OrchaCompilationException> exceptions){
 
         if (receives != null) {
 
@@ -61,44 +95,54 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 Instruction afterReceive = instructions.stream().filter(instruction -> instruction.getLineNumber() > receive.getLineNumber()).findFirst().orElse(null);
 
                 if (afterReceive == null) {
-                    exception = true;
+
                     String message = "receive instruction should be followed by a when, a compute, or a send instruction";
-                    log.error("Error at line " + receive.getLineNumber() + " for the instruction (" + receive.getInstruction() + ") cause by: " + message, new OrchaCompilationException("receive instruction should be followed by a when, a compute, or a send instruction", afterReceive.getLineNumber(), afterReceive.getInstruction()));
+                    OrchaCompilationException exception = new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction());
+                    log.error("Error at line " + receive.getLineNumber() + " for the instruction (" + receive.getInstruction() + ") cause by: " + message, exception);
+                    exceptions.add(exception);
+
+                } else {
+
+                    switch (afterReceive.getCommand()) {
+                        case "compute":
+                            if (((ComputeInstruction) afterReceive).getParameters().contains(receive.getEvent()) == false) {
+                                String message = "compute instruction following a receive does not contain a with as excepted: with should contain " + receive.getEvent();
+                                OrchaCompilationException exception = new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction());
+                                log.error("Error at line " + afterReceive.getLineNumber() + " for the instruction (" + afterReceive.getInstruction() + ") cause by: " + message, exception);
+                                exceptions.add(exception);
+                            }
+                            break;
+                        case "send":
+                            if (((SendInstruction) afterReceive).getData().equals(receive.getEvent()) == false) {
+                                String message = "send instruction does not contain the received event: " + receive.getEvent() + ".";
+                                OrchaCompilationException exception = new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction());
+                                log.error("Error at line " + afterReceive.getLineNumber() + " for the instruction (" + afterReceive.getInstruction() + ") cause by: " + message, exception);
+                                exceptions.add(exception);
+                            }
+                            break;
+                        case "when":
+                            WhenInstruction whenInstruction = (WhenInstruction) afterReceive;
+                            WhenInstruction.ApplicationOrEventInExpression applicationOrEventInExpression = whenInstruction.getApplicationsOrEvents().stream().filter(event -> event.getName().equals(receive.getEvent())).findAny().orElse(null);
+                            if (applicationOrEventInExpression == null) {
+                                String message = "when instruction following a receive does not contain the received event in its condition : " + receive.getEvent() + ".";
+                                OrchaCompilationException exception = new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction());
+                                log.error("Error at line " + whenInstruction.getLineNumber() + " for the instruction (" + whenInstruction.getInstruction() + ") cause by: " + message, exception);
+                                exceptions.add(exception);
+                            }
+                            break;
+                        default:
+                            String message = "receive instruction should be followed by a when, a compute, or a send instruction";
+                            OrchaCompilationException exception = new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction());
+                            log.error("Error at line " + receive.getLineNumber() + " for the instruction (" + receive.getInstruction() + ") cause by: " + message, exception);
+                            exceptions.add(exception);
+                    }
+
+                    // search for the instruction node containing the receive instruction => then add a node has an adjacent node
+                    IntegrationNode receiveNode = orchaProgram.getIntegrationGraph().stream().filter(instructionNode -> instructionNode.getInstruction() == receive).findFirst().orElse(null);
+                    receiveNode.getNextIntegrationNodes().add(new IntegrationNode(afterReceive));
+
                 }
 
-                switch (afterReceive.getCommand()) {
-                    case "compute":
-                        if (((ComputeInstruction) afterReceive).getParameters().contains(receive.getEvent()) == false) {
-                            exception = true;
-                            String message = "compute instruction following a receive does not contain a with as excepted: with should contain " + receive.getEvent();
-                            log.error("Error at line " + afterReceive.getLineNumber() + " for the instruction (" + afterReceive.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction()));
-                        }
-                        break;
-                    case "send":
-                        if (((SendInstruction) afterReceive).getData().equals(receive.getEvent()) == false) {
-                            exception = true;
-                            String message = "send instruction does not contain the received event: " + receive.getEvent() + ".";
-                            log.error("Error at line " + afterReceive.getLineNumber() + " for the instruction (" + afterReceive.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction()));
-                        }
-                        break;
-                    case "when":
-                        WhenInstruction whenInstruction = (WhenInstruction) afterReceive;
-                        WhenInstruction.ApplicationOrEventInExpression applicationOrEventInExpression = whenInstruction.getApplicationsOrEvents().stream().filter(event -> event.getName().equals(receive.getEvent())).findAny().orElse(null);
-                        if (applicationOrEventInExpression == null) {
-                            exception = true;
-                            String message = "when instruction following a receive does not contain the received event in its condition : " + receive.getEvent() + ".";
-                            log.error("Error at line " + whenInstruction.getLineNumber() + " for the instruction (" + whenInstruction.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction()));
-                        }
-                        break;
-                    default:
-                        exception = true;
-                        String message = "receive instruction should be followed by a when, a compute, or a send instruction";
-                        log.error("Error at line " + receive.getLineNumber() + " for the instruction (" + receive.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterReceive.getLineNumber(), afterReceive.getInstruction()));
-                }
-
-                // search for the instruction node containing the receive instruction => then add a node has an adjacent node
-                IntegrationNode receiveNode = orchaProgram.getIntegrationGraph().stream().filter(instructionNode -> instructionNode.getInstruction() == receive).findFirst().orElse(null);
-                receiveNode.getNextIntegrationNodes().add(new IntegrationNode(afterReceive));
 
             }
 
@@ -129,9 +173,10 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                             .allMatch(receive -> ((ReceiveInstruction) receive).getSource().equals(source));
 
                     if (sameSource == false) {    // not all the receive instructions have the same event
-                        exception = true;
                         String message = "all the receive instructions having " + event + " as event should have the same source also.";
-                        log.error(message, new OrchaCompilationException(message));
+                        OrchaCompilationException exception = new OrchaCompilationException(message);
+                        log.error(message, exception);
+                        exceptions.add(exception);
                     }
 
                     ReceiveInstruction fictitiousReceive = new ReceiveInstruction();
@@ -194,11 +239,9 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
         }
 
-        return exception;
-
     }
 
-    private boolean computeAnalysis(List<Instruction> computes, OrchaProgram orchaProgram, boolean exception) {
+    private void computeAnalysis(List<Instruction> computes, OrchaProgram orchaProgram, List<OrchaCompilationException> exceptions){
 
         if (computes != null) {
 
@@ -221,9 +264,10 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                                     .orElse(null);
 
                             if (applicationOrEventInExpression == null) {
-                                exception = true;
                                 String message = "when instruction following a compute does not contain the result of the compute in its condition : " + compute.getApplication() + ".";
-                                log.error("Error at line " + afterCompute.getLineNumber() + " for the instruction (" + afterCompute.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, afterCompute.getLineNumber(), afterCompute.getInstruction()));
+                                OrchaCompilationException exception = new OrchaCompilationException(message, afterCompute.getLineNumber(), afterCompute.getInstruction());
+                                log.error("Error at line " + afterCompute.getLineNumber() + " for the instruction (" + afterCompute.getInstruction() + ") cause by: " + message, exception);
+                                exceptions.add(exception);
                             }
                             break;
                         default:
@@ -242,11 +286,9 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
             }
         }
 
-        return exception;
-
     }
 
-    private boolean whenAnalysis(List<Instruction> whens, OrchaProgram orchaProgram, boolean exception) {
+    private void whenAnalysis(List<Instruction> whens, OrchaProgram orchaProgram, List<OrchaCompilationException> exceptions){
 
         if (whens != null) {
 
@@ -277,22 +319,25 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                                 .orElse(null);
 
                         if (receiveNode == null) {
-                            exception = true;
                             String message = "Unable to retreive " + applicationOrEventName + " from the when instruction (" + when.getInstruction() + ") in a compute or a receive.";
-                            log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
+                            OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                            log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
+                            exceptions.add(exception);
                         } else if (receiveNode.getInstruction().getLineNumber() > when.getLineNumber()) {
-                            exception = true;
                             String message = "the event " + applicationOrEventName + " used in the when instruction was found in this receive instruction (" + receiveNode.getInstruction() + ") but after it.";
-                            log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
+                            OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                            log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
+                            exceptions.add(exception);
                         }
 
                     } else if (computeNode.getInstruction().getLineNumber() > when.getLineNumber()) {
-                        exception = true;
                         String message = "the application " + applicationOrEventName + " used in the when instruction was found in this compute instruction (" + computeNode.getInstruction() + ") but after it.";
-                        log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
+                        OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                        log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
+                        exceptions.add(exception);
                     }
 
-                }
+                };
 
                 List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
 
@@ -306,22 +351,25 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                             SendInstruction send = (SendInstruction) afterWhen;
                             boolean dataFound = when.getApplicationsOrEvents().stream().anyMatch(applicationOrEventInExpression -> applicationOrEventInExpression.getName().equals(send.getData()));
                             if(dataFound == false){
-                                exception = true;
                                 String message = "send instruction sends a data (" + send.getData() + ") that does not match with any predicat in the when instruction (" + when.getInstruction() + ")";
-                                log.error("Error at line " + send.getLineNumber() + " for the instruction (" + send.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
+                                OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                                log.error("Error at line " + send.getLineNumber() + " for the instruction (" + send.getInstruction() + ") cause by: " + message, exception);
+                                exceptions.add(exception);
                             }
                             break;
                         case "compute":
                             break;
                         default:
-                            exception = true;
                             String message = "when instruction should be followed by a send or a compute.";
-                            log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
+                            OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                            log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
+                            exceptions.add(exception);
                     }
                 } else {
-                    exception = true;
                     String message = "when instruction should be followed by a send or a compute.";
-                    log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction()));
+                    OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                    log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
+                    exceptions.add(exception);
                 }
 
 
@@ -347,10 +395,9 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
             }
         }
 
-        return exception;
     }
 
-    private boolean sendAnalysis(List<Instruction> sends, OrchaProgram orchaProgram, boolean exception) {
+    private void sendAnalysis(List<Instruction> sends, OrchaProgram orchaProgram, List<OrchaCompilationException> exceptions){
 
         if (sends != null) {
 
@@ -371,7 +418,5 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
             }
         }
-
-        return exception;
     }
 }

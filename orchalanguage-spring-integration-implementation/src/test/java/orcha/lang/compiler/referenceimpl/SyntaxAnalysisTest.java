@@ -3,7 +3,7 @@ package orcha.lang.compiler.referenceimpl;
 import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.springIntegration.SpringIntegrationAutoConfiguration;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory;
-import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration;
+import orcha.lang.compiler.syntax.WhenInstruction;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

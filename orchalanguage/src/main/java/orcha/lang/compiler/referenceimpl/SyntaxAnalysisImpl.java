@@ -1,6 +1,7 @@
 package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
+import orcha.lang.compiler.syntax.Instruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,11 +25,14 @@ public class SyntaxAnalysisImpl implements SyntaxAnalysis {
 
     }
 
-    private void metaDataAnalysis(OrchaMetadata orchaMetadata) {
+    private void metaDataAnalysis(OrchaMetadata orchaMetadata) throws OrchaCompilationException {
+        for (Instruction instruction : orchaMetadata.getMetadata()) {
+            instruction.analysis();
+        }
     }
 
-    private void instructionAnalysis(List<IntegrationNode> orchaMetadata) throws OrchaCompilationException {
-        for (IntegrationNode node : orchaMetadata) {
+    private void instructionAnalysis(List<IntegrationNode> integrationNodes) throws OrchaCompilationException {
+        for (IntegrationNode node : integrationNodes) {
             node.getInstruction().analysis();
         }
     }

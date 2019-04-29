@@ -1,6 +1,5 @@
 package orcha.lang.compiler.referenceimpl.springIntegration;
 
-import orcha.lang.compiler.WhenInstruction;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 public class WhenInstructionFactory extends AbstractFactoryBean<WhenInstructionForSpringIntegration> {

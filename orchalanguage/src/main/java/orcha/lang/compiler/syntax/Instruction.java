@@ -1,4 +1,6 @@
-package orcha.lang.compiler;
+package orcha.lang.compiler.syntax;
+
+import orcha.lang.compiler.OrchaCompilationException;
 
 public abstract class Instruction {
 

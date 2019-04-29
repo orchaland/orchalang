@@ -1,7 +1,7 @@
 package orcha.lang.compiler.referenceimpl.springIntegration;
 
 import orcha.lang.compiler.OrchaCompilationException;
-import orcha.lang.compiler.WhenInstruction;
+import orcha.lang.compiler.syntax.WhenInstruction;
 
 public class WhenInstructionForSpringIntegration extends WhenInstruction {
 

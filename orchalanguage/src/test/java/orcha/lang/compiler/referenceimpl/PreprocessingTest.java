@@ -1,6 +1,5 @@
 package orcha.lang.compiler.referenceimpl;
 
-import orcha.lang.compiler.Instruction;
 import orcha.lang.compiler.OrchaCompilationException;
 import orcha.lang.compiler.Preprocessing;
 import org.junit.Assert;

@@ -1,11 +1,13 @@
-package orcha.lang.compiler;
+package orcha.lang.compiler.syntax;
+
+import orcha.lang.compiler.OrchaCompilationException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WhenInstruction extends Instruction{
+public class WhenInstruction extends Instruction {
 
 	String whenSyntax = "when \"(?<expression>.*?)\"";
 	String applicationWithConditonInExpressionSyntax = "(?<application>.*?) terminates condition (?<condition>.*?)";
