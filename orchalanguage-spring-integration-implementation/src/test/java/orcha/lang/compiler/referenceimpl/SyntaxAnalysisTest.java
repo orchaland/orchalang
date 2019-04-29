@@ -3,6 +3,7 @@ package orcha.lang.compiler.referenceimpl;
 import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.springIntegration.SpringIntegrationAutoConfiguration;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory;
+import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration;
 import orcha.lang.compiler.syntax.WhenInstruction;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,8 +24,8 @@ public class SyntaxAnalysisTest {
 	@Autowired
 	SyntaxAnalysis syntaxAnalysisForTest;
 
-    @Resource(name = "&whenInstruction")
-    WhenInstructionFactory whenInstructionFactory;
+    /*@Resource(name = "&whenInstruction")
+    WhenInstructionFactory whenInstructionFactory;*/
 
     @Test
 	public void when() {
@@ -34,8 +35,8 @@ public class SyntaxAnalysisTest {
 		try {
 
 			expression = "	 when \"(event receives) and (one	 terminates  condition 	==false)\"";
-			//WhenInstruction whenExpression = new WhenInstructionForSpringIntegration(expression);
-            WhenInstruction whenExpression = whenInstructionFactory.getObject();
+			WhenInstruction whenExpression = new WhenInstructionForSpringIntegration(expression);
+            //WhenInstruction whenExpression = whenInstructionFactory.getObject();
             whenExpression.setInstruction(expression);
 			whenExpression.analysis();
 			List<WhenInstruction.ApplicationOrEventInExpression> applicationOrEvents = whenExpression.getApplicationsOrEvents();
@@ -69,7 +70,7 @@ public class SyntaxAnalysisTest {
 
 			String aggregationExpression = whenExpression.getAggregationExpression();
 			Assert.assertNotNull(aggregationExpression);
-			Assert.assertEquals(aggregationExpression, "size()==2 AND ((([0].payload instanceof Transpiler(orcha.lang.configuration.EventHandler))) AND (([1].payload instanceof Transpiler(orcha.lang.configuration.Application) AND [1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))");
+			Assert.assertEquals(aggregationExpression, "size()==2 AND ((([0].payload instanceof Transpiler(orcha.lang.EventHandler))) AND (([1].payload instanceof Transpiler(orcha.lang.Application) AND [1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))");
 
 
             expression = "when \"(one	 terminates  condition 	==false)\"";
@@ -134,13 +135,13 @@ public class SyntaxAnalysisTest {
 
 
             expression = "when \" ( ( one	 terminates  condition 	==false ) and ( two terminates condition ==true ) ) or ( three terminates ) \"";
-            //whenExpression = new WhenInstructionForSpringIntegration(expression);
-            whenExpression = whenInstructionFactory.getObject();
+            whenExpression = new WhenInstructionForSpringIntegration(expression);
+            //whenExpression = whenInstructionFactory.getObject();
             whenExpression.setInstruction(expression);
             whenExpression.analysis();
             aggregationExpression = whenExpression.getAggregationExpression();
             Assert.assertNotNull(aggregationExpression);
-            Assert.assertEquals(aggregationExpression,"size()==3 AND (((([0].payload instanceof Transpiler(orcha.lang.configuration.Application) AND [0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)) AND (([1].payload instanceof Transpiler(orcha.lang.configuration.Application) AND [1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))) OR (([2].payload instanceof Transpiler(orcha.lang.configuration.Application) AND [2].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))");
+            Assert.assertEquals(aggregationExpression,"size()==3 AND (((([0].payload instanceof Transpiler(orcha.lang.Application) AND [0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)) AND (([1].payload instanceof Transpiler(orcha.lang.Application) AND [1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))) OR (([2].payload instanceof Transpiler(orcha.lang.Application) AND [2].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))");
 
         } catch (Exception e) {
 			Assert.fail("Syntax error in: " + expression);

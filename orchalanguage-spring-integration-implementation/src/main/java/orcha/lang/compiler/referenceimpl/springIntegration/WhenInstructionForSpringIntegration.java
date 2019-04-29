@@ -19,11 +19,11 @@ public class WhenInstructionForSpringIntegration extends WhenInstruction {
 	
 	public String convert(ApplicationOrEventInExpression application) {
 		if(application.getState() == State.TERMINATES) {
-			return "([" + (application.getOrder()-1) + "].payload instanceof Transpiler(orcha.lang.configuration.Application) AND [" + (application.getOrder()-1) + "].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)";
+			return "([" + (application.getOrder()-1) + "].payload instanceof Transpiler(orcha.lang.Application) AND [" + (application.getOrder()-1) + "].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)";
 		} else if(application.getState() == State.RECEIVES){
-			return "([" + (application.getOrder()-1) + "].payload instanceof Transpiler(orcha.lang.configuration.EventHandler))";
+			return "([" + (application.getOrder()-1) + "].payload instanceof Transpiler(orcha.lang.EventHandler))";
 		} else {
-			return "([" + (application.getOrder()-1) + "].payload instanceof Transpiler(orcha.lang.configuration.Application) AND [" + (application.getOrder()-1) + "].payload.state==Transpiler(orcha.lang.configuration.State).FAILED)";
+			return "([" + (application.getOrder()-1) + "].payload instanceof Transpiler(orcha.lang.Application) AND [" + (application.getOrder()-1) + "].payload.state==Transpiler(orcha.lang.configuration.State).FAILED)";
 		}
 	}
 	
