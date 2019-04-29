@@ -67,19 +67,25 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
                 } else if (lineOfCode.toLowerCase().startsWith("domain")) {
 
-                    orchaMetadata.setDomain(lineOfCode.substring("domain".length()).trim());
+                    Instruction domainInstruction = new DomainInstruction(lineOfCode, lineNumber);
+                    orchaMetadata.add(domainInstruction);
 
                 } else if (lineOfCode.toLowerCase().startsWith("description")) {
 
-                    orchaMetadata.setDescription(lineOfCode.substring("description".length()).trim());
+                    Instruction descriptionInstruction = new DescriptionInstruction(lineOfCode, lineNumber);
+                    orchaMetadata.add(descriptionInstruction);
 
-                } else if (lineOfCode.toLowerCase().startsWith("author")) {
+                } else if (lineOfCode.toLowerCase().startsWith("authors")) {
 
-                    orchaMetadata.setAuthor(lineOfCode.substring("author".length()).trim());
+                    Instruction authorsInstruction = new AuthorsInstruction(lineOfCode, lineNumber);
+                    orchaMetadata.add(authorsInstruction);
+
 
                 } else if (lineOfCode.toLowerCase().startsWith("version")) {
 
-                    orchaMetadata.setVersion(lineOfCode.substring("version".length()).trim());
+                    Instruction versionInstruction = new VersionInstruction(lineOfCode, lineNumber);
+                    orchaMetadata.add(versionInstruction);
+
 
                 } else {
                     throw new OrchaCompilationException("Syntax error", lineNumber, lineOfCode);

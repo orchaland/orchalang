@@ -151,6 +151,215 @@ public class SemanticAnalysisTest {
 
     }
 
+    @Test
+    public void domainMetadata() throws OrchaCompilationException {
+
+        try{
+
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            orchaMetadata.add(titleInstruction);
+
+            Instruction domainInstruction = new DomainInstruction("domain:   travel   ");
+            domainInstruction.setLineNumber(2);
+            domainInstruction.analysis();
+            orchaMetadata.add(domainInstruction);
+
+
+            List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
+
+            Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
+            instruction1.setLineNumber(3);
+            instruction1.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction1));
+
+            Instruction instruction2 = new SendInstruction("send travelInfo to customer");
+            instruction2.setLineNumber(4);
+            instruction2.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction2));
+
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
+
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
+
+            orchaMetadata = orchaProgram.getOrchaMetadata();
+            List<Instruction> metadata = orchaMetadata.getMetadata();
+            DomainInstruction domain = (DomainInstruction) metadata.stream().filter(instruction -> instruction instanceof DomainInstruction).findAny().orElse(null);
+            Assert.assertNotNull(domain);
+            Assert.assertEquals(domain.getDomain(), "travel");
+
+        } catch(OrchaCompilationException e){
+            Assert.fail(e.getMessage());
+        }
+
+
+    }
+
+    @Test
+    public void authorsMetadata() throws OrchaCompilationException {
+
+        try{
+
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            orchaMetadata.add(titleInstruction);
+
+            Instruction authors = new AuthorsInstruction("authors:   A.H. Alen,    Ben Orcha   ");
+            authors.setLineNumber(2);
+            authors.analysis();
+            orchaMetadata.add(authors);
+
+
+            List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
+
+            Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
+            instruction1.setLineNumber(3);
+            instruction1.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction1));
+
+            Instruction instruction2 = new SendInstruction("send travelInfo to customer");
+            instruction2.setLineNumber(4);
+            instruction2.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction2));
+
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
+
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
+
+            orchaMetadata = orchaProgram.getOrchaMetadata();
+            List<Instruction> metadata = orchaMetadata.getMetadata();
+            AuthorsInstruction authorsInstruction = (AuthorsInstruction) metadata.stream().filter(instruction -> instruction instanceof AuthorsInstruction).findAny().orElse(null);
+            Assert.assertNotNull(authorsInstruction);
+            List<String> authorList = authorsInstruction.getAuthors();
+            Assert.assertNotNull(authorList);
+            Assert.assertEquals(authorList.size(), 2);
+            String author = authorList.get(0);
+            Assert.assertEquals(author, "A.H. Alen");
+            author = authorList.get(1);
+            Assert.assertEquals(author, "Ben Orcha");
+
+        } catch(OrchaCompilationException e){
+            Assert.fail(e.getMessage());
+        }
+
+
+    }
+
+    @Test
+    public void descriptionMetadata() throws OrchaCompilationException {
+
+        try{
+
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            orchaMetadata.add(titleInstruction);
+
+            Instruction descriptionInstruction = new DescriptionInstruction("description:   organize travel   ");
+            descriptionInstruction.setLineNumber(2);
+            descriptionInstruction.analysis();
+            orchaMetadata.add(descriptionInstruction);
+
+
+            List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
+
+            Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
+            instruction1.setLineNumber(3);
+            instruction1.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction1));
+
+            Instruction instruction2 = new SendInstruction("send travelInfo to customer");
+            instruction2.setLineNumber(4);
+            instruction2.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction2));
+
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
+
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
+
+            orchaMetadata = orchaProgram.getOrchaMetadata();
+            List<Instruction> metadata = orchaMetadata.getMetadata();
+            DescriptionInstruction description = (DescriptionInstruction) metadata.stream().filter(instruction -> instruction instanceof DescriptionInstruction).findAny().orElse(null);
+            Assert.assertNotNull(description);
+            Assert.assertEquals(description.getDescription(), "organize travel");
+
+        } catch(OrchaCompilationException e){
+            Assert.fail(e.getMessage());
+        }
+
+
+    }
+
+    @Test
+    public void versionMetadata() throws OrchaCompilationException {
+
+        try{
+
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+
+            Instruction titleInstruction = new TitleInstruction("title: check order");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            orchaMetadata.add(titleInstruction);
+
+            Instruction versionInstruction = new VersionInstruction("version:   1.0   ");
+            versionInstruction.setLineNumber(2);
+            versionInstruction.analysis();
+            orchaMetadata.add(versionInstruction);
+
+
+            List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
+
+            Instruction instruction1 = new ReceiveInstruction("receive travelInfo from travelAgency");
+            instruction1.setLineNumber(3);
+            instruction1.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction1));
+
+            Instruction instruction2 = new SendInstruction("send travelInfo to customer");
+            instruction2.setLineNumber(4);
+            instruction2.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction2));
+
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
+
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
+
+            orchaMetadata = orchaProgram.getOrchaMetadata();
+            List<Instruction> metadata = orchaMetadata.getMetadata();
+            VersionInstruction version = (VersionInstruction) metadata.stream().filter(instruction -> instruction instanceof VersionInstruction).findAny().orElse(null);
+            Assert.assertNotNull(version);
+            Assert.assertEquals(version.getVersion(), "1.0");
+
+        } catch(OrchaCompilationException e){
+            Assert.fail(e.getMessage());
+        }
+
+
+    }
 
     @Test
     public void receivesInstructionWithTheSameEvent() {
