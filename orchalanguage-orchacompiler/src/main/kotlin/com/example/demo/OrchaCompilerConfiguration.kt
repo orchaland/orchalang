@@ -1,0 +1,60 @@
+package com.example.demo
+
+import orcha.lang.compiler.*
+import orcha.lang.compiler.referenceimpl.*
+import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
+import orcha.lang.compiler.syntax.WhenInstruction
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.DependsOn
+
+@Configuration
+class OrchaCompilerConfiguration{
+
+    @Bean
+    fun orchaCompiler(): OrchaCompiler{
+        return OrchaCompiler()
+    }
+
+    @Bean(name = ["whenInstruction"])
+    fun whenInstructionFactory(): WhenInstructionFactory {
+        return WhenInstructionFactory()
+    }
+
+    @Bean
+    @Throws(Exception::class)
+    fun whenInstruction(): WhenInstruction? {
+        return whenInstructionFactory().getObject()
+    }
+
+    @Value("\${orcha.pathToBinaryCode:build/resources/main}")
+    internal var pathToBinaryCode: String? = null
+
+    @Bean
+    internal fun preprocessingForTest(): Preprocessing {
+        return PreprocessingImpl()
+    }
+
+    @Bean
+    @DependsOn("whenInstruction")
+    internal fun lexicalAnalysisForTest(): LexicalAnalysis {
+        return LexicalAnalysisImpl()
+    }
+
+    @Bean
+    internal fun syntaxAnalysisForTest(): SyntaxAnalysis {
+        return SyntaxAnalysisImpl()
+    }
+
+    @Bean
+    internal fun semanticAnalysisForTest(): SemanticAnalysis {
+        return SemanticAnalysisImpl()
+    }
+
+    @Bean
+    internal fun transpiler(): Transpiler {
+        return TranspileToSpringIntegration(pathToBinaryCode!!)
+    }
+
+}

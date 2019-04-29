@@ -33,6 +33,9 @@ public class PreprocessingImpl implements Preprocessing{
 		}
 				
 		File file = new File(pathToSourceFile + File.separator + orchaFileName);
+		if(file.exists() == false){
+			throw  new OrchaCompilationException("File not found: " + file.getAbsolutePath(), file.getAbsolutePath());
+		}
 		
 		log.info("Preprocessing of the orcha program: " + file.getAbsolutePath());
 		

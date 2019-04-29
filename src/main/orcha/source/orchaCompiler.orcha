@@ -1,5 +1,5 @@
-title "orcha compiler"
-author "Ben Orcha"
+title: orcha compiler
+authors: Ben Orcha
 
 receive orchaProgram from orchaProgramSource
 preprocessing with orchaProgram
