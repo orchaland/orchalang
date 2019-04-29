@@ -22,12 +22,21 @@ The compiler transpile an Orcha program into a adjacency graph of [integration p
 
 Before launching, the adjacency graph of integration patterns needs to be transpiled into an executable version.
 This [reference implentation](https://github.com/orchaland/orchalang/tree/master/orchalanguage-spring-integration-implementation) uses [Spring Integration](https://spring.io/projects/spring-integration) for the target of the executable version.
+
 ## compilation stages
 
 * [preprocessing](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/referenceimpl/PreprocessingImpl.java)
 * [lexical analysis](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/referenceimpl/LexicalAnalysisImpl.java)
-
 * [preprocessing usage](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/test/java/orcha/lang/compiler/referenceimpl/PreprocessingTest.java)
+
+## implementation details
+
+Each instruction can be easily customized by inheritance is sub projects.
+For instance the [when instruction](https://github.com/orchaland/orchalang/blob/master/orchalanguage/src/main/java/orcha/lang/compiler/syntax/WhenInstruction.java) is [adapted to Spring integration](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionForSpringIntegration.java).
+This adaptation can be reached automatically by the current implementation if:
+* a [factory](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionFactory.java) is provided.
+* a bean with the name whenInstruction is defined into a [configuration file](https://github.com/orchaland/orchalang/blob/master/orchalanguage-spring-integration-implementation/src/main/java/orcha/lang/compiler/referenceimpl/springIntegration/SpringIntegrationAutoConfiguration.java).
+
 
 
 
