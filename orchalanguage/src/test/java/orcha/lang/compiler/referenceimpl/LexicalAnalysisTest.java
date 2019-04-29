@@ -46,7 +46,7 @@ public class LexicalAnalysisTest {
             Assert.assertEquals(metadata.size(), 1);
             Instruction instruction = metadata.get(0);
             Assert.assertTrue(instruction instanceof TitleInstruction);
-            
+
 
             List<IntegrationNode> graphOfInstructions = orchaSmartContract.getIntegrationGraph();
 
