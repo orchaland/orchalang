@@ -9,8 +9,9 @@ import java.util.regex.Pattern;
 
 public class SendInstruction extends Instruction {
 
-	String sendSyntax = "send (?<data>.*?) to (?<destinations>.*?)";
-	String data;	
+	String sendSyntax = "send (?<data>.*?)(\\.(?<variables>.*))? to (?<destinations>.*?)";
+	String data;
+	List<String> variables = new ArrayList<String>();
 	List<String> destinations = new ArrayList<String>();
 	
     public SendInstruction(String sendInstruction) {
@@ -31,9 +32,19 @@ public class SendInstruction extends Instruction {
 		}
 
 		data = result.group("data");
-		
+
+		String vars = result.group("variables");
+		System.out.println("vars: " +  vars);
+		if(vars != null) {
+			String[] array = vars.split("\\.");
+			System.out.println(array.length);
+			for(String s: array) {
+				System.out.println("s: " +  s);
+				variables.add(s.trim());
+			}
+		}
+
 		String dest = result.group("destinations");
-		
 		if(dest != null) {
 			String[] array = dest.split(",");
 			for(String s: array) {
@@ -51,6 +62,13 @@ public class SendInstruction extends Instruction {
 		return destinations;
 	}
 
+	public List<String> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(List<String> variables) {
+		this.variables = variables;
+	}
 
 	public void setData(String data) {
 		this.data = data;

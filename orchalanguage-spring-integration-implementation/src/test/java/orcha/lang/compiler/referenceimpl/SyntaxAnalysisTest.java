@@ -4,6 +4,8 @@ import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.springIntegration.SpringIntegrationAutoConfiguration;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory;
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration;
+import orcha.lang.compiler.syntax.Instruction;
+import orcha.lang.compiler.syntax.SendInstruction;
 import orcha.lang.compiler.syntax.WhenInstruction;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +39,7 @@ public class SyntaxAnalysisTest {
 			expression = "	 when \"(event receives) and (one	 terminates  condition 	==false)\"";
 			WhenInstruction whenExpression = new WhenInstructionForSpringIntegration(expression);
             //WhenInstruction whenExpression = whenInstructionFactory.getObject();
-            whenExpression.setInstruction(expression);
+            //whenExpression.setInstruction(expression);
 			whenExpression.analysis();
 			List<WhenInstruction.ApplicationOrEventInExpression> applicationOrEvents = whenExpression.getApplicationsOrEvents();
 			Assert.assertNotNull(applicationOrEvents);
@@ -137,7 +139,7 @@ public class SyntaxAnalysisTest {
             expression = "when \" ( ( one	 terminates  condition 	==false ) and ( two terminates condition ==true ) ) or ( three terminates ) \"";
             whenExpression = new WhenInstructionForSpringIntegration(expression);
             //whenExpression = whenInstructionFactory.getObject();
-            whenExpression.setInstruction(expression);
+            //whenExpression.setInstruction(expression);
             whenExpression.analysis();
             aggregationExpression = whenExpression.getAggregationExpression();
             Assert.assertNotNull(aggregationExpression);
@@ -147,6 +149,7 @@ public class SyntaxAnalysisTest {
 			Assert.fail("Syntax error in: " + expression);
 		}
 	}
+
 
 }
 

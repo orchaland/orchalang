@@ -225,6 +225,43 @@ public class InstructionsSyntaxAnalysisTest {
 		}
 	}
 
+	@Test
+	public void sendWithVariable(){
+		String expression = "send order.number to destination";
+		try{
+
+			SendInstruction sendIntruction = new SendInstruction(expression);
+			sendIntruction.analysis();
+			List<String> variables = sendIntruction.getVariables();
+			Assert.assertNotNull(variables);
+			Assert.assertEquals(variables.size(), 1);
+			String variable = variables.get(0);
+			Assert.assertEquals(variable, "number");
+
+		} catch (Exception e) {
+			Assert.fail("Syntax error in: " + expression);
+		}
+
+		expression = "send order.product.reference to destination";
+		try{
+
+			SendInstruction sendIntruction = new SendInstruction(expression);
+			sendIntruction.analysis();
+			List<String> variables = sendIntruction.getVariables();
+			Assert.assertNotNull(variables);
+			Assert.assertEquals(variables.size(), 2);
+			String variable = variables.get(0);
+			Assert.assertEquals(variable, "product");
+			variable = variables.get(1);
+			Assert.assertEquals(variable, "reference");
+
+		} catch (Exception e) {
+			Assert.fail("Syntax error in: " + expression);
+		}
+
+	}
+
+
 	@Test(expected = OrchaCompilationException.class)
 	public void sendError() throws OrchaCompilationException {
         String expression = "send 	data";
