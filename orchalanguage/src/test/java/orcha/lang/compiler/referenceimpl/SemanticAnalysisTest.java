@@ -704,5 +704,55 @@ public class SemanticAnalysisTest {
 
     }
 
+    @Test
+    public void sendInstructionWithVariable() {
+
+        try{
+
+            Instruction titleInstruction = new TitleInstruction("title: check data");
+            titleInstruction.setLineNumber(1);
+            titleInstruction.analysis();
+            OrchaMetadata orchaMetadata = new OrchaMetadata();
+            orchaMetadata.add(titleInstruction);
+
+
+
+            List<IntegrationNode> integrationNodes = new ArrayList<IntegrationNode>();
+
+            Instruction instruction1 = new SendInstruction("send data.value to output");
+            instruction1.setLineNumber(1);
+            instruction1.analysis();
+
+            integrationNodes.add(new IntegrationNode(instruction1));
+
+            OrchaProgram orchaProgram = new OrchaProgram();
+            orchaProgram.setIntegrationGraph(integrationNodes);
+            orchaProgram.setOrchaMetadata(orchaMetadata);
+
+            orchaProgram = semanticAnalysisForTest.analysis(orchaProgram);
+
+            integrationNodes = orchaProgram.getIntegrationGraph();
+
+            Assert.assertTrue(integrationNodes.size() == 1);
+
+            IntegrationNode translator = integrationNodes.get(0);
+            Assert.assertTrue(translator.getInstruction().equals(instruction1));
+            Assert.assertEquals(translator.getIntegrationPattern(), IntegrationNode.IntegrationPattern.MESSAGE_TRANSLATOR);
+
+            List<IntegrationNode> nextNodes = translator.getNextIntegrationNodes();
+            Assert.assertNotNull(nextNodes);
+            Assert.assertEquals(nextNodes.size(), 1);
+
+            IntegrationNode adapter = nextNodes.get(0);
+            Assert.assertTrue(adapter.getInstruction().equals(instruction1));
+            Assert.assertEquals(adapter.getIntegrationPattern(), IntegrationNode.IntegrationPattern.CHANNEL_ADAPTER);
+
+        }catch(OrchaCompilationException e){
+            Assert.fail(e.getMessage());
+        }
+
+
+    }
+
 }
 

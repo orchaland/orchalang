@@ -34,13 +34,13 @@ public class LexicalAnalysisTest {
                             "receive order from customer",
                             "when \"something terminates\""));
 
-            OrchaProgram orchaSmartContract = lexicalAnalysisForTest.analysis(linesOfCode);
+            OrchaProgram orchaProgram = lexicalAnalysisForTest.analysis(linesOfCode);
 
-            Assert.assertNotNull(orchaSmartContract);
-            Assert.assertNotNull(orchaSmartContract.getIntegrationGraph());
-            Assert.assertNotNull(orchaSmartContract.getOrchaMetadata());
+            Assert.assertNotNull(orchaProgram);
+            Assert.assertNotNull(orchaProgram.getIntegrationGraph());
+            Assert.assertNotNull(orchaProgram.getOrchaMetadata());
 
-            OrchaMetadata orchaMetadata = orchaSmartContract.getOrchaMetadata();
+            OrchaMetadata orchaMetadata = orchaProgram.getOrchaMetadata();
             List<Instruction> metadata = orchaMetadata.getMetadata();
             Assert.assertNotNull(metadata);
             Assert.assertEquals(metadata.size(), 1);
@@ -48,7 +48,7 @@ public class LexicalAnalysisTest {
             Assert.assertTrue(instruction instanceof TitleInstruction);
 
 
-            List<IntegrationNode> graphOfInstructions = orchaSmartContract.getIntegrationGraph();
+            List<IntegrationNode> graphOfInstructions = orchaProgram.getIntegrationGraph();
 
             Assert.assertTrue(graphOfInstructions.size() == 2);
 

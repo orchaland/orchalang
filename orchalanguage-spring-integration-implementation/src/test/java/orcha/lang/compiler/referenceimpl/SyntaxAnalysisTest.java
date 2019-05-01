@@ -20,7 +20,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = {SpringIntegrationAutoConfiguration.class, CompilerReferenceImplTestConfiguration.class})
+//@ContextConfiguration(classes = {SpringIntegrationAutoConfiguration.class, CompilerReferenceImplTestConfiguration.class})
 public class SyntaxAnalysisTest {
 	
 	@Autowired

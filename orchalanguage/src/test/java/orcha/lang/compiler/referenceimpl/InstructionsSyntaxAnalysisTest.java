@@ -232,11 +232,9 @@ public class InstructionsSyntaxAnalysisTest {
 
 			SendInstruction sendIntruction = new SendInstruction(expression);
 			sendIntruction.analysis();
-			List<String> variables = sendIntruction.getVariables();
+			String variables = sendIntruction.getVariables();
 			Assert.assertNotNull(variables);
-			Assert.assertEquals(variables.size(), 1);
-			String variable = variables.get(0);
-			Assert.assertEquals(variable, "number");
+			Assert.assertEquals(variables, "number");
 
 		} catch (Exception e) {
 			Assert.fail("Syntax error in: " + expression);
@@ -247,13 +245,9 @@ public class InstructionsSyntaxAnalysisTest {
 
 			SendInstruction sendIntruction = new SendInstruction(expression);
 			sendIntruction.analysis();
-			List<String> variables = sendIntruction.getVariables();
+			String variables = sendIntruction.getVariables();
 			Assert.assertNotNull(variables);
-			Assert.assertEquals(variables.size(), 2);
-			String variable = variables.get(0);
-			Assert.assertEquals(variable, "product");
-			variable = variables.get(1);
-			Assert.assertEquals(variable, "reference");
+			Assert.assertEquals(variables, "product.reference");
 
 		} catch (Exception e) {
 			Assert.fail("Syntax error in: " + expression);

@@ -1,6 +1,7 @@
 package orcha.lang.compiler.referenceimpl;
 
 import orcha.lang.compiler.*;
+import orcha.lang.compiler.syntax.SendInstruction;
 import orcha.lang.compiler.syntax.WhenInstruction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
@@ -23,6 +24,17 @@ public class CompilerReferenceImplTestConfiguration {
         return whenInstructionFactory().getObject();
     }
 
+    @Bean(name = "sendInstruction")
+    public SendInstructionFactory sendInstructionFactory() {
+        SendInstructionFactory factory = new SendInstructionFactory();
+        return factory;
+    }
+
+    @Bean
+    public SendInstruction sendInstruction() throws Exception {
+        return sendInstructionFactory().getObject();
+    }
+
     @Value("${orcha.pathToBinaryCode:build/resources/main}")
     String pathToBinaryCode;
 
@@ -32,7 +44,7 @@ public class CompilerReferenceImplTestConfiguration {
     }
 
     @Bean
-    @DependsOn({"whenInstruction"})
+    @DependsOn({"whenInstruction", "sendInstruction"})
     LexicalAnalysis lexicalAnalysisForTest() {
         return new LexicalAnalysisImpl();
     }

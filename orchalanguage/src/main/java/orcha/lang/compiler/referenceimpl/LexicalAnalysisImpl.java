@@ -19,6 +19,9 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
     @Resource(name = "&whenInstruction")
     AbstractFactoryBean whenInstructionFactory;
 
+    @Resource(name = "&sendInstruction")
+    AbstractFactoryBean sendInstructionFactory;
+
     @Override
     public OrchaProgram analysis(List<String> linesOfCode) throws OrchaCompilationException {
 
@@ -61,8 +64,15 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
                 } else if (lineOfCode.toLowerCase().startsWith("send")) {
 
-                    Instruction orchaInstruction = new SendInstruction(lineOfCode, lineNumber);
-                    graphOfInstructions.add(new IntegrationNode(orchaInstruction));
+                    try{
+                        Instruction orchaInstruction = (Instruction)sendInstructionFactory.getObject();
+                        orchaInstruction.setLineNumber(lineNumber);
+                        orchaInstruction.setInstruction(lineOfCode);
+                        graphOfInstructions.add(new IntegrationNode(orchaInstruction));
+                    } catch (Exception e){
+                        throw new OrchaCompilationException(e.getMessage());
+                    }
+
 
                 } else if (lineOfCode.toLowerCase().startsWith("title")) {
 

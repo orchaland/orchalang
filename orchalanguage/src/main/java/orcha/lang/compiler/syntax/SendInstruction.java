@@ -11,7 +11,7 @@ public class SendInstruction extends Instruction {
 
 	String sendSyntax = "send (?<data>.*?)(\\.(?<variables>.*))? to (?<destinations>.*?)";
 	String data;
-	List<String> variables = new ArrayList<String>();
+	String variables;
 	List<String> destinations = new ArrayList<String>();
 	
     public SendInstruction(String sendInstruction) {
@@ -22,7 +22,11 @@ public class SendInstruction extends Instruction {
         super(sendInstruction.trim(), lineNumber, "send");
     }
 
-    @Override
+	public SendInstruction() {
+		super("send");
+	}
+
+	@Override
     public void analysis() throws OrchaCompilationException {
 
 		Pattern pattern = Pattern.compile(sendSyntax);
@@ -33,16 +37,7 @@ public class SendInstruction extends Instruction {
 
 		data = result.group("data");
 
-		String vars = result.group("variables");
-		System.out.println("vars: " +  vars);
-		if(vars != null) {
-			String[] array = vars.split("\\.");
-			System.out.println(array.length);
-			for(String s: array) {
-				System.out.println("s: " +  s);
-				variables.add(s.trim());
-			}
-		}
+		variables = result.group("variables");
 
 		String dest = result.group("destinations");
 		if(dest != null) {
@@ -62,11 +57,11 @@ public class SendInstruction extends Instruction {
 		return destinations;
 	}
 
-	public List<String> getVariables() {
+	public String getVariables() {
 		return variables;
 	}
 
-	public void setVariables(List<String> variables) {
+	public void setVariables(String variables) {
 		this.variables = variables;
 	}
 

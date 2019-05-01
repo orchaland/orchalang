@@ -10,10 +10,11 @@ public class IntegrationNode {
     public enum IntegrationPattern{
         CHANNEL_ADAPTER,
         MESSAGE_FILTER,
+        MESSAGE_TRANSLATOR,
         MESSAGE_ROUTER,
         SERVICE_ACTIVATOR,
         AGGREGATOR,
-        RESEQUENCER
+        RESEQUENCER;
     }
 
     IntegrationPattern integrationPattern;
