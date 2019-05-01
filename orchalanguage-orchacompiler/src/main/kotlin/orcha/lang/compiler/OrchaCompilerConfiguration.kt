@@ -37,7 +37,7 @@ class OrchaCompilerConfiguration{
     }
 
     @Bean
-    @DependsOn("whenInstruction")
+    @DependsOn("whenInstruction", "sendInstruction")
     @Qualifier("lexicalAnalysisForOrchaCompiler")
     internal fun lexicalAnalysis(): LexicalAnalysis {
         return LexicalAnalysisImpl()
