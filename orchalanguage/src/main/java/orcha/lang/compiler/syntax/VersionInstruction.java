@@ -34,4 +34,11 @@ public class VersionInstruction extends Instruction {
     public String getVersion() {
         return version;
     }
+
+    @Override
+    public String toString() {
+        return "VersionInstruction{" +
+                "version='" + version + '\'' +
+                "} " + super.toString();
+    }
 }

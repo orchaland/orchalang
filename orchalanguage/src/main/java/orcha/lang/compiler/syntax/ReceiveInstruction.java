@@ -62,4 +62,13 @@ public class ReceiveInstruction extends Instruction {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
+
+	@Override
+	public String toString() {
+		return "ReceiveInstruction{" +
+				"event='" + event + '\'' +
+				", source='" + source + '\'' +
+				", condition='" + condition + '\'' +
+				"} " + super.toString();
+	}
 }

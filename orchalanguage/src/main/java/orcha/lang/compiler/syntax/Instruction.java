@@ -45,4 +45,13 @@ public abstract class Instruction {
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
 	}
+
+	@Override
+	public String toString() {
+		return "Instruction{" +
+				"instruction='" + instruction + '\'' +
+				", lineNumber=" + lineNumber +
+				", command='" + command + '\'' +
+				'}';
+	}
 }

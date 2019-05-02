@@ -72,4 +72,13 @@ public class SendInstruction extends Instruction {
 	public void setDestinations(List<String> destinations) {
 		this.destinations = destinations;
 	}
+
+	@Override
+	public String toString() {
+		return "SendInstruction{" +
+				"data='" + data + '\'' +
+				", variables='" + variables + '\'' +
+				", destinations=" + destinations +
+				"} " + super.toString();
+	}
 }

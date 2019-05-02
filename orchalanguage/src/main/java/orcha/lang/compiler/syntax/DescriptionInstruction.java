@@ -34,4 +34,11 @@ public class DescriptionInstruction extends Instruction {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return "DescriptionInstruction{" +
+                "description='" + description + '\'' +
+                "} " + super.toString();
+    }
 }

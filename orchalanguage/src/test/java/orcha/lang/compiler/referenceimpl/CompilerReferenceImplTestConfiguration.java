@@ -60,9 +60,4 @@ public class CompilerReferenceImplTestConfiguration {
         return new SemanticAnalysisImpl();
     }
 
-    @Bean
-    Transpiler transpiler() {
-        return new TranspileToSpringIntegration(pathToBinaryCode);
-    }
-
 }

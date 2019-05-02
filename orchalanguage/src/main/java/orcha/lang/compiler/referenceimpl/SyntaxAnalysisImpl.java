@@ -14,12 +14,12 @@ public class SyntaxAnalysisImpl implements SyntaxAnalysis {
     @Override
     public OrchaProgram analysis(OrchaProgram orchaProgram) throws OrchaCompilationException {
 
-        log.info("Syntax analysis of the orcha program:" + orchaProgram.getOrchaMetadata().getTitle() + " begins.");
+        log.info("Syntax analysis of the orcha program begins.");
 
         this.metaDataAnalysis(orchaProgram.getOrchaMetadata());
         this.instructionAnalysis(orchaProgram.getIntegrationGraph());
 
-        log.info("Syntax analysis of the orcha program:" + orchaProgram.getOrchaMetadata().getTitle() + " complete successfuly.");
+        log.info("Syntax analysis of the orcha program \"" + orchaProgram.getOrchaMetadata().getTitle() + "\" complete successfuly.");
 
         return orchaProgram;
 
@@ -28,12 +28,15 @@ public class SyntaxAnalysisImpl implements SyntaxAnalysis {
     private void metaDataAnalysis(OrchaMetadata orchaMetadata) throws OrchaCompilationException {
         for (Instruction instruction : orchaMetadata.getMetadata()) {
             instruction.analysis();
+            log.info("Syntax analysis of the metadata: " + instruction);
         }
     }
 
     private void instructionAnalysis(List<IntegrationNode> integrationNodes) throws OrchaCompilationException {
         for (IntegrationNode node : integrationNodes) {
-            node.getInstruction().analysis();
+            Instruction instruction = node.getInstruction();
+            instruction.analysis();
+            log.info("Syntax analysis of the instruction: " + instruction);
         }
     }
 }

@@ -43,4 +43,11 @@ public class AuthorsInstruction extends Instruction {
     public List<String> getAuthors() {
         return authors;
     }
+
+    @Override
+    public String toString() {
+        return "AuthorsInstruction{" +
+                "authors=" + authors +
+                "} " + super.toString();
+    }
 }

@@ -34,4 +34,11 @@ public class DomainInstruction extends Instruction {
     public String getDomain() {
         return domain;
     }
+
+    @Override
+    public String toString() {
+        return "DomainInstruction{" +
+                "domain='" + domain + '\'' +
+                "} " + super.toString();
+    }
 }

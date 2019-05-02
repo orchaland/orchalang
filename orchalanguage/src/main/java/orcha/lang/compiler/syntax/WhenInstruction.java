@@ -291,5 +291,19 @@ public class WhenInstruction extends Instruction {
 		return operator;
 	}
 
-
+	@Override
+	public String toString() {
+		return "WhenInstruction{" +
+				"applicationWithConditonInExpressionSyntax='" + applicationWithConditonInExpressionSyntax + '\'' +
+				", applicationInExpressionSyntax='" + applicationInExpressionSyntax + '\'' +
+				", eventWithConditonInExpressionSyntax='" + eventWithConditonInExpressionSyntax + '\'' +
+				", eventInExpressionSyntax='" + eventInExpressionSyntax + '\'' +
+				", applicationInExpressionFailsSyntax='" + applicationInExpressionFailsSyntax + '\'' +
+				", indexInInInstruction=" + indexInInInstruction +
+				", numberOfBrackets=" + numberOfBrackets +
+				", applicationsOrEvents=" + applicationsOrEvents +
+				", applicationEventOrder=" + applicationEventOrder +
+				", aggregationExpression='" + aggregationExpression + '\'' +
+				"} " + super.toString();
+	}
 }

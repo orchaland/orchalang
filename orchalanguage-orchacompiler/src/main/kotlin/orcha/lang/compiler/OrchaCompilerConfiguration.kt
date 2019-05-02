@@ -1,8 +1,7 @@
 package orcha.lang.compiler
 
 import orcha.lang.compiler.referenceimpl.*
-import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
-import orcha.lang.compiler.syntax.WhenInstruction
+import orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationToSpringIntegration
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -54,8 +53,8 @@ class OrchaCompilerConfiguration{
     }
 
     @Bean
-    internal fun transpiler(): Transpiler {
-        return TranspileToSpringIntegration(pathToBinaryCode!!)
+    internal fun outputGeneration(): OutputGeneration {
+        return OutputGenerationToSpringIntegration()
     }
 
 }

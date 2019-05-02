@@ -51,4 +51,11 @@ public class ComputeInstruction extends Instruction {
 		return parameters;
 	}
 
+	@Override
+	public String toString() {
+		return "ComputeInstruction{" +
+				"application='" + application + '\'' +
+				", parameters=" + parameters +
+				"} " + super.toString();
+	}
 }

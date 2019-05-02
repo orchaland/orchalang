@@ -29,6 +29,12 @@ public class OrchaCompiler {
     @Autowired
     SemanticAnalysis semanticAnalysis;
 
+    @Autowired
+    Postprocessing postprocessing;
+
+    @Autowired
+    OutputGeneration outputGeneration;
+
     public void compile(String orchaFileName) throws OrchaCompilationException {
 
         List<String> linesOfCode = preprocessing.process(orchaFileName);
@@ -37,7 +43,9 @@ public class OrchaCompiler {
 
         orchaProgram  = syntaxAnalysis.analysis(orchaProgram);
 
-        orchaProgram  = semanticAnalysis.analysis(orchaProgram);
+        orchaProgram  = postprocessing.process(orchaProgram);
+
+        Object output  = outputGeneration.generation(orchaProgram);
 
     }
 

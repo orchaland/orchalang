@@ -34,4 +34,11 @@ public class TitleInstruction extends Instruction {
     public String getTitle() {
         return title;
     }
+
+    @Override
+    public String toString() {
+        return "TitleInstruction{" +
+                "title='" + title + '\'' +
+                "} " + super.toString();
+    }
 }
