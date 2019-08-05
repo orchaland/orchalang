@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Programming, modeling and integration language">
+    <meta name="author" content="Ben C.">
+    <link rel="icon" href="http://v4-alpha.getbootstrap.com/favicon.ico">
+
+    <title>Orcha: Orchestrate Human Activities</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="orcha_files/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="orcha_files/jumbotron.css" rel="stylesheet">    
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-static-top navbar-dark bg-inverse">
+      <a class="navbar-brand" href="#">Orcha language</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./orchaAbout.htm">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./orchaContact.htm">Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h2 class="display-6">Drive Human Activities from any business using a simple language:</h2>
+        <p>receive order from customer<br>
+        prepareOrder with order.value<br>
+		when "prepareOrder terminates"<br>
+		send preparOrder.result to customer</p>
+        <p><a class="btn btn-primary btn-lg" href="./orchaSpecifications1-0.htm" role="button">Learn more »</a></p>
+        <p><a class="btn btn-primary btn-lg" href="./orchaUseCases.htm" role="button">Use cases »</a></p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/kdtQ03LjlVA" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-5">
+          <h3>Model your activities/business</h3>
+          <p>An Orcha program describes how an organization works where humans, programs and devices exchange messages and coordinate their activities.<br>
+          Whatever your activities are, Orcha speaks your business language:<br>
+          <code><br>
+         receive passport from passenger<br>
+         controlIdentity with passport.photo<br><br>
+                  
+         receive luggage from passenger<br>
+          scanLuggage with luggage.value<br><br>
+         
+          when "scanLuggage fails and controlIdentity terminates"<br>
+          alertAuthorities with controlIdentity.result<br>
+          </code><br>
+          
+          <p>Orcha modelling language is easy to learn (a few set a instructions).</p>
+		<p>Your models written in Orcha are also programs. So just configure your Orcha program and simply run it to drive your business.</p>
+		<p>Orcha programs are:<br> 
+          <ul>
+			  <li>Lightweight (no application server is needed)</li>
+			  <li>Portable</li>
+			  <li>Microservices compatible</li>
+			  <li>Ready for production mode with a high quality of services</li>
+			</ul> 
+		</p>
+          <!-- <p><a class="btn btn-secondary" href="#" role="button">Learn more »</a></p> -->
+        </div>
+
+        <div class="col-md-6">
+          <h3>Integrate applications and devices</h3>
+          <p>The Orcha language is also an integration language.</p>
+          <p>When you write:</p>
+          <code>
+         receive passport from passenger<br>
+         </code> 
+          <p>data for the passenger can come from:</p>
+           <p> 
+          <ul>
+			  <li>Files</li>
+			  <li>Sensors from the Internet of Things</li>
+			  <li>SQL and NoSQL databases</li>
+			  <li>...</li>
+			</ul> 
+		</p>
+         <p>When you write:</p>
+          <code>
+        controlIdentity with passport.photo<br>
+         </code> 
+          <p>controlIdentity is:</p>
+          <ul>
+			  <li>a Web Service</li>
+			  <li>a local application</li>
+			  <li>written in any programming language</li>
+			</ul> 
+		</p>
+         <!--  <p><a class="btn btn-secondary" href="#" role="button">Learn more »</a></p> -->
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>© OLab-Dynamics 2016
+        <img src="./orcha_files/olab-logos.png" class="img-responsive" alt="Open Lad Dynamics">
+        </p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./orcha_files/jquery.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="./orcha_files/bootstrap.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="orcha_files/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body></html>

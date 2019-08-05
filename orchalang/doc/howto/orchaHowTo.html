@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Orcha how to</title>
+</head>
+<body>
+
+<h1 id="Install">Installation procedure</h1>
+
+<h2>Requirements</h2>
+
+Tested on Windows but should work on other systems.<br>
+Java JDK 1.8 (not JRE) is needed.<br>
+
+<h3>Only for coding:</h3>
+
+<a href="https://spring.io/tools">Eclipse Spring tools suite</a> is needed.<br>
+Add the <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy plugin</a> to Eclipse.<br>
+
+A <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">git client</a> is needed.<br><br>
+
+<a href="https://docs.gitlab.com/ce/gitlab-basics/README.html">Documentation about gitlab</a>
+
+
+<h2>Installation (from the ZIP file)</h2>
+
+<ul>
+	<li>Download the <a href="http://orchalang.com/howto/OrchaBeforeLibrary.zip">OrchaBeforeLibrary ZIP file</a> and unzip it</li>
+	<li>Open a command line window into the project folder (OrchaBeforeLibrary)</li>
+</ul>
+
+<p>Type the following commands (take care if you copy/paste from this page) (starting with ./ under Unix):</p>
+
+<ul>
+	<li>gradlew clean</li>
+	<li>gradlew build</li>
+</ul>
+
+<p>This command may take a long time to complete at the first start since it downloads the building tool (Gradle) and all the required libraries (mainly Spring Integration and Spring Boot).</p>
+
+
+
+<h2>Installation (from gitlab)</h2>
+
+The project home page is: <a href="https://gitlab.com/BenOrcha/orcha">https://gitlab.com/BenOrcha/orcha</a><br>
+
+Clone the project on your local machine using: <a href="https://git-scm.com/docs/git-clone">git clone https://gitlab.com/BenOrcha/orcha</a><br>
+
+Enter the project folder.<br>
+
+<p>Type the following commands (take care if you copy/paste form this page) (starting with ./ under Unix):</p>
+
+<ul> 
+	<li>gradlew clean</li>
+	<li>gradlew build</li>
+	<li>gradle eclipse (only for coding)</li>
+</ul>
+
+<p>Some tests may failed at building time and these commands may take a long time to complete at the first start since it downloads the building tool (Gradle) and all the required libraries (mainly Spring Integration and Spring Boot).</p>
+
+For coding:
+<ul>
+	<li>import the project under Eclipse (menu: file -> import -> existing project into workspace)</li>
+	<li>refresh the project via the menu File or F5</li>
+</ul>
+
+
+<h1 id="Transpilation">Transpilation of an Orcha program (a business process) into Spring integration</h1>
+
+<p>The process (file PrepareOrder.groovy) to transpile is into OrchaBeforeLibrary\src\main\orcha\source\prepareOrder:</p>
+<code>
+receive order from customer<br>
+compute prepareOrder with order.value<br><br>
+
+when "prepareOrder terminates"<br>		
+send prepareOrder.result to delivery<br>
+</code>
+
+<p>Type the following commands:</p>
+
+<ul>
+	<li>gradlew compileOrcha -PorchaFile="['prepareOrder/PrepareOrder.groovy']"</li>
+</ul>
+
+<p>The transpiled code (prepare order.xml) appears into OrchaBeforeLibrary\src\main\resources</p>
+
+<p>Note that the transpilation can be done under Eclipse. The main class is orcha.lang.Compiler.</p>
+
+<h1 id="Launching">Launch the Orcha process (Orchestration of services)</h1>
+
+<code>
+</code>
+
+<p>Type the following commands:</p>
+
+<ul>
+	<li>gradlew launchOrcha</li>
+</ul>
+
+<p>Type Ctrl-C to interrupt (the process is still waiting for another input file).</p>
+
+<p>The output file (prepareOrder.txt) is into OrchaBeforeLibrary\data\output.</p>
+
+<p>Note that the launching can be done under Eclipse. The main class is orcha.lang.OrchaSpringIntegrationLauncher.</p>
+
+<h1 id="Testing">Testing</h1>
+
+<p>The test program (written in Orcha - Behavior Driven Development) PrepareOrderTest.groovy is into OrchaBeforeLibrary\src\test\orcha\source\prepareOrder:</p>
+<code>
+receive order from customer condition "order.product.specification == 'TV'"<br>
+compute prepareOrder with order.value<br>
+when "prepareOrder terminates condition delay>10"<br>
+send prepareOrder.result to delivery<br>
+</code>
+<p>Testing is done at building time (these are non-regression tests). Type the following commands again:</p>
+
+<ul>
+	<li>gradlew build</li>
+</ul>
+
+<p>The output file (prepareOrder.txt) is still (it can be configured differently) into OrchaBeforeLibrary\data\output (the delay is 11).</p>
+
+
+
+<h1>Generation of a contract</h1>
+
+<p>Type the following commands:</p>
+
+<ul>
+	<li>gradlew generateContract -PorchaFile="['prepareOrder/PrepareOrder.groovy']"</li>
+</ul>
+
+<p>The output contract (formatted in xml: contract1.xml) is into OrchaBeforeLibrary\src\main\resources.</p>
+
+
+
+<h1>Selection of a service by comparison</h1>
+
+<p>The process to transpile (BenchmarkingVendors.groovy) is into OrchaBeforeLibrary\src\main\orcha\source\order:</p>
+
+<code>
+receive order from aCustomer condition "order.product.specification == 'TV'"<br>
+compute orderConverter with order.value<br><br>
+
+when "orderConverter terminates"<br>
+compute vendor1 with orderConverter.result<br><br>
+
+receive order from aCustomer condition "order.product.specification == 'TV'"<br>
+compute vendor2 with order.value<br><br>
+
+receive order from aCustomer condition "order.product.specification == 'TV'"<br>
+compute vendor3 with order.value<br><br>
+
+when "(vendor1 terminates) and (vendor2 terminates) and (vendor3 terminates)"<br>
+compute selectBestVendor with vendor1.result, vendor2.result, vendor3.result<br><br>
+
+when  "selectBestVendor terminates condition price>1000"<br>
+send selectBestVendor.result to outputFile1<br><br>
+
+when  "selectBestVendor terminates condition price<=1000"<br>
+send selectBestVendor.result to outputFile2<br><br>
+</code>
+
+<p>Where orderConveter at line three is partially defined (no service are bound, just the input and output data types): </p>
+
+<code>
+Application orderConverter(){<br>
+def program = new OrderConverterApplication(name: "orderConverter", specifications: "Convert an order format into another one. Argument: service.order.Order. Return: service.order.SpecificOrder", description: "Convert a specific vendor order into a generic one.")<br>
+program.input = new Input(type: "service.order.Order")<br>
+program.output = new Output(type: "service.order.SpecificOrder")<br>
+}
+</code>
+
+<h3>Requirements</h3>
+<p>A registry of service providers is need.</p>
+
+<h3>Installation</h3>
+
+<ul>
+	<li>Download the <a href="http://orchalang.com/howto/OrchaRegistry.zip">OrchaRegistry ZIP file</a> and unzip it</li>
+	<li>Open a command line window into the project folder (OrchaRegistry)</li>
+</ul>
+
+<p>Type the following commands (take care if you copy/paste):</p>
+
+<ul>
+	<li>gradlew clean</li>
+	<li>gradlew build</li>
+</ul>
+
+<p>Launch the registry:</p>
+<ul>
+	<li>gradlew orchaRegistry</li>
+</ul>
+
+<p>The registry is running on port 8080.</p>
+
+<h3>Transpilation of the process</h3>
+
+<p>Type the following commands from the OrchaBeforeLibrary directory:</p>
+
+<ul>
+	<li>gradlew compileOrcha -PorchaFile="['order/BenchmarkingVendors.groovy']"</li>
+</ul>
+
+<p>Now a new project has been generated. It contains (see the file SelectOrderConverter.groovy into OrchaBeforeLibrary\orchaProjects\src\main\orcha\source\orderConverter) a auto generated Orcha program which compares two services from two providers:</p>
+
+<code>
+receive order from orderEventHandler<br>
+compute orderConverter1 with order.value<br><br>
+receive order from orderEventHandler<br>
+compute orderConverter2 with order.value<br><br>
+when "(orderConverter1 terminates) and (orderConverter2 terminates)"<br>
+compute selectOrderConverter with orderConverter1.result, orderConverter2.result<br><br>
+when "selectOrderConverter terminates"<br>
+send selectOrderConverter.result to orderConverterOutput
+</code>
+</body>
+</html>

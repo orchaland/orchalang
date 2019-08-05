@@ -1,0 +1,27 @@
+
+receive request from user
+authenticateUsersRequest with request
+when "authenticateUsersRequest terminates condition customer!=null"
+addProductsToRequestAccordingToUsersProfile with authenticateUsersRequest
+when "addProductsToRequestAccordingToUsersProfile terminates"
+send addProductsToRequestAccordingToUsersProfile.result to user
+
+when "authenticateUsersRequest terminates condition customer==null"
+addDefaultProductsToRequest with authenticateUsersRequest
+when "addDefaultProductsToRequest terminates"
+send addDefaultProductsToRequest.result to user
+
+receive request from user
+checkProductsAvailability with request
+when "checkProductsAvailability terminates"
+prepareRequestForDelivery with checkProductsAvailability.result
+
+calculatePrice with checkProductsAvailability.result
+when "calculatePrice terminates"
+send calculatePrice.bill to user
+
+receive payment for user
+bank with payment
+
+when "(prepareRequestForDelivery terminates) and (bank terminates)"
+delivery with prepareRequestForDelivery

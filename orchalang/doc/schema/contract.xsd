@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" 
+	xmlns="http://orchalang.com/schema" 
+	targetNamespace="http://orchalang.com/schema">
+  <xs:element name="contract" type="ContractModel">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">
+        
+   		The ContractModel element is the root of the descriptor.
+        
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ContractModel">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">
+        
+        The ContractModel element is the root of the descriptor.
+        
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+    	<xs:element minOccurs="0" name="contractModelVersion"
+    		type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				Declares to which version of contract descriptor
+    				this contract conforms.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element name="version" type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				The current version of the contract.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="title" type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				The full title of the contract.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element name="description" type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				A detailed description of the contract.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element name="process" type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				The active part of the contract.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="inceptionYear"
+    		type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				The year of the project's inception, specified with
+    				4 digits. This value is used when generating
+    				copyright notices as well as being informational.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="organization"
+    		type="Organization">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				This element describes various attributes of the
+    				organization to which the contract belongs.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="domain" type="Domain">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				This element defines witch domain this contract
+    				belongs.
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+
+		<xs:element name="prerequisites">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">Prerequisites to active the active contract</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="prerequisite" minOccurs="0"
+    					maxOccurs="unbounded" type="Prerequisite" />
+    			</xs:sequence>
+    		</xs:complexType>		
+		</xs:element>
+		
+    	<xs:element name="commitments">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				This element defines witch commitments this contract
+    				must observe.
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="commitment" minOccurs="0"
+    					maxOccurs="unbounded" type="Commitment" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+
+    	<xs:element name="serviceLevelAgreements">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				This element defines the agreements for the serice
+    				used in the collaborative process.
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="serviceLevelAgreement"
+    					minOccurs="0" maxOccurs="unbounded"
+    					type="ServiceLevelAgreement" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+
+    	<xs:element name="checkpoints">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				Where event are catch to verify the correctness of the active contract.
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="checkpoint"
+    					minOccurs="0" maxOccurs="unbounded"
+    					type="Checkpoint" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+    	
+		<xs:element name="deliveries">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">Deliveries of the active contract</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="delivery" minOccurs="0"
+    					maxOccurs="unbounded" type="Delivery" />
+    			</xs:sequence>
+    		</xs:complexType>		
+		</xs:element>
+
+    	<xs:element minOccurs="0" name="licenses">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+
+    				This element describes all of the licenses for this
+    				contract.
+
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="license" minOccurs="0"
+    					maxOccurs="unbounded" type="License" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="authors">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				3.0.0+
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				Describes the authors of a contract.
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="author" minOccurs="0"
+    					maxOccurs="unbounded" type="Author" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="contributors">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				Describes the contributors to a contract that are
+    				not yet authors.
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="contributor" minOccurs="0"
+    					maxOccurs="unbounded" type="Contributor" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="mailingLists">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				3.0.0+
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				Contains information about a contract's mailing
+    				lists.
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:element name="mailingList" minOccurs="0"
+    					maxOccurs="unbounded" type="MailingList" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="properties">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+
+    				Properties that can be used.
+
+    			</xs:documentation>
+    		</xs:annotation>
+    		<xs:complexType>
+    			<xs:sequence>
+    				<xs:any minOccurs="0" maxOccurs="unbounded"
+    					processContents="skip" />
+    			</xs:sequence>
+    		</xs:complexType>
+    	</xs:element>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="Organization">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">Specifies the organization that produces this contract.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="0" name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The full name of the organization.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="url" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">3.0.0+</xs:documentation>
+          <xs:documentation source="description">The URL to the organization's home page.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:complexType name="Domain">
+  	<xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">Describes the domain this contract belongs.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+    	<xs:element minOccurs="0" name="name"  type="xs:string">
+    	</xs:element>
+<!--     	<xs:element minOccurs="0" name="name">
+    		<xs:simpleType>
+    			<xs:restriction base="xs:string">
+    				<xs:enumeration value="Transport"/>
+    				<xs:enumeration value="Sales"/>
+    				<xs:enumeration value="Other"/>
+    			</xs:restriction>
+  			</xs:simpleType>
+    	</xs:element> -->
+    </xs:all>    
+  </xs:complexType>
+  
+  
+  <xs:complexType name="Commitment">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">Information about one of the commitments on this contract.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+    	<xs:element minOccurs="0" name="description" type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description"></xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="specifications"
+    		type="xs:string">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description"></xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="input" type="Input">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				The input data structure for the commitment
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    	<xs:element minOccurs="0" name="output" type="Output">
+    		<xs:annotation>
+    			<xs:documentation source="version">
+    				0.0.1
+    			</xs:documentation>
+    			<xs:documentation source="description">
+    				The output data structure for the commitment
+    			</xs:documentation>
+    		</xs:annotation>
+    	</xs:element>
+    </xs:all>
+    <xs:attribute name="serviceName" type="xs:string" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Contributor">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">Description of a person who has contributed to the contract, but who does not have
+        commit privileges. Usually, these contributions come in the form of patches submitted.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="0" name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The full name of the contributor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="email" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The email address of the contributor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="url" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The URL for the homepage of the contributor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="organization" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The organization to which the contributor belongs.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="organizationUrl" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The URL of the organization.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="roles">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The roles the contributor plays in the contract. Each role is described by a
+            &lt;code&gt;role&lt;/code&gt; element, the body of which is a role name. This can also be used to
+            describe the contribution.
+            
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="role" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="timezone" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+              The timezone the contributor is in. Typically, this is a number in the range
+              &lt;a href="http://en.wikipedia.org/wiki/UTC%E2%88%9212:00"&gt;-12&lt;/a&gt; to &lt;a href="http://en.wikipedia.org/wiki/UTC%2B14:00"&gt;+14&lt;/a&gt;
+              or a valid time zone id like "America/Montreal" (UTC-05:00) or "Europe/Paris" (UTC+01:00).
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="properties">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">Properties about the contributor, such as an instant messenger handle.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="License">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">Describes the licenses for this contract.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="0" name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The full legal name of the license.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="url" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The official url for the license text.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="distribution" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The primary method by which this contract may be distributed.
+            &lt;dl&gt;
+              &lt;dt&gt;repo&lt;/dt&gt;
+              &lt;dd&gt;may be downloaded &lt;/dd&gt;
+              &lt;dt&gt;manual&lt;/dt&gt;
+              &lt;dd&gt;user must manually download and install the dependency.&lt;/dd&gt;
+            &lt;/dl&gt;
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="comments" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">Addendum information pertaining to this license.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="MailingList">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">This element describes all of the mailing lists associated with a project. The
+        auto-generated site references this information.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="0" name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The name of the mailing list.
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="subscribe" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The email address or link that can be used to subscribe to
+            the mailing list.  If this is an email address, a
+            &lt;code&gt;mailto:&lt;/code&gt; link will automatically be created
+            when the documentation is created.
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="unsubscribe" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The email address or link that can be used to unsubscribe to
+            the mailing list.  If this is an email address, a
+            &lt;code&gt;mailto:&lt;/code&gt; link will automatically be created
+            when the documentation is created.
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="post" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The email address or link that can be used to post to
+            the mailing list.  If this is an email address, a
+            &lt;code&gt;mailto:&lt;/code&gt; link will automatically be created
+            when the documentation is created.
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="archive" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The link to a URL where you can browse the mailing list archive.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="otherArchives">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The link to alternate URLs where you can browse the list archive.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="otherArchive" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Author">
+    <xs:annotation>
+      <xs:documentation source="version">0.0.1</xs:documentation>
+      <xs:documentation source="description">Information about one of the authors on this contratc.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="0" name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The unique ID of the author.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The full name of the contributor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="email" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The email address of the contributor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="url" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The URL for the homepage of the contributor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="organization" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The organization to which the contributor belongs.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="organizationUrl" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">The URL of the organization.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="roles">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+            The roles the contributor plays in the contract. Each role is described by a
+            &lt;code&gt;role&lt;/code&gt; element, the body of which is a role name. This can also be used to
+            describe the contribution.
+            
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="role" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="timezone" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">
+            
+              The timezone the contributor is in. Typically, this is a number in the range
+              &lt;a href="http://en.wikipedia.org/wiki/UTC%E2%88%9212:00"&gt;-12&lt;/a&gt; to &lt;a href="http://en.wikipedia.org/wiki/UTC%2B14:00"&gt;+14&lt;/a&gt;
+              or a valid time zone id like "America/Montreal" (UTC-05:00) or "Europe/Paris" (UTC+01:00).
+            
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="properties">
+        <xs:annotation>
+          <xs:documentation source="version">0.0.1</xs:documentation>
+          <xs:documentation source="description">Properties about the contributor, such as an instant messenger handle.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+    <xs:complexType name="ServiceLevelAgreement">
+    	<xs:annotation>
+	      <xs:documentation source="version">0.0.1</xs:documentation>
+	      <xs:documentation source="description">ServiceLevelAgreement for the services used in the collaborative process.</xs:documentation>
+	    </xs:annotation>
+	    <xs:sequence>
+	    	<xs:element minOccurs="0" name="performanceLevel" type="PerformanceLevel">
+	    		<xs:annotation>
+		        	<xs:documentation source="version">0.0.1</xs:documentation>
+		          	<xs:documentation source="description">Reliability and responsiveness of the service.</xs:documentation>
+		        </xs:annotation>
+		    </xs:element>
+	    </xs:sequence>
+	    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="PerformanceLevel">
+    	<xs:annotation>
+	      <xs:documentation source="version">0.0.1</xs:documentation>
+	      <xs:documentation source="description">Reliability and responsiveness of the service.</xs:documentation>
+	    </xs:annotation>
+	    <xs:all>
+	    	<xs:element minOccurs="0" name="retryPattern" type="RetryPattern">
+	    		<xs:annotation>
+		        	<xs:documentation source="version">0.0.1</xs:documentation>
+		          	<xs:documentation source="description">Attempt to redeliver a message when delivery of a message fails.</xs:documentation>
+		        </xs:annotation>
+		    </xs:element>
+		    <xs:element minOccurs="0" name="circuitBreakerPattern" type="CircuitBreakerPattern">
+	    		<xs:annotation>
+		        	<xs:documentation source="version">0.0.1</xs:documentation>
+		          	<xs:documentation source="description">Detect failures and encapsulates logic of preventing a failure to reoccur constantly (during maintenance, temporary external system failure or unexpected system difficulties).</xs:documentation>
+		        </xs:annotation>
+		    </xs:element>
+			<xs:element minOccurs="0" name="messageQueue" type="MessageQueue">
+	    		<xs:annotation>
+		        	<xs:documentation source="version">0.0.1</xs:documentation>
+		          	<xs:documentation source="description"></xs:documentation>
+		        </xs:annotation>
+		    </xs:element>	    
+		</xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="RetryPattern">
+    	<xs:annotation>
+	      <xs:documentation source="version">0.0.1</xs:documentation>
+	      <xs:documentation source="description">Attempt to redeliver a message when delivery of a message fails.</xs:documentation>
+	    </xs:annotation>
+    	<xs:attribute name="maxNumberOfAttempts" type="xs:int" use="required"/>
+    	<xs:attribute name="intervalBetweenTheFirstAndSecondAttempt" type="xs:long" use="required"/>
+    	<xs:attribute name="intervalMultiplierBetweenAttemps" type="xs:int" use="required"/>
+    	<xs:attribute name="maximumIntervalBetweenAttempts" type="xs:long" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="CircuitBreakerPattern">
+    	<xs:annotation>
+	      <xs:documentation source="version">0.0.1</xs:documentation>
+	      <xs:documentation source="description">Detect failures and encapsulates logic of preventing a failure to reoccur constantly (during maintenance, temporary external system failure or unexpected system difficulties).</xs:documentation>
+	    </xs:annotation>
+    	<xs:attribute name="numberOfFailuresBeforeOpening" type="xs:int" use="required"/>
+    	<xs:attribute name="intervalBeforeHalfOpening" type="xs:long" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="MessageQueue">
+    	<xs:annotation>
+	      <xs:documentation source="version">0.0.1</xs:documentation>
+	      <xs:documentation source="description"></xs:documentation>
+	    </xs:annotation>
+    	<xs:attribute name="capacity" type="xs:int" />
+    	<xs:attribute name="fixedDelay" type="xs:long" />
+    	<xs:attribute name="fixedRate" type="xs:long" />
+    	<xs:attribute name="cron" type="xs:string" />
+    </xs:complexType>
+        
+
+    <xs:complexType name="Input">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">An input data structure.</xs:documentation>
+    	</xs:annotation>
+    	<xs:all>
+    		<xs:element minOccurs="0" name="datastructure" type="xs:string"></xs:element>
+    	</xs:all>
+    	<xs:attribute name="typeName" use="required"></xs:attribute>
+    	<xs:attribute name="mimeType" use="optional"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="Output">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">An output data structure.</xs:documentation>
+    	</xs:annotation>
+    	<xs:all>
+    		<xs:element minOccurs="0" name="datastructure" type="xs:string"></xs:element>
+    	</xs:all>
+    	<xs:attribute name="typeName" use="required"></xs:attribute>
+    	<xs:attribute name="mimeType" use="optional"></xs:attribute>
+    </xs:complexType>
+    
+<!--     <xs:complexType name="Prerequisites">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			Prerequisites to active the contract.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:sequence>
+    		<xs:element minOccurs="1" name="prerequisites" type="Prerequisite"></xs:element>
+    	</xs:sequence>
+    </xs:complexType> -->
+
+    <xs:complexType name="Prerequisite">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			A prerequisite to active a commitment.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:all>
+    		<xs:element name="inputEventHandler" type="InputEventHandler"></xs:element>
+    	</xs:all>
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+<!--    <xs:complexType name="Deliveries">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			Deliveries of the active contract.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:sequence>
+    		<xs:element minOccurs="1" name="deliveries" type="Delivery"></xs:element>
+    	</xs:sequence>
+    </xs:complexType> -->
+
+    <xs:complexType name="Delivery">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			A delivery of the active contract.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:all>
+    		<xs:element name="outputEventHandler" type="OutputEventHandler"></xs:element>
+    	</xs:all>    	
+    </xs:complexType>
+
+    <xs:complexType name="InputEventHandler">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			An eventHandler of a prerequisite.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:all>
+    		<xs:element name="input" type="Input"></xs:element>
+    	</xs:all>
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="OutputEventHandler">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			An eventHandler of a delivery.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:all>
+    		<xs:element name="output" type="Output"></xs:element>
+    	</xs:all>
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+<!--     <xs:complexType name="Checkpoints">
+    	<xs:annotation>
+    		<xs:documentation source="version">0.0.1</xs:documentation>
+    		<xs:documentation source="description">
+    			Where to catch events in order to check the correctness of the active contract.
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:sequence>
+    		<xs:element minOccurs="1" name="checkpoints" type="Checkpoint"></xs:element>
+    	</xs:sequence>
+    </xs:complexType> -->
+    
+	<xs:complexType name="Checkpoint">
+	    <xs:annotation>
+	      <xs:documentation source="version">0.0.1</xs:documentation>
+	      <xs:documentation source="description">A checkpoint is a point (joint point) in a process where messages are logged.</xs:documentation>
+	    </xs:annotation>
+	    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+	    <xs:attribute name="messageStore" type="xs:string" default="MongoDB"></xs:attribute>
+	    <xs:attribute name="position" use="required">
+	    	<xs:annotation>
+	    		<xs:documentation source="version">
+	    			0.0.1
+	    		</xs:documentation>
+	    		<xs:documentation source="description">
+	    			position defines the point where messages are
+	    			extracted. It can be before, after or both a commitment,
+	    			a delivery or a prerequisite.
+	    		</xs:documentation>
+	    		</xs:annotation>
+	    	<xs:simpleType>
+	    		<xs:restriction base="xs:string">
+	    			<xs:enumeration value="before" />
+	    			<xs:enumeration value="after" />
+	    			<xs:enumeration value="beforeAndAfter" />
+	    		</xs:restriction>
+	    	</xs:simpleType>
+	    </xs:attribute>
+	    <xs:attribute name="eventName" type="xs:string"></xs:attribute>
+  </xs:complexType>
+        
+</xs:schema>
