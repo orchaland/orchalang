@@ -2,12 +2,40 @@ title: orcha compiler
 authors: Ben Orcha
 
 receive orchaProgram from orchaProgramSource
+
 preprocessing with orchaProgram
 when "preprocessing terminates"
+
 lexicalAnalysis with preprocessing.result
 when "lexicalAnalysis terminates"
+
 syntaxAnalysis with lexicalAnalysis.result
 when "syntaxAnalysis terminates"
+
 semanticAnalysis with syntaxAnalysis.result
 when "semanticAnalysis terminates"
-send semanticAnalysis.result to orchaProgramDestination
+
+postprocessing with semanticAnalysis.result
+when "postprocessing terminates"
+
+linkEditor with postprocessing.result
+when "linkEditor terminates"
+
+outputGeneration with postprocessing.result
+when "outputGeneration terminates"
+send outputGeneration.result to orchaProgramDestination
+
+//----------- outputGeneration -------
+
+//receive orchaProgram from ...
+//applicationGeneration with orchaProgram
+
+//receive orchaProgram from ...
+//eventHandlerGeneration with orchaProgram
+
+//receive orchaProgram from ...
+//integrationGeneration with orchaProgram
+
+//when "(applicationGeneration terminates) and (eventHandlerGeneration terminates) and (integrationGeneration)"
+//send applicationGeneration.result, eventHandlerGeneration.result, integrationGeneration.result
+

@@ -1,8 +1,13 @@
 rootProject.name = 'orchalanguage-starter'
 
-include 'orchalanguage'
-include 'orchalanguage-spring-integration-implementation'
-include 'orchalanguage-orchacompiler'
-include 'orchalanguage-spring-boot-autoconfigure'
-include 'orchalanguage-spring-boot-starter'
-include 'orchalanguage-spring-boot-sample-app'
+// the main part of the compiler
+include 'orchalang'
+
+// the Spring Integration extension of orchalang
+include 'orchalang-spring-integration-implementation'
+
+// ----------------------------------
+include 'orchalang-spring-boot-autoconfigure'
+include 'orchalang-spring-boot-starter'
+include 'orchalang-spring-boot-sample-app'
+include 'orchalang-orchacompiler'
