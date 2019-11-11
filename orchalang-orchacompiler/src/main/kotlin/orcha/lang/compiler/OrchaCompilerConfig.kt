@@ -6,6 +6,7 @@ import orcha.lang.compiler.referenceimpl.SemanticAnalysisImpl
 import orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl
 import orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl
 import orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationToSpringIntegration
+import orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationToSpringIntegrationJavaDSL
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -61,9 +62,14 @@ class OrchaCompilerConfig{
         return LinkEditorImpl()
     }
 
-    @Bean
+    /*@Bean
     internal fun outputGeneration(): OutputGeneration {
         return OutputGenerationToSpringIntegration()
+    }*/
+
+    @Bean
+    internal fun outputGeneration(): OutputGeneration {
+        return OutputGenerationToSpringIntegrationJavaDSL()
     }
 
 }

@@ -4,13 +4,11 @@ import orcha.lang.compiler.syntax.Instruction
 
 import java.util.ArrayList
 
-class IntegrationNode(instruction: Instruction?) {
-    constructor() : this(null) {
-    }
+class IntegrationNode(val instruction: Instruction? = null) {
 
     var integrationPattern: IntegrationPattern? = null
 
-    var instruction: Instruction? = instruction
+    //val instruction: Instruction? = instruction
 
     var nextIntegrationNodes: List<IntegrationNode> = ArrayList()
 

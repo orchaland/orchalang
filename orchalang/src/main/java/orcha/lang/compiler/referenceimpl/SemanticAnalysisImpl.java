@@ -397,11 +397,10 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 nodes.get(index).setIntegrationPattern(IntegrationNode.IntegrationPattern.AGGREGATOR);
 
                 if (applicationsOrEventsInExpression.size() > 1) {
-                    IntegrationNode resequencer = new IntegrationNode();
-                    resequencer.setIntegrationPattern(IntegrationNode.IntegrationPattern.RESEQUENCER);
                     WhenInstruction fictitiousWhen = new WhenInstruction();
                     fictitiousWhen.setAggregationExpression(when.getAggregationExpression());
-                    resequencer.setInstruction(fictitiousWhen);
+                    IntegrationNode resequencer = new IntegrationNode(fictitiousWhen);
+                    resequencer.setIntegrationPattern(IntegrationNode.IntegrationPattern.RESEQUENCER);
                     resequencer.getNextIntegrationNodes().add(nodes.get(index));
 
                     nodes.add(index, resequencer);
@@ -434,9 +433,8 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                 String variables = send.getVariables();
                 if(variables != null){
-                    IntegrationNode translator = new IntegrationNode();
+                    IntegrationNode translator = new IntegrationNode(send);
                     translator.setIntegrationPattern(IntegrationNode.IntegrationPattern.MESSAGE_TRANSLATOR);
-                    translator.setInstruction(send);
                     translator.getNextIntegrationNodes().add(nodes.get(index));
                     nodes.set(index, translator);
                 }

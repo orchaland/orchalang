@@ -24,7 +24,7 @@ class LinkEditorImpl : LinkEditor {
 
         for (node in orchaProgram.integrationGraph) {
 
-            log.info("Link edition  for the node: " + node)
+            log.info("Link edition for the node: " + node)
             log.info("Link edition for the instruction: " + node.instruction!!.instruction)
 
             when (node.integrationPattern) {
@@ -34,7 +34,7 @@ class LinkEditorImpl : LinkEditor {
                             val compute: ComputeInstruction = node.instruction as ComputeInstruction
                             val configuration = springApplicationContext!!.getBean(compute.application)
                             val application: Application = configuration as Application
-
+                            compute.configuration = application
                         }
                     }
                 }
