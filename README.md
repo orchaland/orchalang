@@ -30,4 +30,4 @@ The related configuration: https://github.com/orchaland/orchalang/blob/master/or
 
 https://github.com/orchaland/orchalang/blob/master/orchalang-orchacompiler/src/main/kotlin/orcha/lang/compiler/OrchaCompilerConfig.kt
 
-The OrchaCompiler component: https://github.com/orchaland/orchalang/blob/master/orchalang-orchacompiler/src/main/kotlin/orcha/lang/compiler/OrchaCompilerConfig.kt
+The OrchaCompiler component: https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/kotlin/orcha/lang/compiler/OrchaCompiler.kt
