@@ -23,20 +23,18 @@ The compiler transpile an Orcha program into a adjacency graph of [integration p
 Before launching, the adjacency graph of integration patterns needs to be transpiled into an executable version.
 This [reference implentation](https://github.com/orchaland/orchalang/tree/master/orchalang-spring-integration-implementation) uses [Spring Integration](https://spring.io/projects/spring-integration) for the target of the executable version.
 
-## compilation stages
+## compilation stages and auto configuration
+
+the default auto configuration is independant from any specific implementation for:
 
 * [preprocessing](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/referenceimpl/PreprocessingImpl.java)
 * [lexical analysis](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/referenceimpl/LexicalAnalysisImpl.java)
+* [syntax analysis](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/referenceimpl/SyntaxAnalysisImpl.java)
+* [semantic analysis](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/referenceimpl/SemanticAnalysisImpl.java)
+* [post-processing](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/referenceimpl/PostprocessingImpl.java)
+
 * [preprocessing usage](https://github.com/orchaland/orchalang/blob/master/orchalang/src/test/java/orcha/lang/compiler/referenceimpl/PreprocessingTest.java)
 
-## Auto configuration 
-
-the default auto configuration is independant from any specific implementation for:
-* pre-processing
-* lexical analysis
-* syntax analysis
-* semantic analysis
-* post-processing
 * [auto configuration factories](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/resources/META-INF/spring.factories)
 * [auto configuration class](https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/SpringIntegrationAutoConfiguration.java)
 
