@@ -8,10 +8,8 @@ The program to be compiled is: https://github.com/orchaland/orchalang/blob/maste
 
 The related configuration: https://github.com/orchaland/orchalang/blob/master/orchalang-orchacompiler/src/main/kotlin/orcha/lang/compiler/OrchaCompilerConfiguration.kt
 
-## The configuration of the main program
+## Use of the default compiler implementation
 
-https://github.com/orchaland/orchalang/blob/master/orchalang-orchacompiler/src/main/kotlin/orcha/lang/compiler/OrchaCompilerConfig.kt
-
-The OrchaCompiler component: https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/kotlin/orcha/lang/compiler/OrchaCompiler.kt
-
-The output generation to SpringIntegration Java DSL: https://github.com/orchaland/orchalang/blob/master/orchalang-spring-integration-implementation/src/main/kotlin/orcha/lang/compiler/referenceimpl/springIntegration/OutputGenerationToSpringIntegrationJavaDSL.kt
+Thanks to the auto configurations there is no explicit references to the compiler implementation:
+- https://github.com/orchaland/orchalang/tree/master/orchalang#compilation-stages-and-auto-configuration
+- https://github.com/orchaland/orchalang/tree/master/orchalang-spring-integration-implementation#auto-configuration
