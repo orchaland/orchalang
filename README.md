@@ -18,3 +18,4 @@ cd orchalang
 
 Open the project inside Intellij
 
+[Run the project](https://github.com/orchaland/orchalang/tree/master/orchalang-orchacompiler)

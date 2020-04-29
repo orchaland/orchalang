@@ -1,4 +1,4 @@
-# orcha program examples
+# orcha program example
 
 Run the main program: https://github.com/orchaland/orchalang/blob/master/orchalang-orchacompiler/src/main/kotlin/orcha/lang/compiler/DemoApplication.kt
 
