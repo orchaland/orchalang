@@ -18,4 +18,4 @@ cd orchalang
 
 Open the project inside Intellij
 
-[Run the project](https://github.com/orchaland/orchalang/tree/master/orchalang-orchacompiler)
+[The sub project containing an Orcha and a main program to launch the global project](https://github.com/orchaland/orchalang/tree/master/orchalang-orchacompiler)
