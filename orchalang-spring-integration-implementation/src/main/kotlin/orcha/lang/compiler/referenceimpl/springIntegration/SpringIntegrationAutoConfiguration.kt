@@ -1,7 +1,5 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
-import orcha.lang.compiler.Postprocessing
-import orcha.lang.compiler.referenceimpl.PostprocessingImpl
 import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -32,11 +30,6 @@ class SpringIntegrationAutoConfiguration {
     @Throws(Exception::class)
     fun sendInstruction(): SendInstruction? {
         return sendInstructionFactory().getObject()
-    }
-
-    @Bean
-    internal fun postprocessing(): Postprocessing {
-        return PostprocessingImpl()
     }
 
 }

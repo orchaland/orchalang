@@ -8,8 +8,13 @@ import orcha.lang.compiler.OutputGeneration
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
+import orcha.lang.configuration.Application
+import orcha.lang.configuration.ConfigurableProperties
 import org.slf4j.LoggerFactory
 import java.io.File
+import org.springframework.core.io.support.SpringFactoriesLoader
+
+
 
 class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
 
@@ -45,6 +50,7 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
             when(node.integrationPattern) {
                 IntegrationNode.IntegrationPattern.CHANNEL_ADAPTER -> {
 
+
                 }
                 IntegrationNode.IntegrationPattern.MESSAGE_FILTER -> {
                     when(node.instruction){
@@ -56,6 +62,10 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
                 IntegrationNode.IntegrationPattern.SERVICE_ACTIVATOR -> {
                     when(node.instruction){
                         is ComputeInstruction -> {
+                            val compute: ComputeInstruction = node.instruction as ComputeInstruction
+                            val application: Application = compute.configuration as Application
+                            print("=============" + (application.input?.adapter ?: null))
+                            //val foos = SpringFactoriesLoader.loadFactories(compute.configuration.input.adapter.class, null)
 
                         }
                     }
