@@ -5,15 +5,14 @@ import orcha.lang.compiler.IntegrationNode
 import orcha.lang.compiler.OrchaMetadata
 import orcha.lang.compiler.OrchaProgram
 import orcha.lang.compiler.OutputGeneration
+import orcha.lang.compiler.referenceimpl.springIntegration.javaDSLgenerator.JavaServiceGenerator
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.Application
-import orcha.lang.configuration.ConfigurableProperties
+import orcha.lang.configuration.JavaServiceAdapter
 import org.slf4j.LoggerFactory
 import java.io.File
-import org.springframework.core.io.support.SpringFactoriesLoader
-
 
 
 class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
@@ -50,6 +49,11 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
             when(node.integrationPattern) {
                 IntegrationNode.IntegrationPattern.CHANNEL_ADAPTER -> {
 
+                    log.info("receive ou send => " + node.instruction)
+                    /*val send: SendInstruction = node.instruction as SendInstruction
+                    log.info("send => " + send)
+                    val receive: ReceiveInstruction = node.instruction as ReceiveInstruction
+                    log.info("receive => " + receive)*/
 
                 }
                 IntegrationNode.IntegrationPattern.MESSAGE_FILTER -> {
@@ -60,12 +64,22 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
                     }
                 }
                 IntegrationNode.IntegrationPattern.SERVICE_ACTIVATOR -> {
+                    log.info("compute => " + node.instruction)
+                    // node.instruction est du type ComputeInstruction https://github.com/orchaland/orchalang/blob/master/orchalang/src/main/java/orcha/lang/compiler/syntax/ComputeInstruction.java
                     when(node.instruction){
                         is ComputeInstruction -> {
                             val compute: ComputeInstruction = node.instruction as ComputeInstruction
                             val application: Application = compute.configuration as Application
-                            print("=============" + (application.input?.adapter ?: null))
-                            //val foos = SpringFactoriesLoader.loadFactories(compute.configuration.input.adapter.class, null)
+                            log.info("compute application => " + application)
+                            val adapter: JavaServiceAdapter = application.input?.adapter as JavaServiceAdapter
+                            val javaClass = adapter.javaClass
+                            val method = adapter.method
+                            log.info("compute application adapter => " + adapter + ", javaClass=" + javaClass + ", method=" + method)
+                            val javaCodeGenerator = JavaServiceGenerator()
+                            javaCodeGenerator.generate(javaClass, method);
+                            // exemple de handle https://github.com/orchaland/tests/blob/master/gettingStarted/src/main/java/com/example/gettingStarted/GettingStartedApplication.java
+                            // exemple de programme de génération de code https://github.com/orchaland/tests/tree/master/generateDSL
+
 
                         }
                     }

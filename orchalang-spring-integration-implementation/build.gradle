@@ -7,6 +7,10 @@ dependencies {
 	compile project(':orchalang')
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	compile 'com.helger:jcodemodel:3.2.4'
+
 	compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
 	compile 'com.fasterxml.jackson.core:jackson-core:2.10.0'

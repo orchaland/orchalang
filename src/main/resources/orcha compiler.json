@@ -17,8 +17,8 @@
           },
           "type" : "java.lang.String",
           "mimeType" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true,
-          "value$orchalang_spring_integration_implementation" : null
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "output" : {
           "adapter" : {
@@ -29,15 +29,15 @@
           },
           "type" : "java.util.List<java.lang.String>",
           "mimeType" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true,
-          "value$orchalang_spring_integration_implementation" : null
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "name" : "preprocessing",
         "language" : "Kotlin",
         "specifications$orchalang_spring_integration_implementation" : null,
-        "error$orchalang_spring_integration_implementation" : null,
+        "description$orchalang_spring_integration_implementation" : null,
         "state$orchalang_spring_integration_implementation" : null,
-        "description$orchalang_spring_integration_implementation" : null
+        "error$orchalang_spring_integration_implementation" : null
       },
       "application" : "preprocessing",
       "parameters" : [ "orchaProgram" ]
@@ -69,8 +69,8 @@
         },
         "type" : "java.lang.String",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -81,15 +81,15 @@
         },
         "type" : "java.util.List<java.lang.String>",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "name" : "preprocessing",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "preprocessing",
     "parameters" : [ "orchaProgram" ]
@@ -129,8 +129,8 @@
         },
         "type" : "java.util.List<java.lang.String>",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -141,15 +141,15 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "name" : "lexicalAnalysis",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "lexicalAnalysis",
     "parameters" : [ "preprocessing.result" ]
@@ -189,8 +189,8 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -201,15 +201,15 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "name" : "syntaxAnalysis",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "syntaxAnalysis",
     "parameters" : [ "lexicalAnalysis.result" ]
@@ -249,8 +249,8 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -261,15 +261,15 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "name" : "semanticAnalysis",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "semanticAnalysis",
     "parameters" : [ "syntaxAnalysis.result" ]
@@ -309,8 +309,8 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -321,15 +321,15 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "name" : "postprocessing",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "postprocessing",
     "parameters" : [ "semanticAnalysis.result" ]
@@ -369,8 +369,8 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -381,15 +381,15 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "name" : "linkEditor",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "linkEditor",
     "parameters" : [ "postprocessing.result" ]
@@ -429,16 +429,16 @@
         },
         "type" : "orcha.lang.compiler.OrchaProgram",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : null,
       "name" : "outputGeneration",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "outputGeneration",
     "parameters" : [ "postprocessing.result" ]
