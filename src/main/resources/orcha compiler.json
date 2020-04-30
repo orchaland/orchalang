@@ -35,8 +35,8 @@
         "name" : "preprocessing",
         "language" : "Kotlin",
         "specifications$orchalang_spring_integration_implementation" : null,
-        "description$orchalang_spring_integration_implementation" : null,
         "state$orchalang_spring_integration_implementation" : null,
+        "description$orchalang_spring_integration_implementation" : null,
         "error$orchalang_spring_integration_implementation" : null
       },
       "application" : "preprocessing",
@@ -87,8 +87,8 @@
       "name" : "preprocessing",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "preprocessing",
@@ -147,8 +147,8 @@
       "name" : "lexicalAnalysis",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "lexicalAnalysis",
@@ -207,8 +207,8 @@
       "name" : "syntaxAnalysis",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "syntaxAnalysis",
@@ -267,8 +267,8 @@
       "name" : "semanticAnalysis",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "semanticAnalysis",
@@ -327,8 +327,8 @@
       "name" : "postprocessing",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "postprocessing",
@@ -387,8 +387,8 @@
       "name" : "linkEditor",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "linkEditor",
@@ -436,8 +436,8 @@
       "name" : "outputGeneration",
       "language" : "Kotlin",
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
       "state$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
       "error$orchalang_spring_integration_implementation" : null
     },
     "application" : "outputGeneration",

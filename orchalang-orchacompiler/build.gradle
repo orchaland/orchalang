@@ -1,35 +1,16 @@
 plugins {
-	id 'org.jetbrains.kotlin.jvm' version '1.2.71'
-	id 'org.jetbrains.kotlin.plugin.spring' version '1.2.71'
+	id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.3.50'
 }
-
-
-/*sourceSets {
-	main {
-		java {
-			srcDirs = [ 'src/main/kotlin' ]
-			srcDir 'src/main/orcha'
-		}
-	}
-	test {
-		java {
-			srcDirs = [ 'src/test/kotlin' ]
-			srcDir 'src/test/orcha'
-		}
-		resources {
-			srcDirs = ["src/test/resources"]
-		}
-	}
-}*/
-
 
 dependencies {
 	compile project(':orchalang')
 	compile project(':orchalang-spring-integration-implementation')
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.jetbrains.kotlin:kotlin-reflect'
-	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	implementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.50'
+	//implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.50"
 }
 
 compileKotlin {

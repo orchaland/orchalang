@@ -7,7 +7,7 @@ include 'orchalang'
 include 'orchalang-spring-integration-implementation'
 
 // ----------------------------------
-include 'orchalang-spring-boot-autoconfigure'
+// include 'orchalang-spring-boot-autoconfigure'
 include 'orchalang-spring-boot-starter'
 include 'orchalang-spring-boot-sample-app'
 include 'orchalang-orchacompiler'

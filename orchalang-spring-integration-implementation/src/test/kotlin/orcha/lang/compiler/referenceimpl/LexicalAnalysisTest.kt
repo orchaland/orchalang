@@ -55,7 +55,9 @@ class LexicalAnalysisTest {
             var integrationNode = graphOfInstructions[1]
             Assert.assertNotNull(integrationNode)
             var inst = integrationNode.instruction
-            inst.analysis()
+            if (inst != null) {
+                inst.analysis()
+            }
             Assert.assertNotNull(inst)
             Assert.assertTrue(inst is WhenInstructionForSpringIntegration)
             val whenInstruction = inst as WhenInstructionForSpringIntegration
@@ -66,7 +68,7 @@ class LexicalAnalysisTest {
             Assert.assertNotNull(integrationNode)
             inst = integrationNode.instruction
             Assert.assertNotNull(inst)
-            inst.analysis()
+            inst?.analysis()
             Assert.assertTrue(inst is SendInstructionForSpringIntegration)
             val sendInstruction = inst as SendInstructionForSpringIntegration
             Assert.assertEquals(sendInstruction.getLineNumber(), 5)
