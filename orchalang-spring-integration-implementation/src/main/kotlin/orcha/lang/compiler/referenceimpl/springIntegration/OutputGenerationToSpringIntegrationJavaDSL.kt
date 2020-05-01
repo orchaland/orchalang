@@ -26,15 +26,6 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
 
         this.export(orchaMetadata, graphOfInstructions)
 
-        val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".json"
-        val file = File(pathToResources)
-
-
-        val objectMapper = ObjectMapper()
-        val jsonInString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(graphOfInstructions);
-        file.writeText(jsonInString)
-
-        log.info("XML configuration file for Spring Integration has been generated: " + file.canonicalPath)
         log.info("Generation of the output (Spring Integration Java DSL) for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
     }
 

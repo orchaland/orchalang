@@ -1,5 +1,6 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import orcha.lang.compiler.IntegrationNode
 import orcha.lang.compiler.LinkEditor
 import orcha.lang.compiler.OrchaCompilationException
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
+import java.io.File
 
 class LinkEditorImpl : LinkEditor {
 
@@ -40,6 +42,19 @@ class LinkEditorImpl : LinkEditor {
                 }
             }
         }
+
+        val orchaMetadata = orchaProgram.orchaMetadata
+
+        val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".json"
+        val file = File(pathToResources)
+
+        val graphOfInstructions = orchaProgram.integrationGraph
+
+        val objectMapper = ObjectMapper()
+        val jsonInString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(graphOfInstructions);
+        file.writeText(jsonInString)
+
+        log.info("Json configuration file for Spring Integration has been generated: " + file.canonicalPath)
 
         log.info("Linf edition of the orcha program \"" + orchaProgram.orchaMetadata.title + "\" complete successfuly.")
         return orchaProgram
