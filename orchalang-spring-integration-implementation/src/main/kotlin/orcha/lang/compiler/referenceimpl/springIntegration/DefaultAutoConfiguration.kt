@@ -47,6 +47,6 @@ class DefaultAutoConfiguration {
     @ConditionalOnMissingBean
     @Bean("outputGenerationForOrchaCompiler")
     internal fun outputGeneration(): OutputGeneration {
-        return OutputGenerationToSpringIntegrationJavaDSL()
+        return OutputGenerationImpl()
     }
 }
