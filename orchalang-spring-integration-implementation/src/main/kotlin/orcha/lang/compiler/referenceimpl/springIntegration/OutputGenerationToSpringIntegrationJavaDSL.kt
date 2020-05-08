@@ -6,6 +6,7 @@ import orcha.lang.compiler.OrchaMetadata
 import orcha.lang.compiler.OrchaProgram
 import orcha.lang.compiler.OutputGeneration
 import orcha.lang.compiler.referenceimpl.springIntegration.javaDSLgenerator.JavaServiceGenerator
+import orcha.lang.compiler.referenceimpl.springIntegration.javagettingStarted.JavaGettingStarted
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
@@ -77,6 +78,10 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
                             log.info("compute application adapter => " + adapter + ", javaClass=" + javaClass + ", method=" + method)
                             val javaCodeGenerator = JavaServiceGenerator()
                             javaCodeGenerator.generate(javaClass, method);
+
+                            val javaCodeGenerator1 = JavaGettingStarted ()
+                            javaCodeGenerator1.generate(javaClass, method);
+
                             // exemple de handle https://github.com/orchaland/tests/blob/master/gettingStarted/src/main/java/com/example/gettingStarted/GettingStartedApplication.java
                             // exemple de programme de génération de code https://github.com/orchaland/tests/tree/master/generateDSL
 

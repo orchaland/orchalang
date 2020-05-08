@@ -38,4 +38,3 @@ send outputGeneration.result to orchaProgramDestination
 
 //when "(applicationGeneration terminates) and (eventHandlerGeneration terminates) and (integrationGeneration)"
 //send applicationGeneration.result, eventHandlerGeneration.result, integrationGeneration.result
-
