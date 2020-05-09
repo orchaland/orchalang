@@ -10,6 +10,8 @@ class OrchaCompilerConfiguration {
     @Bean
     fun orchaProgramSource(): EventHandler {
         val eventHandler = EventHandler("orchaProgramSource")
+        val fileAdapter = InputFileAdapter("./files", "*.orcha")
+        eventHandler.input = Input(fileAdapter, "java.lang.String")
         return eventHandler;
     }
 
