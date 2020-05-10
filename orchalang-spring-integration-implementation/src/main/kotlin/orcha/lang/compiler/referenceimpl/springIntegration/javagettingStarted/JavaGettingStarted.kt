@@ -124,6 +124,7 @@ public Order(String product, int id) {
  */
         val const: JMethod = orderapp.method(JMod.PUBLIC, codeModel.VOID, "getProduct")
         const.param(product.type(),product.name())
+        const.param(id.type(),id.name())
         const.body().assign(JExpr._this().ref(product.name()), JExpr.ref(product.name()))
         const.body().assign(JExpr._this().ref(id.name()), JExpr.ref(id.name()))
 
@@ -131,19 +132,16 @@ public Order(String product, int id) {
 public Order() {
     }
  */
-        orderapp.constructor(JMod.PUBLIC).javadoc().add("Creates a new " + orderapp.name() + ".")
+        orderapp.constructor(JMod.PUBLIC).javadoc()
+                //.add("Creates a new " + orderapp.name() + ".")
 
 /*
 public String getProduct() {
         return product;
     }
  */
-
-
         val getter: JMethod = orderapp.method(JMod.PUBLIC, product.type(), "getProduct")
         getter.body()._return(product)
-
-
 
   /*
 public void setProduct(String product) {
@@ -193,7 +191,8 @@ public void setProduct(String product) {
 
         val className11 = "com.example.gettingStarted." + "ProcessOrder"
         val orderapp1= codeModel._class(JMod.PUBLIC, className11, EClassType.CLASS)
-        val order: JFieldVar = orderapp1.field(JMod.NONE,Order::class.java, "order")
+       val order: JFieldVar = orderapp1.field(JMod.NONE,Order::class.java, "order")
+        //const.param(Order::class.java , product.name())
         val Prep: JMethod = orderapp1.method(JMod.PUBLIC,order.type() ,"prepare")
         println("prepare: " + order)
 

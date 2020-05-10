@@ -8,13 +8,10 @@ public class Order
     String product;
     Integer id;
 
-    /**
-     * Creates a new Order.
-     */
     public Order() {
     }
 
-    public void getProduct(String product) {
+    public void getProduct(String product, Integer id) {
         this.product = product;
         this.id = id;
     }
