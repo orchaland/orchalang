@@ -29,6 +29,9 @@ public class OrchaCompilerApplication {
     public IntegrationFlow orchaProgramSourceChannel() {
         return f -> f
                 .handle("preprocessing", "process")
+                .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
+                // handle pour lexicalAnalysis
+                // aggregate pour lexicalAnalysis
                 .log();
     }
 
