@@ -1,6 +1,8 @@
 package essai;
 
-import orcha.lang.compiler.referenceimpl.PreprocessingImpl;
+import orcha.lang.compiler.referenceimpl.*;
+import orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl;
+import orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationToSpringIntegration;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,17 +23,46 @@ public class OrchaCompilerApplication {
     }
 
     @Bean
-    PreprocessingImpl preprocessing(){
-        return new PreprocessingImpl();
-    }
+    PreprocessingImpl preprocessing(){ return new PreprocessingImpl(); }
+
+    @Bean
+    LexicalAnalysisImpl lexicalAnalysis(){return new  LexicalAnalysisImpl();}
+
+    @Bean
+    SyntaxAnalysisImpl syntaxAnalysis(){return new  SyntaxAnalysisImpl();}
+
+    @Bean
+    SemanticAnalysisImpl semanticAnalysis(){return new   SemanticAnalysisImpl();}
+
+    @Bean
+    LinkEditorImpl linkEditor(){return new  LinkEditorImpl();}
+
+    @Bean
+    OutputGenerationToSpringIntegration outputGeneration(){return new  OutputGenerationToSpringIntegration();}
 
     @Bean
     public IntegrationFlow orchaProgramSourceChannel() {
         return f -> f
                 .handle("preprocessing", "process")
                 .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
-                // handle pour lexicalAnalysis
-                // aggregate pour lexicalAnalysis
+                .handle("lexicalAnalysis", "analysis")
+                .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
+                .handle("syntaxAnalysis", "analysis")
+                .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
+                .handle("semanticAnalysis", "analysis")
+                .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
+                .handle("linkEditor", "link")
+                .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
+                .handle("outputGeneration", "generation")
+                .aggregate(a -> a.releaseStrategy(g -> g.size() == 1))
+                // send outputGeneration.result to orchaProgramDestination ??????????????????????????????????
+                //?????????????????????????????????????
+               // .handle("outputGeneration","orchaProgramDestination")
+
+
+
+
+
                 .log();
     }
 
