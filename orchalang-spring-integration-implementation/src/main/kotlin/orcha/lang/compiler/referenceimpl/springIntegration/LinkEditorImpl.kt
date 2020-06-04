@@ -6,7 +6,10 @@ import orcha.lang.compiler.LinkEditor
 import orcha.lang.compiler.OrchaCompilationException
 import orcha.lang.compiler.OrchaProgram
 import orcha.lang.compiler.syntax.ComputeInstruction
+import orcha.lang.compiler.syntax.ReceiveInstruction
+import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.configuration.Application
+import orcha.lang.configuration.EventHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,6 +33,22 @@ class LinkEditorImpl : LinkEditor {
             log.info("Link edition for the instruction: " + node.instruction!!.instruction)
 
             when (node.integrationPattern) {
+
+                IntegrationNode.IntegrationPattern.CHANNEL_ADAPTER -> {
+
+                    when(node.instruction){
+                        is ReceiveInstruction -> {
+                            val receive: ReceiveInstruction = node.instruction as ReceiveInstruction
+                            val configuration = springApplicationContext!!.getBean(receive.source)
+                            val eventHandler: EventHandler = configuration as EventHandler
+                            receive.configuration = eventHandler
+                        }
+                        is SendInstruction -> {
+                            val send: SendInstruction = node.instruction as SendInstruction
+                        }
+                    }
+                }
+
                 IntegrationNode.IntegrationPattern.SERVICE_ACTIVATOR -> {
                     when(node.instruction){
                         is ComputeInstruction -> {
