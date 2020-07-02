@@ -751,7 +751,6 @@ public class SemanticAnalysisTest {
             Assert.fail(e.getMessage());
         }
 
-
     }
 
 }

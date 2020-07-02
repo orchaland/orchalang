@@ -8,6 +8,7 @@ import orcha.lang.compiler.OrchaProgram
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.SendInstruction
+import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.Application
 import orcha.lang.configuration.EventHandler
 import org.slf4j.Logger
@@ -45,6 +46,13 @@ class LinkEditorImpl : LinkEditor {
                         }
                         is SendInstruction -> {
                             val send: SendInstruction = node.instruction as SendInstruction
+                            val map:MutableMap<String,EventHandler> = mutableMapOf()
+                            for(destination in send.destinations){
+                                val configuration = springApplicationContext!!.getBean(destination)
+                                val eventHandler: EventHandler = configuration as EventHandler
+                                map.put(destination, eventHandler)
+                            }
+                            send.configuration = map
                         }
                     }
                 }
@@ -59,6 +67,7 @@ class LinkEditorImpl : LinkEditor {
                         }
                     }
                 }
+
             }
         }
 

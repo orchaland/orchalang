@@ -80,8 +80,8 @@ class OrchaCompilerConfiguration {
     @Bean
     fun orchaProgramDestination(): EventHandler {
         val eventHandler = EventHandler("orchaProgramDestination")
-        val fileAdapter = OutputFileAdapter("data/output", "orchaCompiler.xml")
-        eventHandler.output = Output(fileAdapter, "application/xml")
+        val fileAdapter = OutputFileAdapter("data/output", "orchaCompiler.java")
+        eventHandler.output = Output(fileAdapter, "application/java-archive")
         return eventHandler
     }
 }

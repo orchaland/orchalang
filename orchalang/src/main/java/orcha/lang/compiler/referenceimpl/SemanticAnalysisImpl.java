@@ -432,7 +432,8 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 nodes.get(index).setIntegrationPattern(IntegrationNode.IntegrationPattern.CHANNEL_ADAPTER);
 
                 String variables = send.getVariables();
-                if(variables != null){
+
+                if(variables != null && variables.equals("payload.result")==false){
                     IntegrationNode translator = new IntegrationNode(send);
                     translator.setIntegrationPattern(IntegrationNode.IntegrationPattern.MESSAGE_TRANSLATOR);
                     translator.getNextIntegrationNodes().add(nodes.get(index));
