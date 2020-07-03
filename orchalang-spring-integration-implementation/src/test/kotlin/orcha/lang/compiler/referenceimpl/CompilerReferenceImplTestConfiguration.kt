@@ -11,16 +11,17 @@ import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringBootConfiguration
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.DependsOn
 
 @SpringBootConfiguration
-@Configuration
+@TestConfiguration
 class CompilerReferenceImplTestConfiguration {
 
-    @Value("\${orcha.pathToBinaryCode:build/resources/main}")
-    internal var pathToBinaryCode: String? = null
+    //@Value("\${orcha.pathToBinaryCode:build/resources/main}")
+    //internal var pathToBinaryCode: String? = null
 
     @Bean
     @DependsOn("whenInstruction", "sendInstruction")

@@ -2,6 +2,7 @@ package orcha.lang.compiler.referenceimpl
 
 import orcha.lang.compiler.LexicalAnalysis
 import orcha.lang.compiler.OrchaCompilationException
+import orcha.lang.compiler.referenceimpl.springIntegration.Properties
 import orcha.lang.compiler.referenceimpl.springIntegration.SendInstructionForSpringIntegration
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration
 import orcha.lang.compiler.syntax.TitleInstruction
@@ -10,11 +11,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
+@ContextConfiguration(classes = [CompilerReferenceImplTestConfiguration::class])
 class LexicalAnalysisTest {
 
     @Autowired

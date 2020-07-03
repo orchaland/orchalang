@@ -79,10 +79,6 @@ class LinkEditorImpl : LinkEditor {
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
-        println("------------" + properties!!.pathToIntegrationGraph)
-
-
-        //val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".json"
         val pathToResources = properties!!.pathToIntegrationGraph
         val file = File(pathToResources)
 
