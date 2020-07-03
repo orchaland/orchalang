@@ -14,11 +14,18 @@ import orcha.lang.configuration.EventHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
 import java.io.File
 
 class LinkEditorImpl : LinkEditor {
+
+    @Autowired
+    internal var properties: Properties? = null
+
+    @Autowired
+    val e: Essai? = null
 
     @Autowired
     internal var springApplicationContext: ApplicationContext? = null
@@ -30,7 +37,7 @@ class LinkEditorImpl : LinkEditor {
 
         for (node in orchaProgram.integrationGraph) {
 
-            log.info("Link edition for the node: " + node)
+            log.info("""Link edition for the node: """ + node)
             log.info("Link edition for the instruction: " + node.instruction!!.instruction)
 
             when (node.integrationPattern) {
@@ -69,9 +76,15 @@ class LinkEditorImpl : LinkEditor {
                 }
 
             }
+
+
         }
 
         val orchaMetadata = orchaProgram.orchaMetadata
+
+        println("------------" + e!!.s)
+        //println("------------" + properties!!.pathToIntegrationGraph)
+
 
         val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".json"
         val file = File(pathToResources)

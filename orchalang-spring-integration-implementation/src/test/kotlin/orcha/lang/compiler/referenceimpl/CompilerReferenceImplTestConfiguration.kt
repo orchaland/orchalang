@@ -1,8 +1,10 @@
 package orcha.lang.compiler.referenceimpl
 
 import orcha.lang.compiler.LexicalAnalysis
+import orcha.lang.compiler.LinkEditor
 import orcha.lang.compiler.SemanticAnalysis
 import orcha.lang.compiler.SyntaxAnalysis
+import orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl
 import orcha.lang.compiler.referenceimpl.springIntegration.SendInstructionFactory
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
 import orcha.lang.compiler.syntax.SendInstruction
@@ -56,5 +58,10 @@ class CompilerReferenceImplTestConfiguration {
     @Bean
     internal fun semanticAnalysisForTest(): SemanticAnalysis {
         return SemanticAnalysisImpl()
+    }
+
+    @Bean
+    internal fun linkEditorForTest(): LinkEditor {
+        return LinkEditorImpl()
     }
 }
