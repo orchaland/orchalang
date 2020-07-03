@@ -25,9 +25,6 @@ class LinkEditorImpl : LinkEditor {
     internal var properties: Properties? = null
 
     @Autowired
-    val e: Essai? = null
-
-    @Autowired
     internal var springApplicationContext: ApplicationContext? = null
 
     @Throws(OrchaCompilationException::class)
@@ -82,11 +79,11 @@ class LinkEditorImpl : LinkEditor {
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
-        println("------------" + e!!.s)
-        //println("------------" + properties!!.pathToIntegrationGraph)
+        println("------------" + properties!!.pathToIntegrationGraph)
 
 
-        val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".json"
+        //val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".json"
+        val pathToResources = properties!!.pathToIntegrationGraph
         val file = File(pathToResources)
 
         val graphOfInstructions = orchaProgram.integrationGraph
