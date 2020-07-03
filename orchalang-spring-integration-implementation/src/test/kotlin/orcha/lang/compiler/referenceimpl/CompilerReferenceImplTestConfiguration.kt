@@ -9,6 +9,7 @@ import orcha.lang.compiler.referenceimpl.springIntegration.SendInstructionFactor
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
 import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
+import orcha.lang.configuration.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.test.context.TestConfiguration
@@ -59,6 +60,31 @@ class CompilerReferenceImplTestConfiguration {
     @Bean
     internal fun semanticAnalysisForTest(): SemanticAnalysis {
         return SemanticAnalysisImpl()
+    }
+
+    @Bean
+    fun travelAgency(): EventHandler {
+        val eventHandler = EventHandler("travelAgency")
+        val fileAdapter = InputFileAdapter("./files", "*.json")
+        eventHandler.input = Input(fileAdapter, "java.lang.String")
+        return eventHandler;
+    }
+
+    @Bean
+    fun checkOrder(): Application {
+        val application = Application("checkOrder", "Kotlin")
+        val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.PreprocessingImpl", "process")
+        application.input = Input(javaAdapter, "java.lang.String")
+        application.output = Output(javaAdapter, "java.util.List<java.lang.String>")
+        return application
+    }
+
+    @Bean
+    fun customer(): EventHandler {
+        val eventHandler = EventHandler("customer")
+        val fileAdapter = OutputFileAdapter("data/output", "orchaCompiler.java")
+        eventHandler.output = Output(fileAdapter, "application/java-archive")
+        return eventHandler
     }
 
     @Bean
