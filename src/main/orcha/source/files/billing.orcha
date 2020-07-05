@@ -1,0 +1,9 @@
+title "billing order"
+author "Ben C."
+version "1.0"
+
+receive order from preparedOrder
+compute billing with order.value
+
+when "billing terminates"
+send billing.result to accounting
