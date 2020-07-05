@@ -5,7 +5,7 @@ import java.util.*
 /**
  * @property language the language name like Java.
  */
-class Application(val name: String, var language: String?) {
+data class Application(val name: String, val language: String?, var input: Input? = null, var output: Output? = null, var state: State? = null) {
 
     /**
      * State of a service.<br></br>
@@ -22,21 +22,21 @@ class Application(val name: String, var language: String?) {
     /**
      * The input event of a service called by a compute instruction, there is a single event but it can contains many messages.
      */
-    var input: Input? = null
+    //var input: Input? = null
 
     /**
      * The output event of a service called by a compute instruction, there is a single event but it can contains many messages.
      */
-    var output: Output? = null
+    //var output: Output? = null
 
     /**
      * App state: should not be set programmatically (managed at runtime).
      */
-    internal var state: State? = null
+    //var state: State? = null
 
     internal var error: Error? = null
 
-    internal enum class State {
+    enum class State {
         TERMINATED,
         FAILED,
         RUNNING

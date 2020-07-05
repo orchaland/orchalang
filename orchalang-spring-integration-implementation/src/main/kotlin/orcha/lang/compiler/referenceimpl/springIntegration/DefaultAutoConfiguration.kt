@@ -32,7 +32,7 @@ class DefaultAutoConfiguration {
     private lateinit var postprocessing: Postprocessing
 
     @ConditionalOnMissingBean
-    @DependsOn("preprocessing", "lexicalAnalysis", "syntaxAnalysis", "semanticAnalysis", "postprocessing")
+    @DependsOn("preprocessingForOrchaCompiler", "lexicalAnalysisForOrchaCompiler", "syntaxAnalysisForOrchaCompiler", "semanticAnalysisForOrchaCompiler", "postprocessingForOrchaCompiler")
     @Bean
     fun orchaCompiler(): OrchaCompiler {
         return OrchaCompiler(preprocessing, lexicalAnalysis, syntaxAnalysis, semanticAnalysis, postprocessing, linkEditor(), outputGeneration())

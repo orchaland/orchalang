@@ -5,12 +5,12 @@ package orcha.lang.configuration
  * @property type type like java.lang.String or void
  * @property adapter an adapter like [orcha.lang.configuration.JavaServiceAdapter]
  */
-class Output(val adapter: ConfigurableProperties, val type: String = "void", val mimeType: String? = null) {
+data class Output(val adapter: ConfigurableProperties, val type: String = "void", val mimeType: String? = null, var value: Any? = null) {
 
     /**
      * Content of the output event often in Json format, should not be set programmatically.
      */
-    internal var value: String? = null
+    //var value: Any? = null
 
     internal var autoStartup = true
 }

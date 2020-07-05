@@ -3,7 +3,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	elementFormDefault="qualified" 
 	xmlns="http://orchalang.com/schema" 
-	targetNamespace="http://orchalang.com/schema">
+	targetNamespace="http://essai.com/schema">
   <xs:element name="contract" type="ContractModel">
     <xs:annotation>
       <xs:documentation source="version">0.0.1</xs:documentation>

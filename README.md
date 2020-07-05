@@ -1,4 +1,4 @@
-# orchalang
+# essai
 
 ## orcha language
 
@@ -12,8 +12,8 @@
 ## How to use this project
 
 ````shell script
-git clone https://github.com/orchaland/orchalang
-cd orchalang
+git clone https://github.com/orchaland/essai
+cd essai
 ````
 
 Open the project inside Intellij

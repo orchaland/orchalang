@@ -44,9 +44,9 @@ the lexical analysis needs another implementation because of the specific syntax
 when "app terminates with 'a=0 and b=0'"
 ````
 
-The default auto configuration of the when instruction is implemented there: https://github.com/orchaland/orchalang/blob/master/orchalang-spring-integration-implementation/src/main/kotlin/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionForSpringIntegration.kt
+The default auto configuration of the when instruction is implemented there: https://github.com/orchaland/essai/blob/master/essai-spring-integration-implementation/src/main/kotlin/orcha/lang/compiler/referenceimpl/springIntegration/WhenInstructionForSpringIntegration.kt
 
-The default auto configuration of the send instruction is implemented there: https://github.com/orchaland/orchalang/blob/master/orchalang-spring-integration-implementation/src/main/kotlin/orcha/lang/compiler/referenceimpl/springIntegration/SendInstructionForSpringIntegration.kt 
+The default auto configuration of the send instruction is implemented there: https://github.com/orchaland/essai/blob/master/essai-spring-integration-implementation/src/main/kotlin/orcha/lang/compiler/referenceimpl/springIntegration/SendInstructionForSpringIntegration.kt 
 
 The other compilation stages depends on sub implementation: 
 * [link edition](https://github.com/orchaland/orchalang/blob/master/orchalang-spring-integration-implementation/src/main/kotlin/orcha/lang/compiler/referenceimpl/springIntegration/LinkEditorImpl.kt)

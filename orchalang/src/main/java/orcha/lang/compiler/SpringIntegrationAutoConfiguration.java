@@ -34,6 +34,7 @@ public class SpringIntegrationAutoConfiguration {
         return new PostprocessingImpl();
     }
 
+    //@ConditionalOnMissingBean
     @Bean(name="lexicalAnalysisForOrchaCompiler")
     @DependsOn({"whenInstruction", "sendInstruction"})
     public LexicalAnalysis lexicalAnalysis() {

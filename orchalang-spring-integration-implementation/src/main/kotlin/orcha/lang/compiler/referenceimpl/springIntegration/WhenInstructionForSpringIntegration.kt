@@ -13,11 +13,11 @@ class WhenInstructionForSpringIntegration : WhenInstruction {
 
     override fun convert(application: WhenInstruction.ApplicationOrEventInExpression): String {
         return if (application.state == WhenInstruction.State.TERMINATES) {
-            "([" + (application.order - 1) + "].payload instanceof Transpiler(orcha.lang.App) AND [" + (application.order - 1) + "].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)"
+            "((getMessages().toArray())[" + (application.order - 1) + "].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[" + (application.order - 1) + "].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)"
         } else if (application.state == WhenInstruction.State.RECEIVES) {
-            "([" + (application.order - 1) + "].payload instanceof Transpiler(orcha.lang.EventHandler))"
+            "((getMessages().toArray())[" + (application.order - 1) + "].payload instanceof Transpiler(orcha.lang.EventHandler))"
         } else {
-            "([" + (application.order - 1) + "].payload instanceof Transpiler(orcha.lang.App) AND [" + (application.order - 1) + "].payload.state==Transpiler(orcha.lang.configuration.State).FAILED)"
+            "((getMessages().toArray())[" + (application.order - 1) + "].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[" + (application.order - 1) + "].payload.state==Transpiler(orcha.lang.configuration.State).FAILED)"
         }
     }
 

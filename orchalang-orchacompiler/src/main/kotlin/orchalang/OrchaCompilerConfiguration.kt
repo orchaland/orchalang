@@ -1,4 +1,4 @@
-package orcha.lang.compiler
+package orchalang
 
 import orcha.lang.configuration.*
 import org.springframework.context.annotation.Bean

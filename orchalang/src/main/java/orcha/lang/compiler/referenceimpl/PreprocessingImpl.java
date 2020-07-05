@@ -25,7 +25,9 @@ public class PreprocessingImpl implements Preprocessing{
 
 	@Override
 	public List<String> process(String orchaFileName) throws OrchaCompilationException {
-		
+
+		log.info("Filename of the orcha program: " + orchaFileName);
+
 		String pathToSourceFile = ".";
 				
 		for(String s: pathToOrchaSourceFile.split("/")) {
