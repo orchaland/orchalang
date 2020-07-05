@@ -44,7 +44,7 @@ class LexicalAnalysisTest {
             Assert.assertNotNull(orchaProgram.orchaMetadata)
 
             val orchaMetadata = orchaProgram.orchaMetadata
-            val metadata = orchaMetadata.metadata
+            val metadata = orchaMetadata!!.metadata
             Assert.assertNotNull(metadata)
             Assert.assertEquals(metadata.size.toLong(), 1)
             val instruction = metadata[0]
@@ -53,9 +53,9 @@ class LexicalAnalysisTest {
 
             val graphOfInstructions = orchaProgram.integrationGraph
 
-            Assert.assertTrue(graphOfInstructions.size == 3)
+            Assert.assertTrue(graphOfInstructions!!.size == 3)
 
-            var integrationNode = graphOfInstructions[1]
+            var integrationNode = graphOfInstructions!![1]
             Assert.assertNotNull(integrationNode)
             var inst = integrationNode.instruction
             if (inst != null) {

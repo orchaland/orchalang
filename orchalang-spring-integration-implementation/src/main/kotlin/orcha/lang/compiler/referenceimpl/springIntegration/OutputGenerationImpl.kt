@@ -21,13 +21,21 @@ class OutputGenerationImpl : OutputGeneration {
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
-        log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" begins.")
+        if (orchaMetadata != null) {
+            log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" begins.")
+        }
 
         val graphOfInstructions = orchaProgram.integrationGraph
 
-        this.export(orchaMetadata, graphOfInstructions)
+        if (orchaMetadata != null) {
+            if (graphOfInstructions != null) {
+                this.export(orchaMetadata, graphOfInstructions)
+            }
+        }
 
-        log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
+        if (orchaMetadata != null) {
+            log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
+        }
 
     }
 

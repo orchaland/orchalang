@@ -237,7 +237,7 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
 
                     if (((ReceiveInstruction) receiveNode.getInstruction()).getCondition() != null) {
                         // insert a message filter
-                        IntegrationNode filterNode = new IntegrationNode();
+                        IntegrationNode filterNode = new IntegrationNode(null);
                         filterNode.setIntegrationPattern(IntegrationNode.IntegrationPattern.MESSAGE_FILTER);
                         filterNode.getNextIntegrationNodes().add(receiveNode.getNextIntegrationNodes().get(0));
                         receiveNode.getNextIntegrationNodes().add(filterNode);

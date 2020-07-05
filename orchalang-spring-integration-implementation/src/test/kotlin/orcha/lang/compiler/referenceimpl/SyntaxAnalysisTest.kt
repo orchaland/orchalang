@@ -65,7 +65,7 @@ class SyntaxAnalysisTest {
 
             var aggregationExpression = whenExpression.aggregationExpression
             Assert.assertNotNull(aggregationExpression)
-            Assert.assertEquals(aggregationExpression, "size()==2 AND ((([0].payload instanceof Transpiler(orcha.lang.EventHandler))) AND (([1].payload instanceof Transpiler(orcha.lang.App) AND [1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))")
+            Assert.assertEquals(aggregationExpression, "size()==2 AND ((((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.EventHandler))) AND (((getMessages().toArray())[1].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))")
 
 
             expression = "when \"(one	 terminates  condition 	==false)\""
@@ -136,7 +136,7 @@ class SyntaxAnalysisTest {
             whenExpression.analysis()
             aggregationExpression = whenExpression.aggregationExpression
             Assert.assertNotNull(aggregationExpression)
-            Assert.assertEquals(aggregationExpression, "size()==3 AND (((([0].payload instanceof Transpiler(orcha.lang.App) AND [0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)) AND (([1].payload instanceof Transpiler(orcha.lang.App) AND [1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))) OR (([2].payload instanceof Transpiler(orcha.lang.App) AND [2].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))")
+            Assert.assertEquals(aggregationExpression, "size()==3 AND (((((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)) AND (((getMessages().toArray())[1].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[1].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))) OR (((getMessages().toArray())[2].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[2].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED)))")
 
         } catch (e: Exception) {
             Assert.fail("Syntax error in: " + expression!!)

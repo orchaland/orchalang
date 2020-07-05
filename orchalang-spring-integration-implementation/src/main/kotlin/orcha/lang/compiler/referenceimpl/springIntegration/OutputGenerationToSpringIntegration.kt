@@ -6,7 +6,6 @@ import orcha.lang.compiler.OrchaProgram
 import orcha.lang.compiler.OutputGeneration
 import orcha.lang.compiler.referenceimpl.springIntegration.xmlgenerator.Aggregator
 import orcha.lang.compiler.referenceimpl.springIntegration.xmlgenerator.MessageFilter
-import orcha.lang.compiler.referenceimpl.springIntegration.xmlgenerator.ServiceActivator
 import orcha.lang.compiler.referenceimpl.springIntegration.xmlgenerator.impl.AggregatorImpl
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
@@ -89,7 +88,9 @@ class OutputGenerationToSpringIntegration : OutputGeneration, MessageFilter(), A
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
-        log.info("Generation of the output (Spring Integration) for the orcha program \"" + orchaMetadata.title + "\" begins.")
+        if (orchaMetadata != null) {
+            log.info("Generation of the output (Spring Integration) for the orcha program \"" + orchaMetadata.title + "\" begins.")
+        }
 
         /*val xmlSpringContextFileName = orchaMetadata.title!! + ".xml"
         val xmlSpringContent = sourceCodeDirectory.absolutePath + File.separator + "resources" + File.separator + xmlSpringContextFileName
@@ -114,9 +115,13 @@ class OutputGenerationToSpringIntegration : OutputGeneration, MessageFilter(), A
 
         val graphOfInstructions = orchaProgram.integrationGraph
 
-        this.transpile(document, orchaMetadata, graphOfInstructions)
+        if (orchaMetadata != null) {
+            if (graphOfInstructions != null) {
+                this.transpile(document, orchaMetadata, graphOfInstructions)
+            }
+        }
 
-        val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata.title + ".xml"
+        val pathToResources = "." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + orchaMetadata!!.title + ".xml"
         val file = File(pathToResources)
         val xml = XMLOutputter()
         xml.format = Format.getPrettyFormat()

@@ -1,6 +1,5 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import orcha.lang.compiler.IntegrationNode
 import orcha.lang.compiler.OrchaMetadata
 import orcha.lang.compiler.OrchaProgram
@@ -11,7 +10,6 @@ import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.Application
 import orcha.lang.configuration.JavaServiceAdapter
 import org.slf4j.LoggerFactory
-import java.io.File
 
 
 class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
@@ -20,13 +18,21 @@ class OutputGenerationToSpringIntegrationJavaDSL : OutputGeneration {
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
-        log.info("Generation of the output (Spring Integration Java DSL) for the orcha program \"" + orchaMetadata.title + "\" begins.")
+        if (orchaMetadata != null) {
+            log.info("Generation of the output (Spring Integration Java DSL) for the orcha program \"" + orchaMetadata.title + "\" begins.")
+        }
 
         val graphOfInstructions = orchaProgram.integrationGraph
 
-        this.export(orchaMetadata, graphOfInstructions)
+        if (orchaMetadata != null) {
+            if (graphOfInstructions != null) {
+                this.export(orchaMetadata, graphOfInstructions)
+            }
+        }
 
-        log.info("Generation of the output (Spring Integration Java DSL) for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
+        if (orchaMetadata != null) {
+            log.info("Generation of the output (Spring Integration Java DSL) for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
+        }
     }
 
     private fun export(orchaMetadata: OrchaMetadata, graphOfInstructions: List<IntegrationNode>) {

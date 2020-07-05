@@ -1,8 +1,31 @@
 [ {
+  "instruction" : {
+    "instruction" : "receive travelInfo from travelAgency",
+    "lineNumber" : 1,
+    "command" : "receive",
+    "configuration" : {
+      "output" : null,
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "File",
+          "directory" : "./files",
+          "filenamePattern" : "*.json"
+        },
+        "type" : "java.lang.String",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "name" : "travelAgency",
+      "usersRole$orchalang_spring_integration_implementation" : null
+    },
+    "event" : "travelInfo",
+    "source" : "travelAgency",
+    "condition" : null
+  },
   "integrationPattern" : "CHANNEL_ADAPTER",
   "nextIntegrationNodes" : [ {
-    "integrationPattern" : null,
-    "nextIntegrationNodes" : [ ],
     "instruction" : {
       "instruction" : "compute checkOrder with travelInfo",
       "lineNumber" : 2,
@@ -41,36 +64,11 @@
       },
       "application" : "checkOrder",
       "parameters" : [ "travelInfo" ]
-    }
-  } ],
-  "instruction" : {
-    "instruction" : "receive travelInfo from travelAgency",
-    "lineNumber" : 1,
-    "command" : "receive",
-    "configuration" : {
-      "output" : null,
-      "input" : {
-        "adapter" : {
-          "properties" : [ ],
-          "adapter" : "File",
-          "directory" : "./files",
-          "filenamePattern" : "*.json"
-        },
-        "type" : "java.lang.String",
-        "mimeType" : null,
-        "value$orchalang_spring_integration_implementation" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true
-      },
-      "name" : "travelAgency",
-      "usersRole$orchalang_spring_integration_implementation" : null
     },
-    "event" : "travelInfo",
-    "source" : "travelAgency",
-    "condition" : null
-  }
+    "integrationPattern" : null,
+    "nextIntegrationNodes" : [ ]
+  } ]
 }, {
-  "integrationPattern" : "SERVICE_ACTIVATOR",
-  "nextIntegrationNodes" : [ ],
   "instruction" : {
     "instruction" : "compute checkOrder with travelInfo",
     "lineNumber" : 2,
@@ -109,10 +107,10 @@
     },
     "application" : "checkOrder",
     "parameters" : [ "travelInfo" ]
-  }
+  },
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ]
 }, {
-  "integrationPattern" : "AGGREGATOR",
-  "nextIntegrationNodes" : [ ],
   "instruction" : {
     "instruction" : "when \"checkOrder terminates\"",
     "lineNumber" : 3,
@@ -127,10 +125,10 @@
       "order" : 1
     } ],
     "aggregationExpression" : "size()==1 AND (Application [state=TERMINATES, name=checkOrder, condition=null, order=1])"
-  }
+  },
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ]
 }, {
-  "integrationPattern" : "CHANNEL_ADAPTER",
-  "nextIntegrationNodes" : [ ],
   "instruction" : {
     "instruction" : "send checkOrder to customer",
     "lineNumber" : 4,
@@ -160,5 +158,7 @@
     "data" : "checkOrder",
     "variables" : null,
     "destinations" : [ "customer" ]
-  }
+  },
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ ]
 } ]

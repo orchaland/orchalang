@@ -113,7 +113,7 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
 
         log.info("Lexical analysis of the orcha program complete successfully");
 
-        return new OrchaProgram(graphOfInstructions, orchaMetadata);
+        return new OrchaProgram(orchaMetadata, graphOfInstructions);
     }
 
 

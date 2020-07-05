@@ -8,14 +8,10 @@ import orcha.lang.compiler.OrchaProgram
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.SendInstruction
-import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.Application
 import orcha.lang.configuration.EventHandler
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
 import java.io.File
 
@@ -30,9 +26,9 @@ class LinkEditorImpl : LinkEditor {
     @Throws(OrchaCompilationException::class)
     override fun link(orchaProgram: OrchaProgram): OrchaProgram {
 
-        log.info("Link edition of the orcha program \"" + orchaProgram.orchaMetadata.title + "\" begins. ")
+        log.info("Link edition of the orcha program \"" + orchaProgram.orchaMetadata!!.title + "\" begins. ")
 
-        for (node in orchaProgram.integrationGraph) {
+        for (node in orchaProgram.integrationGraph!!) {
 
             log.info("""Link edition for the node: """ + node)
             log.info("Link edition for the instruction: " + node.instruction!!.instruction)
@@ -90,7 +86,7 @@ class LinkEditorImpl : LinkEditor {
 
         log.info("Json configuration file for Spring Integration has been generated: " + file.canonicalPath)
 
-        log.info("Linf edition of the orcha program \"" + orchaProgram.orchaMetadata.title + "\" complete successfuly.")
+        log.info("Linf edition of the orcha program \"" + orchaProgram.orchaMetadata!!.title + "\" complete successfuly.")
         return orchaProgram
     }
 

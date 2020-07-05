@@ -25,8 +25,7 @@ public class OrchaCompilerApplication {
         return IntegrationFlows.from(Files
                     .inboundAdapter(new File("./files"))
                     .patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000)))
-                .log()
-                .channel("orchaProgramSourceChannel.input")
+                .channel("preprocessingChannel.input")
                 .get();
     }
 
@@ -50,12 +49,6 @@ public class OrchaCompilerApplication {
         return new PostprocessingImpl();
     }
 
-    @Bean(name="lexicalAnalysisForOrchaCompiler")
-    @DependsOn({"whenInstruction", "sendInstruction"})
-    public LexicalAnalysis lexicalAnalysis() {
-        return new LexicalAnalysisImpl();
-    }
-
     @Bean
     MessageToApplication preprocessingMessageToApplication() {
         return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
@@ -67,13 +60,35 @@ public class OrchaCompilerApplication {
     }
 
     @Bean
-    public IntegrationFlow orchaProgramSourceChannel() {
+    public IntegrationFlow preprocessingChannel() {
         return f -> f
                 .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
                 .handle("preprocessingForOrchaCompiler", "process")
                 .handle(preprocessingMessageToApplication(), "transform")
                 .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationExpression("headers['messageID']"))
                 .transform("payload.?[name=='preprocessing']")
+                .handle(applicationToMessage(), "transform")
+                .channel("lexicalAnalysisChannel.input");
+    }
+
+    @Bean(name="lexicalAnalysisForOrchaCompiler")
+    @DependsOn({"whenInstruction", "sendInstruction"})
+    public LexicalAnalysis lexicalAnalysis() {
+        return new LexicalAnalysisImpl();
+    }
+
+    @Bean
+    MessageToApplication lexicalAnalysisMessageToApplication() {
+        return new MessageToApplication(Application.State.TERMINATED, "lexicalAnalysis");
+    }
+
+    @Bean
+    public IntegrationFlow lexicalAnalysisChannel() {
+        return f -> f
+                .handle("lexicalAnalysisForOrchaCompiler", "analysis")
+                .handle(lexicalAnalysisMessageToApplication(), "transform")
+                .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationExpression("headers['messageID']"))
+                .transform("payload.?[name=='lexicalAnalysis']")
                 .handle(applicationToMessage(), "transform")
                 .log();
     }

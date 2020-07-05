@@ -4,13 +4,13 @@ import orcha.lang.compiler.syntax.Instruction
 
 import java.util.ArrayList
 
-class IntegrationNode(val instruction: Instruction? = null) {
+data class IntegrationNode(val instruction: Instruction, var integrationPattern: IntegrationPattern? = null, var nextIntegrationNodes: List<IntegrationNode> = ArrayList()) {
 
-    var integrationPattern: IntegrationPattern? = null
-
+    constructor(instruction: Instruction) : this(instruction, null){
+    }
     //val instruction: Instruction? = instruction
 
-    var nextIntegrationNodes: List<IntegrationNode> = ArrayList()
+
 
     enum class IntegrationPattern {
         CHANNEL_ADAPTER,
@@ -22,8 +22,8 @@ class IntegrationNode(val instruction: Instruction? = null) {
         RESEQUENCER
     }
 
-    override fun toString(): String {
+    /*override fun toString(): String {
         return "IntegrationNode(integrationPattern=$integrationPattern, instruction=$instruction, nextIntegrationNodes=$nextIntegrationNodes)"
-    }
+    }*/
 
 }

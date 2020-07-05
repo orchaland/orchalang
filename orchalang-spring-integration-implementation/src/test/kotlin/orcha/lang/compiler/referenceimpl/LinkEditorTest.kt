@@ -76,7 +76,7 @@ class LinkEditorTest {
 
             orchaProgram = linkEditorForTest!!.link(orchaProgram)
 
-            integrationNodes = orchaProgram.integrationGraph
+            integrationNodes = orchaProgram.integrationGraph as MutableList<IntegrationNode>
 
             Assert.assertTrue(integrationNodes.size == 4)
 

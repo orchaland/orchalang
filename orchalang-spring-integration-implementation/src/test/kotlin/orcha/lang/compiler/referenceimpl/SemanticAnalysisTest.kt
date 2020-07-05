@@ -47,7 +47,7 @@ class SemanticAnalysisTest {
             orchaProgram.orchaMetadata = orchaMetadata
             orchaProgram = semanticAnalysisForTest!!.analysis(orchaProgram)
 
-            integrationNodes = orchaProgram.integrationGraph
+            integrationNodes = orchaProgram.integrationGraph as MutableList<IntegrationNode>
 
             Assert.assertTrue(integrationNodes.size == 1)
             val adapter = integrationNodes[0]
