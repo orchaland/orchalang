@@ -1,0 +1,2 @@
+orchalang:
+  pathToIntegrationGraph: ./src/test/resources/integrationGraph.json

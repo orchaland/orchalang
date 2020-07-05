@@ -1,0 +1,164 @@
+[ {
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ {
+    "integrationPattern" : null,
+    "nextIntegrationNodes" : [ ],
+    "instruction" : {
+      "instruction" : "compute checkOrder with travelInfo",
+      "lineNumber" : 2,
+      "command" : "compute",
+      "configuration" : {
+        "name" : "checkOrder",
+        "language" : "Kotlin",
+        "input" : {
+          "adapter" : {
+            "properties" : [ ],
+            "adapter" : "JavaApplication",
+            "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+            "method" : "process"
+          },
+          "type" : "java.lang.String",
+          "mimeType" : null,
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "output" : {
+          "adapter" : {
+            "properties" : [ ],
+            "adapter" : "JavaApplication",
+            "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+            "method" : "process"
+          },
+          "type" : "java.util.List<java.lang.String>",
+          "mimeType" : null,
+          "value" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "state" : null,
+        "specifications$orchalang_spring_integration_implementation" : null,
+        "description$orchalang_spring_integration_implementation" : null,
+        "error$orchalang_spring_integration_implementation" : null
+      },
+      "application" : "checkOrder",
+      "parameters" : [ "travelInfo" ]
+    }
+  } ],
+  "instruction" : {
+    "instruction" : "receive travelInfo from travelAgency",
+    "lineNumber" : 1,
+    "command" : "receive",
+    "configuration" : {
+      "output" : null,
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "File",
+          "directory" : "./files",
+          "filenamePattern" : "*.json"
+        },
+        "type" : "java.lang.String",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "name" : "travelAgency",
+      "usersRole$orchalang_spring_integration_implementation" : null
+    },
+    "event" : "travelInfo",
+    "source" : "travelAgency",
+    "condition" : null
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute checkOrder with travelInfo",
+    "lineNumber" : 2,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "checkOrder",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+          "method" : "process"
+        },
+        "type" : "java.lang.String",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+          "method" : "process"
+        },
+        "type" : "java.util.List<java.lang.String>",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "checkOrder",
+    "parameters" : [ "travelInfo" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"checkOrder terminates\"",
+    "lineNumber" : 3,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "checkOrder",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (Application [state=TERMINATES, name=checkOrder, condition=null, order=1])"
+  }
+}, {
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "send checkOrder to customer",
+    "lineNumber" : 4,
+    "command" : "send",
+    "configuration" : {
+      "customer" : {
+        "output" : {
+          "adapter" : {
+            "properties" : [ "directory", "filename" ],
+            "adapter" : "File",
+            "directory" : "data/output",
+            "filename" : "orchaCompiler.java",
+            "appendNewLine" : true,
+            "createDirectory" : true,
+            "writingMode" : "APPEND"
+          },
+          "type" : "application/java-archive",
+          "mimeType" : null,
+          "value" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "input" : null,
+        "name" : "customer",
+        "usersRole$orchalang_spring_integration_implementation" : null
+      }
+    },
+    "data" : "checkOrder",
+    "variables" : null,
+    "destinations" : [ "customer" ]
+  }
+} ]
