@@ -25,7 +25,6 @@ public class OrchaCompilerApplication {
         return IntegrationFlows.from(Files
                     .inboundAdapter(new File("./files"))
                     .patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000)))
-               // .transform(Files.toStringTransformer())
                 .log()
                 .channel("orchaProgramSourceChannel.input")
                 .get();
@@ -57,24 +56,12 @@ public class OrchaCompilerApplication {
         return new LexicalAnalysisImpl();
     }
 
-    /*@Bean(name = "whenInstruction")
-    WhenInstructionFactory whenInstructionFactory() {
-        return new WhenInstructionFactory();
-    }
-
-    @Bean(name = "sendInstruction")
-    SendInstructionFactory sendInstructionFactory()  {
-        return new SendInstructionFactory();
-    }*/
-
     @Bean
-    //@Transformer
     MessageToApplication preprocessingMessageToApplication() {
         return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
     }
 
     @Bean
-    //@Transformer
     ApplicationToMessage applicationToMessage(){
         return new ApplicationToMessage();
     }
@@ -84,7 +71,6 @@ public class OrchaCompilerApplication {
         return f -> f
                 .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
                 .handle("preprocessingForOrchaCompiler", "process")
-                //.transform(preprocessingMessageToApplication())
                 .handle(preprocessingMessageToApplication(), "transform")
                 .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationExpression("headers['messageID']"))
                 .transform("payload.?[name=='preprocessing']")
