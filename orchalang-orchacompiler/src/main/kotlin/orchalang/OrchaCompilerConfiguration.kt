@@ -14,6 +14,7 @@ class OrchaCompilerConfiguration {
         eventHandler.input = Input(fileAdapter, "java.lang.String")
         return eventHandler;
     }
+    
 
     @Bean
     fun preprocessing(): Application {

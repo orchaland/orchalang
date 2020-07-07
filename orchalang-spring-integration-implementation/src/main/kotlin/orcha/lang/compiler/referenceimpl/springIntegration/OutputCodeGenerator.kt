@@ -1,15 +1,12 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
-import orcha.lang.configuration.ConfigurableProperties
-import orcha.lang.configuration.InputFileAdapter
-import orcha.lang.configuration.JavaServiceAdapter
-import orcha.lang.configuration.OutputFileAdapter
+import orcha.lang.configuration.*
 
 interface OutputCodeGenerator {
 
     fun inputAdapter(adapter: ConfigurableProperties)
     fun outputAdapter(adapter: ConfigurableProperties)
     fun filter(expression: String)
-    fun serviceActivator(adapter: ConfigurableProperties)
+    fun serviceActivator(adapter: ConfigurableProperties,preprocessing: Application,syntaxAnalysis: Application,semanticAnalysis:Application,postprocessing:Application,lexicalAnalysis:Application)
 
 }

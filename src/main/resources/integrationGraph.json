@@ -1,0 +1,513 @@
+[ {
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ {
+    "integrationPattern" : null,
+    "nextIntegrationNodes" : [ ],
+    "instruction" : {
+      "instruction" : "compute preprocessing with orchaProgram",
+      "lineNumber" : 7,
+      "command" : "compute",
+      "configuration" : {
+        "name" : "preprocessing",
+        "language" : "Kotlin",
+        "input" : {
+          "adapter" : {
+            "properties" : [ ],
+            "adapter" : "JavaApplication",
+            "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+            "method" : "process"
+          },
+          "type" : "java.lang.String",
+          "mimeType" : null,
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "output" : {
+          "adapter" : {
+            "properties" : [ ],
+            "adapter" : "JavaApplication",
+            "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+            "method" : "process"
+          },
+          "type" : "java.util.List<java.lang.String>",
+          "mimeType" : null,
+          "value" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "state" : null,
+        "specifications$orchalang_spring_integration_implementation" : null,
+        "description$orchalang_spring_integration_implementation" : null,
+        "error$orchalang_spring_integration_implementation" : null
+      },
+      "application" : "preprocessing",
+      "parameters" : [ "orchaProgram" ]
+    }
+  } ],
+  "instruction" : {
+    "instruction" : "receive orchaProgram from orchaProgramSource",
+    "lineNumber" : 5,
+    "command" : "receive",
+    "configuration" : {
+      "output" : null,
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "File",
+          "directory" : "./files",
+          "filenamePattern" : "*.orcha"
+        },
+        "type" : "java.lang.String",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "name" : "orchaProgramSource",
+      "usersRole$orchalang_spring_integration_implementation" : null
+    },
+    "event" : "orchaProgram",
+    "source" : "orchaProgramSource",
+    "condition" : null
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute preprocessing with orchaProgram",
+    "lineNumber" : 7,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "preprocessing",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+          "method" : "process"
+        },
+        "type" : "java.lang.String",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
+          "method" : "process"
+        },
+        "type" : "java.util.List<java.lang.String>",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "preprocessing",
+    "parameters" : [ "orchaProgram" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"preprocessing terminates\"",
+    "lineNumber" : 8,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "preprocessing",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute lexicalAnalysis with preprocessing.result",
+    "lineNumber" : 10,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "lexicalAnalysis",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.LexicalAnalysisImpl",
+          "method" : "analysis"
+        },
+        "type" : "java.util.List<java.lang.String>",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.LexicalAnalysisImpl",
+          "method" : "analysis"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "lexicalAnalysis",
+    "parameters" : [ "preprocessing.result" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"lexicalAnalysis terminates\"",
+    "lineNumber" : 11,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "lexicalAnalysis",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute syntaxAnalysis with lexicalAnalysis.result",
+    "lineNumber" : 13,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "syntaxAnalysis",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl",
+          "method" : "analysis"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl",
+          "method" : "analysis"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "syntaxAnalysis",
+    "parameters" : [ "lexicalAnalysis.result" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"syntaxAnalysis terminates\"",
+    "lineNumber" : 14,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "syntaxAnalysis",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute semanticAnalysis with syntaxAnalysis.result",
+    "lineNumber" : 16,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "semanticAnalysis",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.SemanticAnalysisImpl",
+          "method" : "analysis"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.SemanticAnalysisImpl",
+          "method" : "analysis"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "semanticAnalysis",
+    "parameters" : [ "syntaxAnalysis.result" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"semanticAnalysis terminates\"",
+    "lineNumber" : 17,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "semanticAnalysis",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute postprocessing with semanticAnalysis.result",
+    "lineNumber" : 19,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "postprocessing",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.PostprocessingImpl",
+          "method" : "process"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.PostprocessingImpl",
+          "method" : "process"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "postprocessing",
+    "parameters" : [ "semanticAnalysis.result" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"postprocessing terminates\"",
+    "lineNumber" : 20,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "postprocessing",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute linkEditor with postprocessing.result",
+    "lineNumber" : 22,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "linkEditor",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl",
+          "method" : "link"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl",
+          "method" : "link"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "linkEditor",
+    "parameters" : [ "postprocessing.result" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"linkEditor terminates\"",
+    "lineNumber" : 23,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "linkEditor",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "compute outputGeneration with postprocessing.result",
+    "lineNumber" : 25,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "outputGeneration",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "JavaApplication",
+          "javaClass" : "orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationToSpringIntegration",
+          "method" : "generation"
+        },
+        "type" : "orcha.lang.compiler.OrchaProgram",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : null,
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "outputGeneration",
+    "parameters" : [ "postprocessing.result" ]
+  }
+}, {
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "when \"outputGeneration terminates\"",
+    "lineNumber" : 26,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "outputGeneration",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))"
+  }
+}, {
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ ],
+  "instruction" : {
+    "instruction" : "send outputGeneration.result to orchaProgramDestination",
+    "lineNumber" : 27,
+    "command" : "send",
+    "configuration" : {
+      "orchaProgramDestination" : {
+        "output" : {
+          "adapter" : {
+            "properties" : [ "directory", "filename" ],
+            "adapter" : "File",
+            "directory" : "data/output",
+            "filename" : "orchaCompiler.java",
+            "appendNewLine" : true,
+            "createDirectory" : true,
+            "writingMode" : "APPEND"
+          },
+          "type" : "application/java-archive",
+          "mimeType" : null,
+          "value" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "input" : null,
+        "name" : "orchaProgramDestination",
+        "usersRole$orchalang_spring_integration_implementation" : null
+      }
+    },
+    "data" : "outputGeneration",
+    "variables" : "payload.result",
+    "destinations" : [ "orchaProgramDestination" ]
+  }
+} ]
