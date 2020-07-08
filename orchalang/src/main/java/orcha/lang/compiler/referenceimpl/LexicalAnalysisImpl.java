@@ -77,27 +77,32 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
                 } else if (lineOfCode.toLowerCase().startsWith("title")) {
 
                     Instruction titleInstruction = new TitleInstruction(lineOfCode, lineNumber);
+                    titleInstruction.analysis();
                     orchaMetadata.add(titleInstruction);
 
                 } else if (lineOfCode.toLowerCase().startsWith("domain")) {
 
                     Instruction domainInstruction = new DomainInstruction(lineOfCode, lineNumber);
+                    domainInstruction.analysis();
                     orchaMetadata.add(domainInstruction);
 
                 } else if (lineOfCode.toLowerCase().startsWith("description")) {
 
                     Instruction descriptionInstruction = new DescriptionInstruction(lineOfCode, lineNumber);
+                    descriptionInstruction.analysis();
                     orchaMetadata.add(descriptionInstruction);
 
                 } else if (lineOfCode.toLowerCase().startsWith("authors")) {
 
                     Instruction authorsInstruction = new AuthorsInstruction(lineOfCode, lineNumber);
+                    authorsInstruction.analysis();
                     orchaMetadata.add(authorsInstruction);
 
 
                 } else if (lineOfCode.toLowerCase().startsWith("version")) {
 
                     Instruction versionInstruction = new VersionInstruction(lineOfCode, lineNumber);
+                    versionInstruction.analysis();
                     orchaMetadata.add(versionInstruction);
 
 
@@ -110,6 +115,8 @@ public class LexicalAnalysisImpl implements LexicalAnalysis {
             lineNumber++;
 
         }
+
+        log.info("Metadata found: " + orchaMetadata);
 
         log.info("Lexical analysis of the orcha program complete successfully");
 

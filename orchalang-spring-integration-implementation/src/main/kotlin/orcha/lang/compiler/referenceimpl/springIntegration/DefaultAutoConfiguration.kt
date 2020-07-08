@@ -45,6 +45,13 @@ class DefaultAutoConfiguration {
     }
 
     @ConditionalOnMissingBean
+    @Bean("outputGenerationToSpringIntegrationJavaDSL")
+    internal fun outputGenerationToSpringIntegrationJavaDSL(): OutputCodeGenerationToSpringIntegrationJavaDSLImpl {
+        return OutputCodeGenerationToSpringIntegrationJavaDSLImpl()
+    }
+
+    @ConditionalOnMissingBean
+    @DependsOn("outputGenerationToSpringIntegrationJavaDSL")
     @Bean("outputGenerationForOrchaCompiler")
     internal fun outputGeneration(): OutputGeneration {
         return OutputGenerationImpl()
