@@ -5,6 +5,8 @@ import com.helger.jcodemodel.JExpr.FALSE
 import com.helger.jcodemodel.JExpr._super
 import orcha.lang.compiler.referenceimpl.*
 import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage
+import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication
+import orcha.lang.configuration.Application
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -81,11 +83,18 @@ class jCodeModel {
             val newLexicalAnalysisInvoque = JExpr._new(codeModel.ref(LexicalAnalysisImpl::class.java))
             body._return(newLexicalAnalysisInvoque)
 
-            method = generat.method(JMod.NONE,  ApplicationToMessage::class.java, "preprocessingMessageToApplication")
+            method = generat.method(JMod.NONE,  MessageToApplication::class.java, "preprocessingMessageToApplication")
             method.annotate(Bean::class.java)
             body = method.body()
-            val newapreprocessingMessageInvoque = JExpr._new(codeModel.ref( ApplicationToMessage::class.java))
+
+
+            val newapreprocessingMessageInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg("Application.State.TERMINATED").arg("preprocessing")
             //.arg(Application.State.TERMINATED).arg(postprocessing.name)??????????????????????????????????mech narj3elha
+
+            //  @Bean
+            //    MessageToApplication preprocessingMessageToApplication() {
+            //        return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
+            //    }
             body._return(newapreprocessingMessageInvoque)
             method = generat.method(JMod.NONE,  ApplicationToMessage::class.java, "applicationToMessage")
             method.annotate(Bean::class.java)

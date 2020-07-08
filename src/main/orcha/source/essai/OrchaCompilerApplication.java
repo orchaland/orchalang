@@ -7,6 +7,7 @@ import orcha.lang.compiler.referenceimpl.PreprocessingImpl;
 import orcha.lang.compiler.referenceimpl.SemanticAnalysisImpl;
 import orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl;
 import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage;
+import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,8 +55,8 @@ public class OrchaCompilerApplication {
     }
 
     @Bean
-    ApplicationToMessage preprocessingMessageToApplication() {
-        return new ApplicationToMessage();
+    MessageToApplication preprocessingMessageToApplication() {
+        return new MessageToApplication("Application.State.TERMINATED", "preprocessing");
     }
 
     @Bean
@@ -65,14 +66,6 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow orchaProgramSourceChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
-                .handle("preprocessingForOrchaCompiler", "process")
-                .handle(preprocessingMessageToApplication(), "transform")
-                .aggregate(a -> a
-                        .releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
-                        .correlationStrategy("headers['messageID']"))
-                .transform("payload.?[name=='preprocessing']")
-                .handle(applicationToMessage(), "transform")
-                .log();
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(preprocessingMessageToApplication(), "transform").aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").log();
     }
 }
