@@ -1,0 +1,78 @@
+package essai;
+
+import java.io.File;
+import orcha.lang.compiler.referenceimpl.LexicalAnalysisImpl;
+import orcha.lang.compiler.referenceimpl.PostprocessingImpl;
+import orcha.lang.compiler.referenceimpl.PreprocessingImpl;
+import orcha.lang.compiler.referenceimpl.SemanticAnalysisImpl;
+import orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl;
+import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.Pollers;
+import org.springframework.integration.file.dsl.Files;
+
+@Configuration
+@SpringBootApplication(scanBasePackages = {
+    "orchalang"
+})
+public class OrchaCompilerApplication {
+
+    @Bean
+    public IntegrationFlow orchaProgramSourceFlow() {
+        return IntegrationFlows.from(Files.inboundAdapter(new File("./files")).patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000))).log().channel("orchaProgramSourceChannel.input").get();
+    }
+
+    @Bean(name = "preprocessingForOrchaCompiler")
+    PreprocessingImpl preprocessing() {
+        return new PreprocessingImpl();
+    }
+
+    @Bean(name = "syntaxAnalysisForOrchaCompiler")
+    SyntaxAnalysisImpl syntaxAnalysis() {
+        return new SyntaxAnalysisImpl();
+    }
+
+    @Bean(name = "semanticAnalysisForOrchaCompiler")
+    SemanticAnalysisImpl semanticAnalysis() {
+        return new SemanticAnalysisImpl();
+    }
+
+    @Bean(name = "postprocessingForOrchaCompiler")
+    PostprocessingImpl postprocessing() {
+        return new PostprocessingImpl();
+    }
+
+    @Bean(name = "lexicalAnalysisForOrchaCompiler")
+    @DependsOn("{'sendInstruction' , 'whenInstruction' }")
+    LexicalAnalysisImpl lexicalAnalysis() {
+        return new LexicalAnalysisImpl();
+    }
+
+    @Bean
+    ApplicationToMessage preprocessingMessageToApplication() {
+        return new ApplicationToMessage();
+    }
+
+    @Bean
+    ApplicationToMessage applicationToMessage() {
+        return new ApplicationToMessage();
+    }
+
+    @Bean
+    public IntegrationFlow orchaProgramSourceChannel() {
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
+                .handle("preprocessingForOrchaCompiler", "process")
+                .handle(preprocessingMessageToApplication(), "transform")
+                .aggregate(a -> a
+                        .releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
+                        .correlationStrategy("headers['messageID']"))
+                .transform("payload.?[name=='preprocessing']")
+                .handle(applicationToMessage(), "transform")
+                .log();
+    }
+}

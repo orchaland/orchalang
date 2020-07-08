@@ -16,7 +16,7 @@ class OrchaCompilerConfiguration {
     }
     
 
-    @Bean
+    @Bean("preprocessing")
     fun preprocessing(): Application {
         val application = Application("preprocessing", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.PreprocessingImpl", "process")

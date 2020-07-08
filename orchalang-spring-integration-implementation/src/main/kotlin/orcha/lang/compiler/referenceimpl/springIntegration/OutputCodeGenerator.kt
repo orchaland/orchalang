@@ -7,6 +7,5 @@ interface OutputCodeGenerator {
     fun inputAdapter(adapter: ConfigurableProperties)
     fun outputAdapter(adapter: ConfigurableProperties)
     fun filter(expression: String)
-    fun serviceActivator(adapter: ConfigurableProperties,preprocessing: Application,syntaxAnalysis: Application,semanticAnalysis:Application,postprocessing:Application,lexicalAnalysis:Application)
-
+    fun serviceActivator(adapter: ConfigurableProperties)
 }

@@ -71,7 +71,8 @@ public class OrchaCompilerApplication {
         return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
                 .handle("preprocessingForOrchaCompiler", "process")
                 .handle(preprocessingMessageToApplication(), "transform")
-                .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationExpression("headers['messageID']"))
+                .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
+                        .correlationExpression("headers['messageID']"))
                 .transform("payload.?[name=='preprocessing']")
                 .handle(applicationToMessage(), "transform")
                 .log();

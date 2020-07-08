@@ -1,9 +1,12 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
 import com.helger.jcodemodel.*
+import orcha.lang.compiler.Preprocessing
 import orcha.lang.compiler.referenceimpl.*
 import orcha.lang.configuration.*
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -64,37 +67,37 @@ class OutputCodeGeneratorImpl : OutputCodeGenerator {
         log.info("Generation of a filter for the expression " + expression)
 
     }
-    override fun serviceActivator(adapter: ConfigurableProperties,preprocessing: Application,syntaxAnalysis: Application,semanticAnalysis:Application,postprocessing:Application,lexicalAnalysis:Application)
+    override fun serviceActivator(adapter: ConfigurableProperties)
     {
         when(adapter){
             is JavaServiceAdapter -> {
                 val javaServiceAdapter: JavaServiceAdapter = adapter as JavaServiceAdapter
                 log.info("Generation of a service activator for " + javaServiceAdapter)
 
-                var method = generat.method(JMod.NONE, PreprocessingImpl::class.java,preprocessing.name)
+                var method = generat.method(JMod.NONE, PreprocessingImpl::class.java,"preprocessing")
                 //method.annotate(Bean::class.java)
                 method.annotate(Bean::class.java).param("name","preprocessingForOrchaCompiler")
                 var  body = method.body()
                 val newPreprocessingInvoque = JExpr._new(codeModel.ref(PreprocessingImpl::class.java))
                 body._return(newPreprocessingInvoque)
-                 method = generat.method(JMod.NONE, SyntaxAnalysisImpl::class.java, syntaxAnalysis.name)
+                 method = generat.method(JMod.NONE, SyntaxAnalysisImpl::class.java, "syntaxAnalysis")
                 //method.annotate(Bean::class.java)
                 method.annotate(Bean::class.java).param("name","syntaxAnalysisForOrchaCompiler")
                 body = method.body()
                 val newSyntaxAnalysisInvoque = JExpr._new(codeModel.ref(SyntaxAnalysisImpl::class.java))
                 body._return(newSyntaxAnalysisInvoque)
-                method = generat.method(JMod.NONE, SemanticAnalysisImpl::class.java, semanticAnalysis.name)
+                method = generat.method(JMod.NONE, SemanticAnalysisImpl::class.java, "semanticAnalysis")
                 method.annotate(Bean::class.java).param("name","semanticAnalysisForOrchaCompiler")
                 body = method.body()
                 val newSemanticAnalysisInvoque = JExpr._new(codeModel.ref(SemanticAnalysisImpl::class.java))
                 body._return(newSemanticAnalysisInvoque)
-                method = generat.method(JMod.NONE, PostprocessingImpl::class.java, postprocessing.name)
+                method = generat.method(JMod.NONE, PostprocessingImpl::class.java, "postprocessing")
                 method.annotate(Bean::class.java).param("name","postprocessingForOrchaCompiler")
                 body = method.body()
                 val newPostprocessingInvoque = JExpr._new(codeModel.ref(PostprocessingImpl::class.java))
                 body._return(newPostprocessingInvoque)
 
-                method = generat.method(JMod.NONE, LexicalAnalysisImpl::class.java, lexicalAnalysis.name)
+                method = generat.method(JMod.NONE, LexicalAnalysisImpl::class.java, "lexicalAnalysis")
                 method.annotate(Bean::class.java).param("name","lexicalAnalysisForOrchaCompiler")
                 method.annotate(DependsOn::class.java)
                 //    @DependsOn({"whenInstruction", "sendInstruction"})??????????? mech narj3elha
@@ -126,7 +129,29 @@ class OutputCodeGeneratorImpl : OutputCodeGenerator {
                // }
                 method = generat.method(JMod.PUBLIC, IntegrationFlow::class.java, "orchaProgramSourceChannel")
                 method.annotate(Bean::class.java)
-                 body =method.body()
+                body = method.body()
+                val holder1 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "f", null)
+                val aLambda1 = JLambda()
+                val arr1= aLambda1.addParam("f")
+                val setBody1: JBlock = aLambda1.body()
+                //val enrichHeadersInvoke = JExpr.invoke(holder1,"enrichHeaders")
+                val holder3 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "h", null)
+                val aLambda3 = JLambda()
+                val arr3= aLambda3.addParam("h")
+                val setBody3: JBlock = aLambda3.body()
+                setBody3.add(JExpr.invoke(codeModel,holder3,"headerExpression").arg("messageID").arg("headers['id'].toString()"))
+                setBody1.add(JExpr.invoke(codeModel,holder1,"enrichHeaders").arg(aLambda3))
+              val preprocessingMessageToApplicationInvoke=JExpr.invoke("preprocessingMessageToApplication")
+                val applicationToMessageInvoke=JExpr.invoke("applicationToMessage")
+                val handlerInvoke1=JExpr.invoke(codeModel,holder1,"handle").arg("preprocessingForOrchaCompiler").arg("process")
+                val handleInvoke2=JExpr.invoke(handlerInvoke1,"handle").arg(preprocessingMessageToApplicationInvoke).arg("transform")
+                val transformInvoke=JExpr.invoke(handleInvoke2,"transform").arg("payload.?[name=='preprocessing']")
+
+
+                val handlerinvoke =JExpr.invoke(transformInvoke,"handle").arg(applicationToMessageInvoke).arg("transform")
+                 val logInvoke1 = JExpr.invoke(handlerinvoke, "log")
+                body._return(logInvoke1)
+
 
             }
         }

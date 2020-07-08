@@ -18,22 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 class OutputGenerationImpl : OutputGeneration {
 
     val outputCodeGenerator: OutputCodeGenerator = OutputCodeGeneratorImpl()
-    @Qualifier("preprocessing")
-    @Autowired
-    private lateinit var preprocessing: Application
-
-    @Qualifier("syntaxAnalysis")
-    @Autowired
-    private lateinit var syntaxAnalysis: Application
-    @Qualifier("semanticAnalysis")
-    @Autowired
-    private lateinit var semanticAnalysis: Application
-    @Qualifier("postprocessing")
-    @Autowired
-    private lateinit var postprocessing:Application
-    @Qualifier("lexicalAnalysis")
-    @Autowired
-    private lateinit var lexicalAnalysis: Application
 
     override fun generation(orchaProgram: OrchaProgram) {
 
@@ -93,7 +77,7 @@ class OutputGenerationImpl : OutputGeneration {
                             val compute: ComputeInstruction = node.instruction as ComputeInstruction
                             val application: Application = compute.configuration as Application
                             val adapter: JavaServiceAdapter = application.input?.adapter as JavaServiceAdapter
-                            outputCodeGenerator.serviceActivator(adapter,preprocessing,syntaxAnalysis,semanticAnalysis,postprocessing,lexicalAnalysis)
+                            outputCodeGenerator.serviceActivator(adapter)
                         }
                     }
                 }
