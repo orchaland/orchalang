@@ -23,10 +23,23 @@ data class OrchaMetadata(var metadata: MutableList<Instruction?> = ArrayList()) 
             return domainInstruction?.domain
         }
 
+    var domainAsCapitalizedConcatainedString: String? = null
+        get() {
+            val domainInstruction = metadata.stream().filter { instruction: Instruction? -> instruction is DomainInstruction }.findAny().orElse(null) as DomainInstruction?
+            return domainInstruction!!.domain.split(" ").joinToString(""){ it.toString().capitalize() }
+            return domainInstruction?.domain
+        }
+
     var title: String? = null
         get() {
             val titleInstruction = metadata.stream().filter { instruction: Instruction? -> instruction is TitleInstruction }.findAny().orElse(null) as TitleInstruction?
             return titleInstruction?.title
+        }
+
+    var titleAsCapitalizedConcatainedString: String? = null
+        get() {
+            val titleInstruction = metadata.stream().filter { instruction: Instruction? -> instruction is TitleInstruction }.findAny().orElse(null) as TitleInstruction?
+            return titleInstruction!!.title.split(" ").joinToString(""){ it.toString().capitalize() }
         }
 
     var version: String? = null

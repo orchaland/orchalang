@@ -55,7 +55,12 @@ public class MetadataSyntaxAnalysisTest {
         try{
 
             OrchaMetadata orchaMetadata = new OrchaMetadata();
-            Instruction domainInstruction = new DomainInstruction("domain:   travel   ");
+            Instruction titleInstruction = new TitleInstruction("title:   this is    a    title   ");
+            titleInstruction.setLineNumber(2);
+            titleInstruction.analysis();
+            orchaMetadata.add(titleInstruction);
+
+            Instruction domainInstruction = new DomainInstruction("domain:   travel   agency ");
             domainInstruction.setLineNumber(2);
             domainInstruction.analysis();
             orchaMetadata.add(domainInstruction);
@@ -75,12 +80,15 @@ public class MetadataSyntaxAnalysisTest {
             versionInstruction.analysis();
             orchaMetadata.add(versionInstruction);
 
-
+            Assert.assertEquals(orchaMetadata.getTitle(), "this is a title");
+            Assert.assertEquals(orchaMetadata.getTitleAsCapitalizedConcatainedString(), "ThisIsATitle");
 
             List<Instruction> metadata = orchaMetadata.getMetadata();
             DomainInstruction domain = (DomainInstruction) metadata.stream().filter(instruction -> instruction instanceof DomainInstruction).findAny().orElse(null);
             Assert.assertNotNull(domain);
-            Assert.assertEquals(domain.getDomain(), "travel");
+            Assert.assertEquals(domain.getDomain(), "travel agency");
+            Assert.assertEquals(orchaMetadata.getDomain(), "travel agency");
+            Assert.assertEquals(orchaMetadata.getDomainAsCapitalizedConcatainedString(), "TravelAgency");
 
             AuthorsInstruction authorsInstruction = (AuthorsInstruction) metadata.stream().filter(instruction -> instruction instanceof AuthorsInstruction).findAny().orElse(null);
             Assert.assertNotNull(authorsInstruction);

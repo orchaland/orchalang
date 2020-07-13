@@ -22,6 +22,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
         val className = orchaMetadata.domain + "." + orchaMetadata.title + "Application"
 
+
         log.info("Generated class name: " + className)
 
         val generatedClass = codeModel._class(JMod.PUBLIC, className , EClassType.CLASS)
