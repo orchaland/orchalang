@@ -20,8 +20,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
     override fun orchaMetadata(orchaMetadata: OrchaMetadata) {
 
-        val className = orchaMetadata.domain + "." + orchaMetadata.title + "Application"
-
+        val className = orchaMetadata.domainAsCapitalizedConcatainedString!!.decapitalize() + "." + orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
 
         log.info("Generated class name: " + className)
 

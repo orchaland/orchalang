@@ -29,6 +29,7 @@ class OutputGenerationImpl : OutputGeneration {
         val graphOfInstructions = orchaProgram.integrationGraph
 
         if (orchaMetadata != null) {
+            outputCodeGenerationToSpringIntegrationJavaDSL.orchaMetadata(orchaMetadata)
             if (graphOfInstructions != null) {
                 this.export(orchaMetadata, graphOfInstructions)
             }
@@ -41,8 +42,6 @@ class OutputGenerationImpl : OutputGeneration {
     }
 
     private fun export(orchaMetadata: OrchaMetadata, graphOfInstructions: List<IntegrationNode>) {
-
-        outputCodeGenerationToSpringIntegrationJavaDSL.orchaMetadata(orchaMetadata)
 
         for (node in graphOfInstructions) {
 
