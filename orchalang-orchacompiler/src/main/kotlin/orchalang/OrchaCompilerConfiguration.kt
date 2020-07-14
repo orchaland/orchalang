@@ -72,7 +72,7 @@ class OrchaCompilerConfiguration {
     @Bean
     fun outputGeneration(): Application {
         val application = Application("outputGeneration", "Kotlin")
-        val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationToSpringIntegration", "generation")
+        val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationImpl", "generation")
         application.input = Input(javaAdapter, "orcha.lang.compiler.OrchaProgram")
         return application
     }

@@ -1,18 +1,18 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
+import orcha.lang.compiler.IntegrationNode
 import orcha.lang.compiler.OrchaMetadata
-import orcha.lang.configuration.ConfigurableProperties
-import orcha.lang.configuration.InputFileAdapter
-import orcha.lang.configuration.JavaServiceAdapter
-import orcha.lang.configuration.OutputFileAdapter
+import orcha.lang.compiler.syntax.WhenInstruction
+import orcha.lang.configuration.*
 
 interface OutputCodeGenerationToSpringIntegrationJavaDSL {
 
     fun orchaMetadata(orchaMetadata: OrchaMetadata)
-    fun inputAdapter(adapter: ConfigurableProperties)
+    fun inputAdapter(eventHandler: EventHandler, nextIntegrationNodes: List<IntegrationNode>)
     fun outputAdapter(adapter: ConfigurableProperties)
     fun filter(expression: String)
-    fun serviceActivator(adapter: ConfigurableProperties)
+    fun serviceActivator(application: Application, nextIntegrationNodes: List<IntegrationNode>)
+    fun aggregator(instruction : WhenInstruction)
     fun export()
 
 }
