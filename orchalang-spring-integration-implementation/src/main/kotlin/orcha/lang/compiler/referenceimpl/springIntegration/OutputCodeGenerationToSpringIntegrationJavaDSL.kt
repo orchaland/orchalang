@@ -12,7 +12,7 @@ interface OutputCodeGenerationToSpringIntegrationJavaDSL {
     fun outputAdapter(adapter: ConfigurableProperties)
     fun filter(expression: String)
     fun serviceActivator(application: Application, nextIntegrationNodes: List<IntegrationNode>)
-    fun aggregator(instruction : WhenInstruction)
+    fun aggregator(instruction : WhenInstruction, nextIntegrationNodes: List<IntegrationNode>)
     fun export()
 
 }

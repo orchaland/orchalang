@@ -94,7 +94,7 @@ class OutputGenerationImpl : OutputGeneration {
                     when(node.instruction){
                         is WhenInstruction -> {
                             val whenInstruction: WhenInstruction = node.instruction as WhenInstruction
-                            outputCodeGenerationToSpringIntegrationJavaDSL.aggregator(whenInstruction)
+                            outputCodeGenerationToSpringIntegrationJavaDSL.aggregator(whenInstruction, node.nextIntegrationNodes)
                         }
                     }
                 }
@@ -103,9 +103,9 @@ class OutputGenerationImpl : OutputGeneration {
                 }
             }
 
-            val adjacentNodes = node.nextIntegrationNodes
+            //val adjacentNodes = node.nextIntegrationNodes
 
-            this.generate(orchaMetadata, adjacentNodes)
+            //this.generate(orchaMetadata, adjacentNodes)
         }
 
     }

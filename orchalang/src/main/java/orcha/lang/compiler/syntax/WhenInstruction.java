@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class WhenInstruction extends Instruction {
 
@@ -277,6 +278,15 @@ public class WhenInstruction extends Instruction {
 	
 	public List<ApplicationOrEventInExpression> getApplicationsOrEvents() {
 		return applicationsOrEvents;
+	}
+
+	public String getApplicationsOrEventsAsCapitalizedConcatainedString(){
+		List<String> list = applicationsOrEvents.stream().map(ApplicationOrEventInExpression::getName).collect(Collectors.toList());
+		String concatainedString = "";
+		for(String name: list){
+			concatainedString = concatainedString + name.substring(0, 1).toUpperCase() + name.substring(1);
+		}
+		return concatainedString;
 	}
 
 	public String getAggregationExpression() {

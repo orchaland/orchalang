@@ -349,14 +349,32 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                         OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
                         log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
                         exceptions.add(exception);
+                    } else {
+                        // add this when instruction as next node of the related compute instruction
+                        // where is the when instruction into the list of nodes ?
+                        List<IntegrationNode> nodes = orchaProgram.getIntegrationGraph();
+                        int index = IntStream.range(0, nodes.size())
+                                .filter(i -> nodes.get(i).getInstruction().equals(when))
+                                .findAny()
+                                .getAsInt();
+
+                        computeNode.getNextIntegrationNodes().add(nodes.get(index));
                     }
 
                 };
 
-                List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
+
+                // search for the node right after the when
+                IntegrationNode nodeAfterWhen = orchaProgram.getIntegrationGraph().stream().filter(node -> node.getInstruction().getLineNumber() > when.getLineNumber()).findFirst().orElse(null);
+
+                System.out.println(nodeAfterWhen);
+
+                //List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
 
                 // search for the instruction right after the when
-                Instruction afterWhen = instructions.stream().filter(instruc -> instruc.getLineNumber() > when.getLineNumber()).findFirst().orElse(null);
+                Instruction afterWhen = nodeAfterWhen.getInstruction();
+
+                //Instruction afterWhen = instructions.stream().filter(instruc -> instruc.getLineNumber() > when.getLineNumber()).findFirst().orElse(null);
 
                 if (afterWhen != null) {
                     switch (afterWhen.getCommand()) {
@@ -395,6 +413,8 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                         .getAsInt();
 
                 nodes.get(index).setIntegrationPattern(IntegrationNode.IntegrationPattern.AGGREGATOR);
+
+                nodes.get(index).getNextIntegrationNodes().add(nodeAfterWhen);
 
                 if (applicationsOrEventsInExpression.size() > 1) {
                     WhenInstruction fictitiousWhen = new WhenInstruction();
