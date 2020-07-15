@@ -116,12 +116,6 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
 
                 val newapreprocessingMessageInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg("Application.State.TERMINATED").arg(application.name)
-                //.arg(Application.State.TERMINATED).arg(postprocessing.name)??????????????????????????????????mech narj3elha
-
-                //  @Bean
-                //    MessageToApplication preprocessingMessageToApplication() {
-                //        return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
-                //    }
                 body._return(newapreprocessingMessageInvoque)
                 method = generatedClass!!.method(JMod.NONE,  ApplicationToMessage::class.java, "applicationToMessage")
                 method.annotate(Bean::class.java)
@@ -131,17 +125,19 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 method = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, application.name + "Channel")
                 method.annotate(Bean::class.java)
                 body = method.body()
-
                 val holder1 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "f", null)
                 val aLambda1 = JLambda()
                 val arr1= aLambda1.addParam("f")
                 val setBody1: JBlock = aLambda1.body()
-
                 val enrichHeadersInvoke =JExpr.invoke(codeModel,holder1,"enrichHeaders")
-                setBody1.add(enrichHeadersInvoke)
-
+                val holder2 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "h", null)
+                val aLambda2 = JLambda()
+                val arr2= aLambda2.addParam("h")
+                val setBody2: JBlock = aLambda2.body()
+                setBody2.add(JExpr.invoke(codeModel,holder2,"headerExpression").arg("messageID").arg("headers['id'].toString()"))
+                setBody1.add(enrichHeadersInvoke.arg(aLambda2))
                 val messageToApplicationInvoke=JExpr.invoke(application.name + "MessageToApplication")
-                val applicationToMessageInvoke=JExpr.invoke("applicationToMessage")
+
                 val handlerInvoke1=JExpr.invoke(codeModel,aLambda1,"handle").arg("preprocessingForOrchaCompiler").arg("process")
                 val handleInvoke2=JExpr.invoke(handlerInvoke1,"handle").arg(messageToApplicationInvoke).arg("transform")
 
@@ -165,34 +161,26 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         val method = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, "aggregate" + whenInstruction.applicationsOrEventsAsCapitalizedConcatainedString + "Channel.input")
         method.annotate(Bean::class.java)
         val body = method.body()
-
-
         val holder1 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "f", null)
         val aLambda1 = JLambda()
         val arr1= aLambda1.addParam("f")
-        val setBody1: JBlock = aLambda1.body()
-
-
-
-        //val aggregateInvoke1 =JExpr.invoke(handleInvoke2,"aggregate")
-
-        val holder3 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "a", null)
-
-
         val aggregateInvoke1 =JExpr.invoke(codeModel,holder1,"aggregate")
-        setBody1.add(aggregateInvoke1)
-        //setBody1.add(enrichHeadersInvoke)
-
-
+        val setBody1: JBlock = aLambda1.body()
+        //val aggregateInvoke1 =JExpr.invoke(handleInvoke2,"aggregate")
+        val holder3 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "a", null)
         val aLambda3 = JLambda()
         val arr3= aLambda3.addParam("a")
         val setBody3: JBlock = aLambda3.body()
+        setBody1.add(aggregateInvoke1)
+        //setBody1.add(enrichHeadersInvoke)
+
         val relationIdExceptionInvoke=JExpr.invoke(codeModel,holder3,"releaseExpression").arg("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
         val correlationStrategyInvoke=JExpr.invoke(relationIdExceptionInvoke,"correlationStrategy").arg("headers['messageID']")
         setBody3.add(correlationStrategyInvoke)
         aggregateInvoke1.arg(aLambda3)
-        val transformInvoke=JExpr.invoke(aggregateInvoke1,"transform").arg("payload.?[name=='preprocessing']")
-        val handlerinvoke =JExpr.invoke(transformInvoke,"handle")/*.arg(applicationToMessageInvoke)*/.arg("transform")
+        val transformInvoke=JExpr.invoke(codeModel,aLambda1,"transform").arg("payload.?[name=='preprocessing']")
+        val applicationToMessageInvoke=JExpr.invoke("applicationToMessage")
+        val handlerinvoke =JExpr.invoke(transformInvoke,"handle").arg(applicationToMessageInvoke).arg("transform")
 
         var channelInvoke: JInvocation? = null
 
@@ -214,6 +202,15 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         log.info("Export generated class to: " + file.absolutePath)
         codeModel.build(FileCodeWriter(file))
     }
+
+    //  public static void main(String[] args) {
+    //
+    //        new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
+    //
+    //    }
+    //}
+
+
 
     companion object {
         private val log = LoggerFactory.getLogger(OutputCodeGenerationToSpringIntegrationJavaDSLImpl::class.java)
