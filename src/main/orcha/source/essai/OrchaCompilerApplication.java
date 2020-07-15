@@ -11,6 +11,7 @@ import orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl;
 import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication;
 import orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationImpl;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -27,6 +28,10 @@ public class OrchaCompilerApplication {
     @Bean
     public IntegrationFlow orchaProgramSourceFlow() {
         return IntegrationFlows.from(Files.inboundAdapter(new File("./files")).patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000))).enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).channel("preprocessingChannel.input").get();
+    }
+
+    public static void main(String args) {
+        new SpringApplicationBuilder("OrchaCompilerApplication.class").web("WebApplicationType.NONE").run("args");
     }
 
     @Bean(name = "preprocessingForOrchaCompiler")
@@ -54,7 +59,7 @@ public class OrchaCompilerApplication {
         return f -> f.aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("lexicalAnalysisChannel.input");
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
+    @Bean(name = "lexicalAnalysisForOrchaCompiler")
     LexicalAnalysisImpl lexicalAnalysis() {
         return new LexicalAnalysisImpl();
     }
@@ -71,7 +76,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow lexicalAnalysisChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(lexicalAnalysisMessageToApplication(), "transform").channel("aggregateLexicalAnalysisChannel.input");
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("lexicalAnalysisForOrchaCompiler", "analysis").handle(lexicalAnalysisMessageToApplication(), "transform").channel("aggregateLexicalAnalysisChannel.input");
     }
 
     @Bean
@@ -79,7 +84,7 @@ public class OrchaCompilerApplication {
         return f -> f.aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("syntaxAnalysisChannel.input");
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
+    @Bean(name = "syntaxAnalysisForOrchaCompiler")
     SyntaxAnalysisImpl syntaxAnalysis() {
         return new SyntaxAnalysisImpl();
     }
@@ -96,7 +101,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow syntaxAnalysisChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(syntaxAnalysisMessageToApplication(), "transform").channel("aggregateSyntaxAnalysisChannel.input");
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("syntaxAnalysisForOrchaCompiler", "analysis").handle(syntaxAnalysisMessageToApplication(), "transform").channel("aggregateSyntaxAnalysisChannel.input");
     }
 
     @Bean
@@ -104,7 +109,7 @@ public class OrchaCompilerApplication {
         return f -> f.aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("semanticAnalysisChannel.input");
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
+    @Bean(name = "semanticAnalysisForOrchaCompiler")
     SemanticAnalysisImpl semanticAnalysis() {
         return new SemanticAnalysisImpl();
     }
@@ -121,7 +126,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow semanticAnalysisChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(semanticAnalysisMessageToApplication(), "transform").channel("aggregateSemanticAnalysisChannel.input");
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("semanticAnalysisForOrchaCompiler", "analysis").handle(semanticAnalysisMessageToApplication(), "transform").channel("aggregateSemanticAnalysisChannel.input");
     }
 
     @Bean
@@ -129,7 +134,7 @@ public class OrchaCompilerApplication {
         return f -> f.aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("postprocessingChannel.input");
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
+    @Bean(name = "postprocessingForOrchaCompiler")
     PostprocessingImpl postprocessing() {
         return new PostprocessingImpl();
     }
@@ -146,7 +151,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow postprocessingChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(postprocessingMessageToApplication(), "transform").channel("aggregatePostprocessingChannel.input");
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("postprocessingForOrchaCompiler", "process").handle(postprocessingMessageToApplication(), "transform").channel("aggregatePostprocessingChannel.input");
     }
 
     @Bean
@@ -154,7 +159,7 @@ public class OrchaCompilerApplication {
         return f -> f.aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("linkEditorChannel.input");
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
+    @Bean(name = "linkEditorForOrchaCompiler")
     LinkEditorImpl linkEditor() {
         return new LinkEditorImpl();
     }
@@ -171,7 +176,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow linkEditorChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(linkEditorMessageToApplication(), "transform").channel("aggregateLinkEditorChannel.input");
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("linkEditorForOrchaCompiler", "link").handle(linkEditorMessageToApplication(), "transform").channel("aggregateLinkEditorChannel.input");
     }
 
     @Bean
@@ -179,7 +184,7 @@ public class OrchaCompilerApplication {
         return f -> f.aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("outputGenerationChannel.input");
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
+    @Bean(name = "outputGenerationForOrchaCompiler")
     OutputGenerationImpl outputGeneration() {
         return new OutputGenerationImpl();
     }
@@ -196,7 +201,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow outputGenerationChannel() {
-        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("preprocessingForOrchaCompiler", "process").handle(outputGenerationMessageToApplication(), "transform").channel("aggregateOutputGenerationChannel.input");
+        return f -> f.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).handle("outputGenerationForOrchaCompiler", "generation").handle(outputGenerationMessageToApplication(), "transform").channel("aggregateOutputGenerationChannel.input");
     }
 
     @Bean

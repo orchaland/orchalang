@@ -9,12 +9,15 @@ import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.*
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.io.File
 import org.springframework.integration.dsl.IntegrationFlow
 import org.springframework.integration.dsl.IntegrationFlows
 import org.springframework.integration.dsl.Pollers
+import java.io.File
+import java.util.*
+
 
 class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationToSpringIntegrationJavaDSL {
 
@@ -78,6 +81,24 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
                 val getInvoke = JExpr.invoke(channelInvoke, "get")
                 body._return(getInvoke)
+
+                // public static void main(String[] args) {
+                //
+                //        new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
+                method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+               // val arrays= codeModel.ref(Arrays::class.java)
+                method.param(String::class.java,"args")
+                body = method.body()
+                //JExpr.invoke(JExpr.invoke(JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java)).arg("OrchaCompilerApplication.class"),"web").arg("WebApplicationType.NONE"),"run").arg("args")
+                body.add(JExpr.invoke(JExpr.invoke(JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java)).arg("OrchaCompilerApplication.class"),"web").arg("WebApplicationType.NONE"),"run").arg("args"))
+
+
+
+
+
+
+
+
             }
         }
     }
@@ -87,6 +108,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
             is OutputFileAdapter -> {
                 val outputFileAdapter: OutputFileAdapter = adapter as OutputFileAdapter
                 log.info("Generation of the output code for " + outputFileAdapter)
+
             }
         }
     }
@@ -105,7 +127,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
                 val classe = Class.forName(javaServiceAdapter.javaClass)
                 var method = generatedClass!!.method(JMod.NONE, classe, application.name)
-                method.annotate(Bean::class.java).param("name","preprocessingForOrchaCompiler")
+                method.annotate(Bean::class.java).param("name",  application.name+"ForOrchaCompiler")
                 var body = method.body()
                 val serviceInvoque = JExpr._new(codeModel.ref(classe))
                 body._return(serviceInvoque)
@@ -138,7 +160,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 setBody1.add(enrichHeadersInvoke.arg(aLambda2))
                 val messageToApplicationInvoke=JExpr.invoke(application.name + "MessageToApplication")
 
-                val handlerInvoke1=JExpr.invoke(codeModel,aLambda1,"handle").arg("preprocessingForOrchaCompiler").arg("process")
+                val handlerInvoke1=JExpr.invoke(codeModel,aLambda1,"handle").arg(application.name+"ForOrchaCompiler").arg(javaServiceAdapter.method)
                 val handleInvoke2=JExpr.invoke(handlerInvoke1,"handle").arg(messageToApplicationInvoke).arg("transform")
 
                 var channelInvoke: JInvocation? = null
@@ -154,6 +176,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 body._return(channelInvoke)
             }
         }
+
     }
 
     override fun aggregator(whenInstruction: WhenInstruction, nextIntegrationNodes: List<IntegrationNode>) {
@@ -203,12 +226,6 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         codeModel.build(FileCodeWriter(file))
     }
 
-    //  public static void main(String[] args) {
-    //
-    //        new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
-    //
-    //    }
-    //}
 
 
 
