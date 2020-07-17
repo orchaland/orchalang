@@ -93,6 +93,7 @@ public class OrchaCompilerApplication {
                 .log();
     }
 
+
     public static void main(String[] args) {
 
         new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
