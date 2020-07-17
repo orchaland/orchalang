@@ -8,9 +8,9 @@
       "input" : {
         "adapter" : {
           "properties" : [ ],
-          "adapter" : "File",
           "directory" : "./files",
-          "filenamePattern" : "*.json"
+          "filenamePattern" : "*.json",
+          "adapter" : "File"
         },
         "type" : "java.lang.String",
         "mimeType" : null,
@@ -36,9 +36,9 @@
         "input" : {
           "adapter" : {
             "properties" : [ ],
-            "adapter" : "JavaApplication",
             "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
-            "method" : "process"
+            "method" : "process",
+            "adapter" : "JavaApplication"
           },
           "type" : "java.lang.String",
           "mimeType" : null,
@@ -48,9 +48,9 @@
         "output" : {
           "adapter" : {
             "properties" : [ ],
-            "adapter" : "JavaApplication",
             "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
-            "method" : "process"
+            "method" : "process",
+            "adapter" : "JavaApplication"
           },
           "type" : "java.util.List<java.lang.String>",
           "mimeType" : null,
@@ -79,9 +79,9 @@
       "input" : {
         "adapter" : {
           "properties" : [ ],
-          "adapter" : "JavaApplication",
           "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
-          "method" : "process"
+          "method" : "process",
+          "adapter" : "JavaApplication"
         },
         "type" : "java.lang.String",
         "mimeType" : null,
@@ -91,9 +91,9 @@
       "output" : {
         "adapter" : {
           "properties" : [ ],
-          "adapter" : "JavaApplication",
           "javaClass" : "orcha.lang.compiler.referenceimpl.PreprocessingImpl",
-          "method" : "process"
+          "method" : "process",
+          "adapter" : "JavaApplication"
         },
         "type" : "java.util.List<java.lang.String>",
         "mimeType" : null,
@@ -109,7 +109,59 @@
     "parameters" : [ "travelInfo" ]
   },
   "integrationPattern" : "SERVICE_ACTIVATOR",
-  "nextIntegrationNodes" : [ ]
+  "nextIntegrationNodes" : [ {
+    "instruction" : {
+      "instruction" : "when \"checkOrder terminates\"",
+      "lineNumber" : 3,
+      "command" : "when",
+      "configuration" : null,
+      "indexInInInstruction" : 0,
+      "numberOfBrackets" : 0,
+      "applicationsOrEvents" : [ {
+        "state" : "TERMINATES",
+        "name" : "checkOrder",
+        "condition" : null,
+        "order" : 1
+      } ],
+      "aggregationExpression" : "size()==1 AND (Application [state=TERMINATES, name=checkOrder, condition=null, order=1])",
+      "applicationsOrEventsAsCapitalizedConcatainedString" : "CheckOrder"
+    },
+    "integrationPattern" : "AGGREGATOR",
+    "nextIntegrationNodes" : [ {
+      "instruction" : {
+        "instruction" : "send checkOrder to customer",
+        "lineNumber" : 4,
+        "command" : "send",
+        "configuration" : {
+          "customer" : {
+            "output" : {
+              "adapter" : {
+                "properties" : [ "directory", "filename" ],
+                "adapter" : "File",
+                "directory" : "data/output",
+                "filename" : "orchaCompiler.java",
+                "appendNewLine" : true,
+                "createDirectory" : true,
+                "writingMode" : "APPEND"
+              },
+              "type" : "application/java-archive",
+              "mimeType" : null,
+              "value" : null,
+              "autoStartup$orchalang_spring_integration_implementation" : true
+            },
+            "input" : null,
+            "name" : "customer",
+            "usersRole$orchalang_spring_integration_implementation" : null
+          }
+        },
+        "data" : "checkOrder",
+        "variables" : null,
+        "destinations" : [ "customer" ]
+      },
+      "integrationPattern" : "CHANNEL_ADAPTER",
+      "nextIntegrationNodes" : [ ]
+    } ]
+  } ]
 }, {
   "instruction" : {
     "instruction" : "when \"checkOrder terminates\"",
@@ -124,10 +176,44 @@
       "condition" : null,
       "order" : 1
     } ],
-    "aggregationExpression" : "size()==1 AND (Application [state=TERMINATES, name=checkOrder, condition=null, order=1])"
+    "aggregationExpression" : "size()==1 AND (Application [state=TERMINATES, name=checkOrder, condition=null, order=1])",
+    "applicationsOrEventsAsCapitalizedConcatainedString" : "CheckOrder"
   },
   "integrationPattern" : "AGGREGATOR",
-  "nextIntegrationNodes" : [ ]
+  "nextIntegrationNodes" : [ {
+    "instruction" : {
+      "instruction" : "send checkOrder to customer",
+      "lineNumber" : 4,
+      "command" : "send",
+      "configuration" : {
+        "customer" : {
+          "output" : {
+            "adapter" : {
+              "properties" : [ "directory", "filename" ],
+              "adapter" : "File",
+              "directory" : "data/output",
+              "filename" : "orchaCompiler.java",
+              "appendNewLine" : true,
+              "createDirectory" : true,
+              "writingMode" : "APPEND"
+            },
+            "type" : "application/java-archive",
+            "mimeType" : null,
+            "value" : null,
+            "autoStartup$orchalang_spring_integration_implementation" : true
+          },
+          "input" : null,
+          "name" : "customer",
+          "usersRole$orchalang_spring_integration_implementation" : null
+        }
+      },
+      "data" : "checkOrder",
+      "variables" : null,
+      "destinations" : [ "customer" ]
+    },
+    "integrationPattern" : "CHANNEL_ADAPTER",
+    "nextIntegrationNodes" : [ ]
+  } ]
 }, {
   "instruction" : {
     "instruction" : "send checkOrder to customer",
