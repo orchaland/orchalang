@@ -83,11 +83,11 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 // public static void main(String[] args) {
                 //
                 //        new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
-
+                666825751
                 method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
                 //method.param(String::class.java,"args")
-                val myValueClass = codeModel._class(JMod.NONE, "String")
-                method.param(JMod.NONE,myValueClass.array(),"args")
+                val springRef = codeModel.ref("String")
+                method.param(JMod.NONE,springRef.array(),"args")
                 body = method.body()
                 val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
                 val orchaInvoke=JExpr.ref("OrchaCompilerApplication")
