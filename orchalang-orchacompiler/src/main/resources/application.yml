@@ -1,0 +1,16 @@
+orcha:
+  rollback-transaction-directory: output3
+  commit-transaction-directory: output2
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost:1521/test
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
