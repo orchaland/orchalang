@@ -1,20 +1,17 @@
 package transactionJPA;
 
-import essai.OrchaCompilerApplication;
+import orcha.lang.compiler.LexicalAnalysis;
 import orcha.lang.compiler.Preprocessing;
-import orcha.lang.compiler.SyntaxAnalysis;
+import orcha.lang.compiler.referenceimpl.LexicalAnalysisImpl;
 import orcha.lang.compiler.referenceimpl.PreprocessingImpl;
-import orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl;
 import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage;
 import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication;
 import orcha.lang.configuration.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.IntegrationComponentScan;
@@ -41,6 +38,15 @@ public class transactionJPAApplication {
     String rollbackTransactionDirectory;
 
 
+    @Bean(name = "preprocessingForOrchaCompiler")
+    Preprocessing preprocessing(){
+        return new PreprocessingImpl();
+    }
+    @Bean(name="lexicalAnalysisForOrchaCompiler")
+    public LexicalAnalysis lexicalAnalysis() {
+        return new LexicalAnalysisImpl();
+    }
+
     @Bean
     public IntegrationFlow orchaProgramSourceFlow() {
         return IntegrationFlows.from(Files
@@ -49,14 +55,7 @@ public class transactionJPAApplication {
                 .channel("preprocessingChannel.input")
                 .get();
     }
-    @Bean(name = "preprocessingForOrchaCompiler")
-    Preprocessing preprocessing(){
-        return new PreprocessingImpl();
-    }
-    @Bean(name="syntaxAnalysisForOrchaCompiler")
-    public SyntaxAnalysis syntaxAnalysis() {
-        return new SyntaxAnalysisImpl();
-    }
+
     @Bean
     MessageToApplication preprocessingMessageToApplication() {
         return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
@@ -82,8 +81,6 @@ public class transactionJPAApplication {
                 .handle(applicationToMessage(), "transform")
                 .channel("lexicalAnalysisChannel.input");
     }
-
-
     @Bean
     public IntegrationFlow lexicalAnalysisChannel() {
         return f -> f
