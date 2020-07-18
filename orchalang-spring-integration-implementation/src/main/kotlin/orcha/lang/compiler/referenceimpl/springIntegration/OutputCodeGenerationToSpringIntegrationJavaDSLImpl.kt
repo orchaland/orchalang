@@ -219,8 +219,8 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         log.info("Generation of the main program")
 
         val method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
-        val myValueClass = codeModel._class(JMod.NONE, "String")
-        method.param(JMod.NONE,myValueClass.array(),"args")
+        //val myValueClass = codeModel._class(JMod.NONE, "String")
+        //method.param(JMod.NONE,myValueClass.array(),"args")
         val body = method.body()
         val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
         val orchaInvoke=JExpr.ref("OrchaCompilerApplication")
