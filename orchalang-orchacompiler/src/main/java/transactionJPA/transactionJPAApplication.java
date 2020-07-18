@@ -44,7 +44,7 @@ public class transactionJPAApplication {
     @Bean
     public IntegrationFlow orchaProgramSourceFlow() {
         return IntegrationFlows.from(Files
-                .inboundAdapter(new File("./files1"))
+                .inboundAdapter(new File("./file1"))
                 .patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000)))
                 .channel("preprocessingChannel.input")
                 .get();
