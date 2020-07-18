@@ -213,11 +213,14 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         setBody1.add(aggregateInvoke1)
         //setBody1.add(enrichHeadersInvoke)
 
-        val relationIdExceptionInvoke=JExpr.invoke(codeModel,holder3,"releaseExpression").arg("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
+       // val relationIdExceptionInvoke=JExpr.invoke(codeModel,holder3,"releaseExpression").arg("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
+        val relationIdExceptionInvoke=JExpr.invoke(codeModel,holder3,"releaseExpression").arg(whenInstruction.aggregationExpression)
         val correlationStrategyInvoke=JExpr.invoke(relationIdExceptionInvoke,"correlationStrategy").arg("headers['messageID']")
         setBody3.add(correlationStrategyInvoke)
         aggregateInvoke1.arg(aLambda3)
-        val transformInvoke=JExpr.invoke(codeModel,aLambda1,"transform").arg("payload.?[name=='preprocessing']")
+        val applicationName = whenInstruction.applicationsOrEvents[0].name
+        val transformInvoke=JExpr.invoke(codeModel,aLambda1,"transform").arg("payload.?[name=='" + applicationName + "']")
+        //val transformInvoke=JExpr.invoke(codeModel,aLambda1,"transform").arg("payload.?[name=='preprocessing']")
         val applicationToMessageInvoke=JExpr.invoke("applicationToMessage")
         val handlerinvoke =JExpr.invoke(transformInvoke,"handle").arg(applicationToMessageInvoke).arg("transform")
 
@@ -237,6 +240,29 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
     }
 
     override fun export() {
+
+        val method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+        //method.param(String::class.java,"args")
+        // val myValueClass = codeModel._class(JMod.NONE, "String")
+        //method.param(JMod.NONE,myValueClass.array(),"args")
+
+        val springRef = codeModel.ref("String")
+
+        method.param(JMod.NONE,springRef.array(),"args")
+       val body = method.body()
+        val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
+        val orchaInvoke=JExpr.ref("OrchaCompilerApplication")
+        val classInvoke=JExpr.refthis(orchaInvoke,"class")
+        springInvoke.arg(classInvoke)
+        val webInvoke=JExpr.invoke(springInvoke,"web")
+        val WebApplicationTypeInvoke=JExpr.ref("WebApplicationType")
+        val NONEInvoke=JExpr.refthis(WebApplicationTypeInvoke,"NONE")
+        webInvoke.arg(NONEInvoke)
+        val runInvoke=JExpr.invoke(webInvoke,"run")
+        val argsInvoke=JExpr.ref("args")
+        runInvoke.arg(argsInvoke)
+        body.add(runInvoke)
+
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
         log.info("Export generated class to: " + file.absolutePath)
         codeModel.build(FileCodeWriter(file))

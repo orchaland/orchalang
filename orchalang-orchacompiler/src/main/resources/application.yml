@@ -1,6 +1,6 @@
 orcha:
-  rollback-transaction-directory: output3
-  commit-transaction-directory: output2
+  rollback-transaction-directory: output2
+  commit-transaction-directory: output1
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost:1521/test

@@ -3,6 +3,7 @@ package orchalang
 import orcha.lang.configuration.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.io.File
 
 @Configuration
 class OrchaCompilerConfiguration {
@@ -14,6 +15,14 @@ class OrchaCompilerConfiguration {
         eventHandler.input = Input(fileAdapter, "java.lang.String")
         return eventHandler;
     }
+   @Bean
+    fun studentBase(): EventHandler {
+        val eventHandler = EventHandler("orchaProgramSource")
+        val outputFileAdapter = OutputFileAdapter("./files1", "orchaProgramDestination.java")
+        eventHandler.output = Output(outputFileAdapter, "application/java-archive")
+        return eventHandler
+    }
+
 
     @Bean
     fun preprocessing(): Application {
