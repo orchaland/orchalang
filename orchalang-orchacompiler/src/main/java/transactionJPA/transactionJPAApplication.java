@@ -102,7 +102,7 @@ public class transactionJPAApplication {
                         .releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
                         .correlationExpression("headers['messageID']"))
                 .split()
-                .filter(String.class, m -> m!="commited transaction")
+                //.filter(String.class, m -> m!="commited transaction")
                 .route("headers['sendChannel']")
                 .get();
     }
@@ -131,7 +131,7 @@ public class transactionJPAApplication {
     @Bean
     public IntegrationFlow outputFileFlow() {
         return IntegrationFlows.from(send_To_orchaProgramDestination())
-                .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
+                .enrichHeaders(s -> s.headerExpressions(h -> h.put("file_name", "headers['id'].toString()")))
                 .transform(Transformers.toJson())
                 .handle(Files.outboundAdapter(new File("." + File.separator + "output1")).autoCreateDirectory(true))
                 .get();
@@ -155,8 +155,5 @@ public class transactionJPAApplication {
         new SpringApplicationBuilder(transactionJPAApplication.class).web(WebApplicationType.NONE).run(args);
 
     }
-
-
-
-
+    
 }
