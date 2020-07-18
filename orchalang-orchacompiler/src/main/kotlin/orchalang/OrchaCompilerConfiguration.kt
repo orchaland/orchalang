@@ -18,7 +18,7 @@ class OrchaCompilerConfiguration {
    @Bean
     fun studentBase(): EventHandler {
         val eventHandler = EventHandler("orchaProgramSource")
-        val outputFileAdapter = OutputFileAdapter("./files1", "orchaProgramDestination.java")
+        val outputFileAdapter = OutputFileAdapter("./file1", "orchaProgramDestination.java")
         eventHandler.output = Output(outputFileAdapter, "application/java-archive")
         return eventHandler
     }
