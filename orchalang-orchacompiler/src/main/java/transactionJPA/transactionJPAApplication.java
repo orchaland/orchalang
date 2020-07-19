@@ -24,6 +24,8 @@ import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.jpa.dsl.Jpa;
+import org.springframework.integration.jpa.support.PersistMode;
+
 import javax.persistence.EntityManagerFactory;
 import java.io.File;
 
@@ -112,8 +114,10 @@ public class transactionJPAApplication {
     @Bean
     public IntegrationFlow lexicalAnalysisChannel() {
         return f -> f
-                .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
-                .handle("lexicalAnalysisForOrchaCompiler", "analysis", c -> c.transactional(true))
+                .handle(Jpa.updatingGateway(this.entityManagerFactory)
+                        .entityClass(StudentDomain.class)
+                        .persistMode(PersistMode.PERSIST), e -> e.transactional(true))
+                .handle("lexicalAnalysisForOrchaCompiler", "analysis")
                 .handle(lexicalAnalysisMessageToApplication(), "transform")
                 .routeToRecipients(r -> r
                         .recipient("outputlexicalAnalysisAggregatorChannel.input")
