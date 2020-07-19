@@ -101,6 +101,7 @@ public class transactionJPAApplication {
               .get();
     }
     @Bean(name="lexicalAnalysisForOrchaCompiler")
+    @DependsOn({"whenInstruction", "sendInstruction"})
     public LexicalAnalysis lexicalAnalysis() {
         return new LexicalAnalysisImpl();
     }
@@ -143,15 +144,48 @@ public class transactionJPAApplication {
     }
 
     @Bean
-    public IntegrationFlow outboundAdapterFlow() {
-        return f -> f
-                .handle(Jpa.outboundAdapter(this.entityManagerFactory)
-                                .entityClass(StudentDomain.class)
-                                .persistMode(PersistMode.PERSIST),
-                        e -> e.transactional());
+    public DirectChannel commitedTransactionChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow commitedTransactionFlow() {
+        return IntegrationFlows.from(commitedTransactionChannel())
+                .split()
+                .filter(String.class, m -> m!="commited transaction")
+                .route("headers['sendChannel']")
+                .get();
     }
 
 
+
+    @Bean
+    public DirectChannel send_To_orchaProgramDestination() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow outputFileFlow() {
+        return IntegrationFlows.from(send_To_orchaProgramDestination())
+                .enrichHeaders(s -> s.headerExpressions(h -> h.put("messageID", "headers['id'].toString()")))
+                .transform(Transformers.toJson())
+                .handle(Files.outboundAdapter(new File("." + File.separator + "output1"))
+                        .autoCreateDirectory(true))
+                .get();
+    }
+
+    @Bean
+    public DirectChannel outputChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow outputChannelFlow() {
+        return IntegrationFlows.from(outputChannel())
+                .handle("outputGeneration", "generation")
+                .log()
+                .get();
+    }
 
 
     public static void main(String[] args) {
