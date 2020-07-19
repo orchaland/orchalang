@@ -33,6 +33,11 @@ public class transactionJPAApplication {
     @Value("${orcha.rollback-transaction-directory}")
     String rollbackTransactionDirectory;
 
+    @MessagingGateway
+    public interface School {
+        @Gateway(requestChannel = "school.input")
+        void add(StudentDomain student);
+    }
 
 
     @Bean(name = "preprocessingForOrchaCompiler")
@@ -59,7 +64,7 @@ public class transactionJPAApplication {
     public IntegrationFlow pollingAdapterFlow() {
         return IntegrationFlows
                 .from(Jpa.inboundAdapter(this.entityManagerFactory)
-                                .entityClass(OrchaProgram.class)
+                                .entityClass(StudentDomain.class)
                                 .maxResults(1)
                                 .expectSingleResult(true),
                         e -> e.poller(Pollers.fixedDelay(1000)))
