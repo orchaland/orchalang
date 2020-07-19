@@ -33,11 +33,6 @@ public class transactionJPAApplication {
     @Value("${orcha.rollback-transaction-directory}")
     String rollbackTransactionDirectory;
 
-    @MessagingGateway
-    public interface School {
-        @Gateway(requestChannel = "school.input")
-        void add(StudentDomain student);
-    }
 
 
     @Bean(name = "preprocessingForOrchaCompiler")
