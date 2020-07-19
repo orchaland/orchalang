@@ -1,6 +1,7 @@
 package transactionJPA;
 
 import orcha.lang.compiler.LexicalAnalysis;
+import orcha.lang.compiler.OrchaProgram;
 import orcha.lang.compiler.Preprocessing;
 import orcha.lang.compiler.referenceimpl.LexicalAnalysisImpl;
 import orcha.lang.compiler.referenceimpl.PreprocessingImpl;
@@ -13,8 +14,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.integration.annotation.Gateway;
-import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -23,43 +24,34 @@ import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.jpa.dsl.Jpa;
-import org.springframework.integration.jpa.support.PersistMode;
-
 import javax.persistence.EntityManagerFactory;
 import java.io.File;
-import java.util.List;
 
-@SpringBootApplication
-@IntegrationComponentScan
+@SpringBootApplication(scanBasePackages = {"orchalang"})
 public class transactionJPAApplication {
-
 
     @Value("${orcha.rollback-transaction-directory}")
     String rollbackTransactionDirectory;
+
+    @MessagingGateway
+    public interface School {
+        @Gateway(requestChannel = "school.input")
+        void add(StudentDomain student);
+    }
 
 
     @Bean(name = "preprocessingForOrchaCompiler")
     Preprocessing preprocessing(){
         return new PreprocessingImpl();
     }
-    @Bean(name="lexicalAnalysisForOrchaCompiler")
-    public LexicalAnalysis lexicalAnalysis() {
-        return new LexicalAnalysisImpl();
-    }
 
-    @Bean
-    public IntegrationFlow orchaProgramSourceFlow() {
-        return IntegrationFlows.from(Files
-                .inboundAdapter(new File("./file1"))
-                .patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000)))
-                .channel("preprocessingChannel.input")
-                .get();
-    }
+
 
     @Bean
     MessageToApplication preprocessingMessageToApplication() {
         return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
     }
+
     @Bean
     ApplicationToMessage applicationToMessage(){
         return new ApplicationToMessage();
@@ -69,41 +61,81 @@ public class transactionJPAApplication {
     private EntityManagerFactory entityManagerFactory;
 
     @Bean
+    public IntegrationFlow pollingAdapterFlow() {
+        return IntegrationFlows
+                .from(Jpa.inboundAdapter(this.entityManagerFactory)
+                                .entityClass(OrchaProgram.class)
+                                .maxResults(1)
+                                .expectSingleResult(true),
+                        e -> e.poller(Pollers.fixedDelay(1000)))
+                .channel("preprocessingChannel.input")
+                .get();
+    }
+
+
+    @Bean
     public IntegrationFlow preprocessingChannel() {
         return f -> f
-                .handle(Jpa.updatingGateway(this.entityManagerFactory)
-                        .entityClass(Preprocessing.class)
-                        .persistMode(PersistMode.PERSIST), e -> e.transactional(true))
-                .handle("preprocessing", "process")
+                .handle("preprocessingForOrchaCompiler", "process",c -> c.transactional(true))
                 .handle(preprocessingMessageToApplication(), "transform")
-                .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationExpression("headers['messageID']"))
-                .transform("payload.?[name=='preprocessing']")
-                .handle(applicationToMessage(), "transform")
-                .channel("lexicalAnalysisChannel.input");
+               .routeToRecipients(r -> r
+                .recipient("outputPreprocessingAggregatorChannel.input")
+               );
     }
+    @Bean
+    public DirectChannel outputPreprocessingAggregatorChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow outputPreprocessingAggregatorFlow() {
+      return  IntegrationFlows.from(outputPreprocessingAggregatorChannel())
+              .aggregate(a -> a
+              .releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
+              .correlationExpression("headers['messageID']"))
+              .split()
+              .filter(String.class, m -> m!="commited transaction")
+              .route("payload.?[name=='preprocessing']")
+              .get();
+    }
+    @Bean(name="lexicalAnalysisForOrchaCompiler")
+    @DependsOn({"whenInstruction", "sendInstruction"})
+    public LexicalAnalysis lexicalAnalysis() {
+        return new LexicalAnalysisImpl();
+    }
+
+    @Bean
+    MessageToApplication lexicalAnalysisMessageToApplication() {
+        return new MessageToApplication(Application.State.TERMINATED, "lexicalAnalysis");
+    }
+
     @Bean
     public IntegrationFlow lexicalAnalysisChannel() {
         return f -> f
+                .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
                 .handle("lexicalAnalysisForOrchaCompiler", "analysis", c -> c.transactional(true))
-                .enrichHeaders(h -> h.header("sendChannel", "send_To_orchaProgramDestination"))
+                .handle(lexicalAnalysisMessageToApplication(), "transform")
                 .routeToRecipients(r -> r
-                        .recipient("outputRetainingAggregatorChannel")
+                        .recipient("outputlexicalAnalysisAggregatorChannel.input")
                         .recipient("outputChannel")
                 );
     }
+
+
     @Bean
     public DirectChannel outputRetainingAggregatorChannel() {
         return new DirectChannel();
     }
+
     @Bean
-    public IntegrationFlow outputRetainingAggregatorFlow() {
+    public IntegrationFlow outputLexicalAnalysisAggregatorFlow() {
         return IntegrationFlows.from(outputRetainingAggregatorChannel())
                 .aggregate(a -> a
                         .releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
                         .correlationExpression("headers['messageID']"))
                 .split()
-                //.filter(String.class, m -> m!="commited transaction")
-                .route("headers['sendChannel']")
+                .filter(String.class, m -> m!="commited transaction")
+                .route("payload.?[name=='lexicalAnalysis']")
                 .get();
     }
 
@@ -131,9 +163,10 @@ public class transactionJPAApplication {
     @Bean
     public IntegrationFlow outputFileFlow() {
         return IntegrationFlows.from(send_To_orchaProgramDestination())
-                .enrichHeaders(s -> s.headerExpressions(h -> h.put("file_name", "headers['id'].toString()")))
+                .enrichHeaders(s -> s.headerExpressions(h -> h.put("messageID", "headers['id'].toString()")))
                 .transform(Transformers.toJson())
-                .handle(Files.outboundAdapter(new File("." + File.separator + "output1")).autoCreateDirectory(true))
+                .handle(Files.outboundAdapter(new File("." + File.separator + "output1"))
+                        .autoCreateDirectory(true))
                 .get();
     }
 
@@ -150,10 +183,11 @@ public class transactionJPAApplication {
                 .get();
     }
 
+
     public static void main(String[] args) {
 
         new SpringApplicationBuilder(transactionJPAApplication.class).web(WebApplicationType.NONE).run(args);
 
     }
-    
+
 }
