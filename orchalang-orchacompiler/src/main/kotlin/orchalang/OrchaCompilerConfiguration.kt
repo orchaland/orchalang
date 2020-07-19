@@ -15,13 +15,29 @@ class OrchaCompilerConfiguration {
         eventHandler.input = Input(fileAdapter, "java.lang.String")
         return eventHandler;
     }
-   @Bean
+
+    @Bean
     fun studentBase(): EventHandler {
-        val eventHandler = EventHandler("orchaProgramSource")
-        val outputFileAdapter = OutputFileAdapter("./file1", "orchaProgramDestination.java")
-        eventHandler.output = Output(outputFileAdapter, "application/java-archive")
+        val eventHandler = EventHandler("studentBase")
+        val databaseAdapter = DatabaseAdapter()
+        eventHandler.input = Input(databaseAdapter,"service.school.Student")
         return eventHandler
     }
+   // @Bean
+    //    fun studentBase(): EventHandler {
+    //        val eventHandler = EventHandler("studentBase")
+    //        val outputFileAdapter = OutputFileAdapter(
+    //                "." + File.separator + "output", "welcomeFile.json")
+    //        eventHandler.output = Output( outputFileAdapter, "service.school.Student")
+    //        return eventHandler
+    //    }
+    //@Bean
+    //    fun studentBase(): EventHandler {
+    //        val eventHandler = EventHandler("orchaProgramSource")
+    //        val outputFileAdapter = OutputFileAdapter("./file1", "orchaProgramDestination.java")
+    //        eventHandler.output = Output(outputFileAdapter, "application/java-archive")
+    //        return eventHandler
+    //    }
 
 
     @Bean

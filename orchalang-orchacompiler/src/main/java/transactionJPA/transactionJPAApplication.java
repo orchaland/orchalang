@@ -41,13 +41,10 @@ public class transactionJPAApplication {
         void add(StudentDomain student);
     }
 
-
     @Bean(name = "preprocessingForOrchaCompiler")
     Preprocessing preprocessing(){
         return new PreprocessingImpl();
     }
-
-
 
     @Bean
     MessageToApplication preprocessingMessageToApplication() {
@@ -62,8 +59,9 @@ public class transactionJPAApplication {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+
     @Bean
-    public IntegrationFlow pollingAdapterFlow() {
+    public IntegrationFlow school() {
         return IntegrationFlows
                 .from(Jpa.inboundAdapter(this.entityManagerFactory)
                                 .entityClass(StudentDomain.class)
@@ -73,8 +71,6 @@ public class transactionJPAApplication {
                 .channel("preprocessingChannel.input")
                 .get();
     }
-
-
     @Bean
     public IntegrationFlow preprocessingChannel() {
         return f -> f

@@ -13,6 +13,7 @@ dependencies {
 	compile "org.springframework.integration:spring-integration-jpa:5.2.1.RELEASE"
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	runtime("com.h2database:h2")
+	//compile "org.springframework.integration:spring-integration-mongodb:5.2.1.RELEASE"
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
 	//compile "org.springframework.integration:spring-integration-mongodb:5.2.1.RELEASE"
 	implementation 'org.springframework.integration:spring-integration-file:5.2.1.RELEASE'
