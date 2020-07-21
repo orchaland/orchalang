@@ -1,13 +1,13 @@
 title: check order
 domain: bank
-description: check an order from a customer
+description: check an order from a student
 authors: Ben Orcha, H. A. Alpha
 version: 1.0
 
 /**
 * A comment
 */
-receive order from customer
+receive order from student
 checkOrder with order.value
 
 // Another comment

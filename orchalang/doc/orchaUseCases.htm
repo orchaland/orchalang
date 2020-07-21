@@ -49,12 +49,12 @@
 			<code>
 				<a href="orchaSpecifications1-0.htm#language">receive</a> request <a href="orchaSpecifications1-0.htm#language">from</a> user<br>
 				authenticateUsersRequest <a href="orchaSpecifications1-0.htm#language">with</a> request<br>
-				<a href="orchaSpecifications1-0.htm#language">when</a> "authenticateUsersRequest terminates condition customer!=null"<br>
+				<a href="orchaSpecifications1-0.htm#language">when</a> "authenticateUsersRequest terminates condition student!=null"<br>
 				addProductsToRequestAccordingToUsersProfile <a href="orchaSpecifications1-0.htm#language">with</a> authenticateUsersRequest<br>
 				<a href="orchaSpecifications1-0.htm#language">when</a> "addProductsToRequestAccordingToUsersProfile terminates"<br>
 				<a href="orchaSpecifications1-0.htm#language">send</a> addProductsToRequestAccordingToUsersProfile.result <a href="orchaSpecifications1-0.htm#language">to</a> user<br>
 				<br>
-				<a href="orchaSpecifications1-0.htm#language">when</a> "authenticateUsersRequest terminates condition customer==null"<br>
+				<a href="orchaSpecifications1-0.htm#language">when</a> "authenticateUsersRequest terminates condition student==null"<br>
 				addDefaultProductsToRequest <a href="orchaSpecifications1-0.htm#language">with</a> authenticateUsersRequestv<br>
 				<a href="orchaSpecifications1-0.htm#language">when</a> "addDefaultProductsToRequest terminates"<br>
 				<a href="orchaSpecifications1-0.htm#language">send</a> addDefaultProductsToRequest.result <a href="orchaSpecifications1-0.htm#language">to</a> user<br>
@@ -246,7 +246,7 @@
           <code>// This is a comment
           </code><br><br>
           <p>It is not allowed to put a comment at the end of an instruction:</p>
-          <code>receive order from customer 	// forbidden comment
+          <code>receive order from student 	// forbidden comment
           </code><br><br>
           
           <h3>Events can contain applications</h3>			  
@@ -626,8 +626,8 @@ Un convertisseur est une classe Java (écrite en Groovy dans l'exemple ci-dessou
           Here is an example of a configuration where the files of a directory are used as source of events:
           </p>
           <code>
-          EventHandler customer(){<br>
-          def eventHandler = new EventHandler(name: "customer")<br>
+          EventHandler student(){<br>
+          def eventHandler = new EventHandler(name: "student")<br>
         def fileAdapter = new InputFileAdapter(directory: 'C:/Users/BenC', filenamePattern: "*.json")<br>
         eventHandler.input = new Input(mimeType: "application/json", type: "service.order.Order", adapter: fileAdapter)<br>
         return eventHandler<br>

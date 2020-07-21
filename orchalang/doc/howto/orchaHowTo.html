@@ -70,7 +70,7 @@ For coding:
 
 <p>The process (file PrepareOrder.groovy) to transpile is into OrchaBeforeLibrary\src\main\orcha\source\prepareOrder:</p>
 <code>
-receive order from customer<br>
+receive order from student<br>
 compute prepareOrder with order.value<br><br>
 
 when "prepareOrder terminates"<br>		
@@ -108,7 +108,7 @@ send prepareOrder.result to delivery<br>
 
 <p>The test program (written in Orcha - Behavior Driven Development) PrepareOrderTest.groovy is into OrchaBeforeLibrary\src\test\orcha\source\prepareOrder:</p>
 <code>
-receive order from customer condition "order.product.specification == 'TV'"<br>
+receive order from student condition "order.product.specification == 'TV'"<br>
 compute prepareOrder with order.value<br>
 when "prepareOrder terminates condition delay>10"<br>
 send prepareOrder.result to delivery<br>

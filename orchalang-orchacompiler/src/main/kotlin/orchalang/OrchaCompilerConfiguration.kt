@@ -15,14 +15,13 @@ class OrchaCompilerConfiguration {
         eventHandler.input = Input(fileAdapter, "java.lang.String")
         return eventHandler;
     }
-
-    @Bean
-    fun studentBase(): EventHandler {
-        val eventHandler = EventHandler("studentBase")
-        val databaseAdapter = DatabaseAdapter()
-        eventHandler.input = Input(databaseAdapter,"service.school.Student")
-        return eventHandler
-    }
+    //@Bean
+    //    fun studentBase(): EventHandler {
+    //        val eventHandler = EventHandler("studentBase")
+    //        val databaseAdapter = DatabaseAdapter()
+    //        eventHandler.input = Input(databaseAdapter,"service.school.Student")
+    //        return eventHandler
+    //    }
    // @Bean
     //    fun studentBase(): EventHandler {
     //        val eventHandler = EventHandler("studentBase")
