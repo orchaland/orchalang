@@ -1,4 +1,12 @@
-activemq:
-  broker-url: tcp://localhost:61616
-  user: admin
-  password: admin
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost:1521/test
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

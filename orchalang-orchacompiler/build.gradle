@@ -10,11 +10,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.50'
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.50"
-	compile 'org.springframework.boot:spring-boot-starter-activemq'
+	//compile 'org.springframework.boot:spring-boot-starter-activemq'
 	compile 'org.springframework.integration:spring-integration-jms:5.2.1.RELEASE'
-	//compile "org.springframework.integration:spring-integration-jpa:5.2.1.RELEASE"
-	//implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-	//runtime("com.h2database:h2")
+	compile "org.springframework.integration:spring-integration-jpa:5.2.1.RELEASE"
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	runtime("com.h2database:h2")
 	//compile "org.springframework.integration:spring-integration-mongodb:5.2.1.RELEASE"
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
 	//compile "org.springframework.integration:spring-integration-mongodb:5.2.1.RELEASE"
