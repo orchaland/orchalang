@@ -105,20 +105,14 @@ public class transactionJPAApplication {
 				.channel("outputChannel.input");
 	}
 
-	@Bean
-	public DirectChannel outputChannel() {
-		return new DirectChannel();
-	}
-
 
 	@Bean
 	public IntegrationFlow outboundStudentBaseFlow() {
-		return IntegrationFlows.from(outputChannel())
+		return f->f
 				.handle(Jpa.outboundAdapter(this.entityManagerFactory)
 								.entityClass(StudentDomain.class)
 								.persistMode(PersistMode.PERSIST),
-						c -> c.transactional(true))
-				.get();
+						c -> c.transactional(true));
 	}
 
 
