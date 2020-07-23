@@ -1,8 +1,0 @@
-title "billing order"
-author "Ben C."
-version "1.0"
-
-receive student from studentBase
-enrollStudent with student
-when "enrollStudent terminates"
-send  enrollStudent.result to studentBase

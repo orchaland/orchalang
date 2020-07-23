@@ -101,16 +101,24 @@ public class transactionJPAApplication {
 						.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
 						.correlationExpression("headers['messageID']"))
 				.transform("payload.?[name=='enrollStudent']")
-				.handle(applicationToMessage(), "transform");
+				.handle(applicationToMessage(), "transform")
+				.channel("outputChannel.input");
 	}
 
 	@Bean
+	public DirectChannel outputChannel() {
+		return new DirectChannel();
+	}
+
+
+	@Bean
 	public IntegrationFlow outboundStudentBaseFlow() {
-		return f -> f
+		return IntegrationFlows.from(outputChannel())
 				.handle(Jpa.outboundAdapter(this.entityManagerFactory)
 								.entityClass(StudentDomain.class)
 								.persistMode(PersistMode.PERSIST),
-						e -> e.transactional());
+						c -> c.transactional(true))
+				.get();
 	}
 
 
@@ -123,10 +131,9 @@ public class transactionJPAApplication {
 
 		System.out.println("\nmanyStudentsInValideTransaction is starting\n");
 		try{
-			List<?> results = populateDatabase.readDatabase();
 			StudentDomain student = new StudentDomain("Morgane", 21, 1);
 			populateDatabase.saveStudent(student);
-			//List<?> results = populateDatabase.readDatabase();
+			List<?> results = populateDatabase.readDatabase();
 			System.out.println("database: " + results);
 
 		} catch(Exception e){
