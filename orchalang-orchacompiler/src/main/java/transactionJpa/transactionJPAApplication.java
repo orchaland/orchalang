@@ -29,9 +29,9 @@ public class transactionJPAApplication {
 
 	/*
      receive student from database
-     preprocessing with student
-     when "preprocessing terminates"
-     send  preprocessing.result to studentBase
+     enrollStudent with student
+     when " enrollStudent  terminates"
+     send   enrollStudent.result to studentBase
      */
 
 	
@@ -72,13 +72,13 @@ public class transactionJPAApplication {
 								.expectSingleResult(true),
 						e -> e.poller(p -> p.fixedDelay(5000)))
 				.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
-				.channel("preprocessingChannel.input")
+				.channel("enrollStudentChannel.input")
 				.log()
 				.get();
 	}
 	@Bean
-	MessageToApplication preprocessingMessageToApplication() {
-		return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
+	MessageToApplication enrollStudentMessageToApplication() {
+		return new MessageToApplication(Application.State.TERMINATED, "enrollStudent");
 	}
 
 	@Bean
@@ -87,20 +87,20 @@ public class transactionJPAApplication {
 	}
 
 	@Bean
-	public IntegrationFlow preprocessingChannel() {
+	public IntegrationFlow enrollStudentChannel() {
 		return f -> f
-				.handle("preprocessing", "process", c -> c.transactional(true))
-				.handle(preprocessingMessageToApplication(), "transform")
-						.channel("outputPreprocessingAggregatorChannel.input");
+				.handle("EnrollStudent", "enrollStudent", c -> c.transactional(true))
+				.handle(enrollStudentMessageToApplication(), "transform")
+						.channel("outputenrollStudentggregatorChannel.input");
 
 	}
 
 	@Bean
-	public IntegrationFlow outputPreprocessingAggregatorChannel() {
+	public IntegrationFlow outputenrollStudentggregatorChannel() {
 		return f->f.aggregate(a ->	a
 						.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
 						.correlationExpression("headers['messageID']"))
-				.transform("payload.?[name=='preprocessing']")
+				.transform("payload.?[name=='enrollStudent']")
 				.handle(applicationToMessage(), "transform");
 	}
 
@@ -132,10 +132,6 @@ public class transactionJPAApplication {
 		} catch(Exception e){
 			System.out.println(">>>>>> Caught exception: " + e);
 		}
-		
-		//results = populateDatabase.readDatabase();
-		//System.out.println("database: " + results);
-		//List<?> results = populateDatabase.readDatabase();
 
 
 	}

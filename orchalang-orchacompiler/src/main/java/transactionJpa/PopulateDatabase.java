@@ -30,6 +30,8 @@ public class PopulateDatabase {
     }
 
 
+
+
     public List<?> readDatabase(){
         JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
         List<?> results = jdbcTemplate.queryForList("Select * from Student");
