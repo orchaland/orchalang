@@ -38,6 +38,15 @@ class OrchaCompilerConfiguration {
     //        return eventHandler
     //    }
 
+   /* @Bean
+    fun enrollStudent(): Application {
+        val application = Application("enrollStudent", "Kotlin")
+        val javaAdapter = JavaServiceAdapter("transactionJpa.EnrollStudent", "enroll")
+        application.input = Input(javaAdapter, "java.lang.String")
+        application.output = Output(javaAdapter, "java.util.List<java.lang.String>")
+        return application
+    }*/
+
 
     @Bean
     fun preprocessing(): Application {

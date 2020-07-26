@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class PopulateDatabase {
@@ -28,9 +30,6 @@ public class PopulateDatabase {
         entityManager.merge(student);
         System.out.println(" and save it.");
     }
-
-
-
 
     public List<?> readDatabase(){
         JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);

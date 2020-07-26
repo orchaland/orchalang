@@ -34,6 +34,7 @@ public class OrchaCompilerApplication {
         return new PreprocessingImpl();
     }
 
+
     @Bean(name="syntaxAnalysisForOrchaCompiler")
     public SyntaxAnalysis syntaxAnalysis() {
         return new SyntaxAnalysisImpl();

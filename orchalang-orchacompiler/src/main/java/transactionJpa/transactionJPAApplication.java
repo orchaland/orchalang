@@ -21,7 +21,9 @@ import org.springframework.integration.jpa.dsl.Jpa;
 import org.springframework.integration.jpa.support.PersistMode;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @SpringBootApplication
 @IntegrationComponentScan
@@ -33,6 +35,11 @@ public class transactionJPAApplication {
      when " enrollStudent  terminates"
      send   enrollStudent.result to studentBase
      */
+	@MessagingGateway
+	public interface StudentService {
+		@Gateway(requestChannel = "student.input")
+		void add(StudentDomain student);
+	}
 
 	
 	@Bean(name = "preprocessingForOrchaCompiler")
@@ -50,6 +57,9 @@ public class transactionJPAApplication {
 		return new SemanticAnalysisImpl();
 	}
 
+
+
+
 	@Bean(name="postprocessingForOrchaCompiler")
 	public Postprocessing postprocessing() {
 		return new PostprocessingImpl();
@@ -64,7 +74,7 @@ public class transactionJPAApplication {
 	private EntityManagerFactory entityManagerFactory;
 
 	@Bean
-	public IntegrationFlow StudentbaseFlow() {
+	public IntegrationFlow student() {
 		return IntegrationFlows
 				.from(Jpa.inboundAdapter(this.entityManagerFactory)
 								.entityClass(StudentDomain.class)
@@ -73,8 +83,12 @@ public class transactionJPAApplication {
 						e -> e.poller(p -> p.fixedDelay(5000)))
 				.enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
 				.channel("enrollStudentChannel.input")
-				.log()
 				.get();
+	}
+
+	@Bean(name="enrollStudentForStudent")
+	public  EnrollStudent enrollStudent()  {
+		return new enrollStudent();
 	}
 	@Bean
 	MessageToApplication enrollStudentMessageToApplication() {
@@ -89,7 +103,7 @@ public class transactionJPAApplication {
 	@Bean
 	public IntegrationFlow enrollStudentChannel() {
 		return f -> f
-				.handle("EnrollStudent", "enrollStudent", c -> c.transactional(true))
+				.handle("enrollStudentForStudent", "enroll",c -> c.transactional(true))
 				.handle(enrollStudentMessageToApplication(), "transform")
 						.channel("outputenrollStudentggregatorChannel.input");
 
@@ -102,31 +116,31 @@ public class transactionJPAApplication {
 						.correlationExpression("headers['messageID']"))
 				.transform("payload.?[name=='enrollStudent']")
 				.handle(applicationToMessage(), "transform")
-				.channel("outputChannel.input");
+				.channel("outboundStudentBaseFlow.input");
 	}
 
 
 	@Bean
 	public IntegrationFlow outboundStudentBaseFlow() {
-		return f->f
-				.handle(Jpa.outboundAdapter(this.entityManagerFactory)
+		return f->f.handle(Jpa.outboundAdapter(this.entityManagerFactory)
 								.entityClass(StudentDomain.class)
 								.persistMode(PersistMode.PERSIST),
-						c -> c.transactional(true));
+						c -> c.transactional());
 	}
 
 
 	public static void main(String[] args) {
 
+
 		ConfigurableApplicationContext context = SpringApplication.run(transactionJPAApplication.class, args);
 
 		PopulateDatabase populateDatabase = (PopulateDatabase)context.getBean("populateDatabase");
 
-
-		System.out.println("\nmanyStudentsInValideTransaction is starting\n");
 		try{
+
 			StudentDomain student = new StudentDomain("Morgane", 21, 1);
 			populateDatabase.saveStudent(student);
+
 			List<?> results = populateDatabase.readDatabase();
 			System.out.println("database: " + results);
 
@@ -136,4 +150,6 @@ public class transactionJPAApplication {
 
 
 	}
-}
+
+	}
+
