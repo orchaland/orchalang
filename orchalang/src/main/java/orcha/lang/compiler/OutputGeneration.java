@@ -5,6 +5,6 @@ package orcha.lang.compiler;
  */
 public interface OutputGeneration {
 
-    public void generation(OrchaProgram orchaProgram);
+    public Object generation(OrchaProgram orchaProgram);
 
 }

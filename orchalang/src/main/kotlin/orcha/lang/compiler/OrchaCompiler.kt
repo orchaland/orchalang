@@ -19,7 +19,8 @@ class OrchaCompiler(private val preprocessing: Preprocessing, private val lexica
 
         orchaProgram = linkEditor!!.link(orchaProgram)
 
-        outputGeneration!!.generation(orchaProgram)
+        val generatedCode = outputGeneration!!.generation(orchaProgram)
+
 
     }
 

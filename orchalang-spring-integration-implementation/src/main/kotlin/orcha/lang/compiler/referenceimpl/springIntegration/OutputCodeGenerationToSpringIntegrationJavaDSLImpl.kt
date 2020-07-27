@@ -24,7 +24,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
     override fun orchaMetadata(orchaMetadata: OrchaMetadata) {
 
-        val className = orchaMetadata.domainAsCapitalizedConcatainedString!!.decapitalize() + "." + orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
+        var className = orchaMetadata.domainAsCapitalizedConcatainedString!!.decapitalize() + "." + orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
 
         log.info("Generated class name: " + className)
 
@@ -32,6 +32,28 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
         val jAnnotation: JAnnotationUse = generatedClass!!.annotate(SpringBootApplication::class.java)
         jAnnotation.paramArray("scanBasePackages", orchaMetadata.domain);
+
+        log.info("Generation of the main program")
+
+        val method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+        //val myValueClass = codeModel._class(JMod.NONE, "String")
+        //method.param(JMod.NONE,myValueClass.array(),"args")
+        val body = method.body()
+        val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
+
+        className = orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
+
+        val orchaInvoke=JExpr.ref(className)
+        val classInvoke=JExpr.refthis(orchaInvoke,"class")
+        springInvoke.arg(classInvoke)
+        val webInvoke=JExpr.invoke(springInvoke,"web")
+        val WebApplicationTypeInvoke=JExpr.ref("WebApplicationType")
+        val NONEInvoke=JExpr.refthis(WebApplicationTypeInvoke,"NONE")
+        webInvoke.arg(NONEInvoke)
+        val runInvoke=JExpr.invoke(webInvoke,"run")
+        val argsInvoke=JExpr.ref("args")
+        runInvoke.arg(argsInvoke)
+        body.add(runInvoke)
     }
 
     override fun inputAdapter(eventHandler: EventHandler, nextIntegrationNodes: List<IntegrationNode>) {
@@ -216,27 +238,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
     override fun export(orchaMetadata: OrchaMetadata) {
 
-        log.info("Generation of the main program")
-
-        val method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
-        //val myValueClass = codeModel._class(JMod.NONE, "String")
-        //method.param(JMod.NONE,myValueClass.array(),"args")
-        val body = method.body()
-        val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
-
         val className = orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
-
-        val orchaInvoke=JExpr.ref(className)
-        val classInvoke=JExpr.refthis(orchaInvoke,"class")
-        springInvoke.arg(classInvoke)
-        val webInvoke=JExpr.invoke(springInvoke,"web")
-        val WebApplicationTypeInvoke=JExpr.ref("WebApplicationType")
-        val NONEInvoke=JExpr.refthis(WebApplicationTypeInvoke,"NONE")
-        webInvoke.arg(NONEInvoke)
-        val runInvoke=JExpr.invoke(webInvoke,"run")
-        val argsInvoke=JExpr.ref("args")
-        runInvoke.arg(argsInvoke)
-        body.add(runInvoke)
 
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
         log.info("Export generated class " + className + " to: " + file.absolutePath)

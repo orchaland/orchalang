@@ -18,7 +18,7 @@ class OutputGenerationImpl : OutputGeneration {
     @Autowired
     private lateinit var outputCodeGenerationToSpringIntegrationJavaDSL: OutputCodeGenerationToSpringIntegrationJavaDSL
 
-    override fun generation(orchaProgram: OrchaProgram) {
+    override fun generation(orchaProgram: OrchaProgram): Any? {
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
@@ -42,6 +42,8 @@ class OutputGenerationImpl : OutputGeneration {
         if (orchaMetadata != null) {
             log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
         }
+
+        return null
 
     }
 
