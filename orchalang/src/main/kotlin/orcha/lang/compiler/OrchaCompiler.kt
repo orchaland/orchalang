@@ -2,7 +2,7 @@ package orcha.lang.compiler
 
 import org.slf4j.LoggerFactory
 
-class OrchaCompiler(private val preprocessing: Preprocessing, private val lexicalAnalysis: LexicalAnalysis, private val syntaxAnalysis: SyntaxAnalysis, private val semanticAnalysis: SemanticAnalysis, private val postprocessing: Postprocessing, private val linkEditor: LinkEditor, private val outputGeneration: OutputGeneration) {
+class OrchaCompiler(private val preprocessing: Preprocessing, private val lexicalAnalysis: LexicalAnalysis, private val syntaxAnalysis: SyntaxAnalysis, private val semanticAnalysis: SemanticAnalysis, private val postprocessing: Postprocessing, private val linkEditor: LinkEditor, private val outputGeneration: OutputGeneration, private val outputExportation: OutputExportation) {
 
     @Throws(OrchaCompilationException::class)
     fun compile(orchaFileName: String) {
@@ -21,6 +21,7 @@ class OrchaCompiler(private val preprocessing: Preprocessing, private val lexica
 
         val generatedCode = outputGeneration!!.generation(orchaProgram)
 
+        outputExportation.export(generatedCode)
 
     }
 

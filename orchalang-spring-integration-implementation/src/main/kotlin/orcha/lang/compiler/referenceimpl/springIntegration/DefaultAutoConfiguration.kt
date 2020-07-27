@@ -35,7 +35,7 @@ class DefaultAutoConfiguration {
     @DependsOn("preprocessingForOrchaCompiler", "lexicalAnalysisForOrchaCompiler", "syntaxAnalysisForOrchaCompiler", "semanticAnalysisForOrchaCompiler", "postprocessingForOrchaCompiler")
     @Bean
     fun orchaCompiler(): OrchaCompiler {
-        return OrchaCompiler(preprocessing, lexicalAnalysis, syntaxAnalysis, semanticAnalysis, postprocessing, linkEditor(), outputGeneration())
+        return OrchaCompiler(preprocessing, lexicalAnalysis, syntaxAnalysis, semanticAnalysis, postprocessing, linkEditor(), outputGeneration(), outputExportation())
     }
 
     @ConditionalOnMissingBean
@@ -55,5 +55,12 @@ class DefaultAutoConfiguration {
     @Bean("outputGenerationForOrchaCompiler")
     internal fun outputGeneration(): OutputGeneration {
         return OutputGenerationImpl()
+    }
+
+    @ConditionalOnMissingBean
+    @DependsOn("outputGenerationToSpringIntegrationJavaDSL")
+    @Bean("outputExportationForOrchaCompiler")
+    internal fun outputExportation(): OutputExportation {
+        return OutputExportationImpl()
     }
 }

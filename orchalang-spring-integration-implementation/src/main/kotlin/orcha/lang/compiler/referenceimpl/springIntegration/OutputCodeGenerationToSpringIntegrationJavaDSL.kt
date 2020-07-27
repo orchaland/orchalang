@@ -13,6 +13,8 @@ interface OutputCodeGenerationToSpringIntegrationJavaDSL {
     fun filter(expression: String)
     fun serviceActivator(application: Application, nextIntegrationNodes: List<IntegrationNode>)
     fun aggregator(instruction : WhenInstruction, nextIntegrationNodes: List<IntegrationNode>)
-    fun export(orchaMetadata: OrchaMetadata)
+    fun getGeneratedCode(): Any
+    //fun export(orchaMetadata: OrchaMetadata)
+    fun export(generatedCode: Any)
 
 }

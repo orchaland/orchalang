@@ -236,13 +236,27 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         body._return(channelInvoke)
     }
 
-    override fun export(orchaMetadata: OrchaMetadata) {
+    override fun getGeneratedCode(): Any {
+        return this.codeModel
+    }
+
+    /*override fun export(orchaMetadata: OrchaMetadata) {
 
         val className = orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
 
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
         log.info("Export generated class " + className + " to: " + file.absolutePath)
         codeModel.build(FileCodeWriter(file))
+    }*/
+
+    override fun export(generatedCode: Any) {
+
+        val codeModel: JCodeModel = generatedCode as JCodeModel
+
+        val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
+        log.info("Export generated class to: " + file.absolutePath)
+        codeModel.build(FileCodeWriter(file))
+
     }
 
     companion object {
