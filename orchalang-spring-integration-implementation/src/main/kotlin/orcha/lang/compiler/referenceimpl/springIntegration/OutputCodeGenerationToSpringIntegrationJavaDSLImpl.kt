@@ -214,7 +214,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         body._return(channelInvoke)
     }
 
-    override fun export() {
+    override fun export(orchaMetadata: OrchaMetadata) {
 
         log.info("Generation of the main program")
 
@@ -223,7 +223,10 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         //method.param(JMod.NONE,myValueClass.array(),"args")
         val body = method.body()
         val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
-        val orchaInvoke=JExpr.ref("OrchaCompilerApplication")
+
+        val className = orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
+
+        val orchaInvoke=JExpr.ref(className)
         val classInvoke=JExpr.refthis(orchaInvoke,"class")
         springInvoke.arg(classInvoke)
         val webInvoke=JExpr.invoke(springInvoke,"web")
@@ -236,7 +239,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         body.add(runInvoke)
 
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
-        log.info("Export generated class to: " + file.absolutePath)
+        log.info("Export generated class " + className + " to: " + file.absolutePath)
         codeModel.build(FileCodeWriter(file))
     }
 

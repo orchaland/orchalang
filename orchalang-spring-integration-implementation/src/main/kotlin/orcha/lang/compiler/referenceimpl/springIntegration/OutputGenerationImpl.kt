@@ -35,7 +35,9 @@ class OutputGenerationImpl : OutputGeneration {
             }
         }
 
-        outputCodeGenerationToSpringIntegrationJavaDSL.export()
+        if (orchaMetadata != null) {
+            outputCodeGenerationToSpringIntegrationJavaDSL.export(orchaMetadata)
+        }
 
         if (orchaMetadata != null) {
             log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
