@@ -6,6 +6,7 @@ import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage
 import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.integration.dsl.IntegrationFlow
 import org.springframework.integration.dsl.IntegrationFlows
@@ -209,27 +210,39 @@ class essaiGeneration {
                body._return(logInvoke1 )
 
 
+/* public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
+        PopulateDatabase populateDatabase = (PopulateDatabase) context.getBean("populateDatabase");
+        //List<?> results = populateDatabase.readDatabase();
+        List<?> results;
+        System.out.println("\nmanyStudentsInValideTransaction is starting\n");
+        try {
+            StudentDomain student = new StudentDomain("Morgane", 21, -1);
+            populateDatabase.saveStudent(student);
+            results = populateDatabase.readDatabase();
+            System.out.println("database: " + results);
+        } catch (Exception e) {
+            System.out.println(">>>>>> Caught exception: " + e);
+        }
+        //results = populateDatabase.readDatabase();
+        //System.out.println("database: " + results);
+        //List<?> results = populateDatabase.readDatabase();
+    }*/
+        method = generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
 
+        val springRef = codeModel.ref("String")
+        method.param(JMod.NONE, springRef.array(), "args")
+         body = method.body()
+//ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
+        val configurableApplicationContextinvoker: JFieldVar = generatedClass.field(JMod.NONE,ConfigurableApplicationContext::class.java, "context")
+        val springApplicationinvoke1=JExpr.ref("SpringApplication")
+        val orchaInvoke = JExpr.ref("JPAApplication")
+        val classInvoke = JExpr.refthis(orchaInvoke, "class")
+        val argsref1=JExpr.ref("args")
+        val runinvok = JExpr.invoke(springApplicationinvoke1,"run").arg(classInvoke).arg(argsref1)
+        val equll= configurableApplicationContextinvoker.assign(runinvok)
+        body._return(equll)
 
-
-
-        //ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
-        //
-        //        PopulateDatabase populateDatabase = (PopulateDatabase) context.getBean("populateDatabase");
-        //        //List<?> results = populateDatabase.readDatabase();
-        //        List<?> results;
-        //
-        //        System.out.println("\nmanyStudentsInValideTransaction is starting\n");
-        //        try {
-        //
-        //            StudentDomain student = new StudentDomain("Morgane", 21, -1);
-        //            populateDatabase.saveStudent(student);
-        //            results = populateDatabase.readDatabase();
-        //            System.out.println("database: " + results);
-        //
-        //        } catch (Exception e) {
-        //            System.out.println(">>>>>> Caught exception: " + e);
-        //        }
 
 
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source")

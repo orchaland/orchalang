@@ -1,6 +1,5 @@
 title:"enrollStudent"
 authors:"Ben Orcha"
-version "1.0"
 
 receive student from studentDatabase
 enrollStudent with student

@@ -13,9 +13,8 @@ class DemoApplication{
 
 	@Bean
 	fun init(orchaCompiler: OrchaCompiler) = CommandLineRunner {
-		orchaCompiler . compile("orchaCompiler.orcha")
+		orchaCompiler . compile("enrollStudent.orcha")
 	}
-
 }
 
 fun main(args: Array<String>) {

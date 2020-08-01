@@ -17,6 +17,7 @@ import org.springframework.integration.dsl.IntegrationFlows
 import org.springframework.integration.dsl.Pollers
 import org.springframework.orm.jpa.EntityManagerFactoryInfo
 import java.io.File
+import javax.persistence.EntityManagerFactory
 
 class OutputCodeGenerationToSpringIntegrationJavaDSLJpaImpl :OutputCodeGenerationToSpringIntegrationJavaDSL {
     var generatedClass: JDefinedClass? = null
@@ -33,7 +34,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLJpaImpl :OutputCodeGeneratio
             is InputFileAdapter -> {
                 val inputFileAdapter: InputFileAdapter = adapter as InputFileAdapter
                 log.info("Generation of the output code for " + inputFileAdapter)
-                val entityManagerFactory: JFieldVar = generatedClass!!.field(JMod.PRIVATE, EntityManagerFactoryInfo::class.java, "entityManagerFactory")
+                val entityManagerFactory: JFieldVar = generatedClass!!.field(JMod.PRIVATE, EntityManagerFactory::class.java, "entityManagerFactory")
                 entityManagerFactory.annotate(Autowired::class.java)
                 var method = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, "studentDatabaseFlow")
                 method.annotate(Bean::class.java)

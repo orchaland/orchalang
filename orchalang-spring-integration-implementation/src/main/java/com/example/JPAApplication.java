@@ -32,32 +32,6 @@ public class JPAApplication {
     send enrollStudent.result to studentOutputDatabase
      */
 
-    @Bean(name = "preprocessingForOrchaCompiler")
-    Preprocessing preprocessing(){
-        return new PreprocessingImpl();
-    }
-
-
-    @Bean(name="syntaxAnalysisForOrchaCompiler")
-    public SyntaxAnalysis syntaxAnalysis() {
-        return new SyntaxAnalysisImpl();
-    }
-
-    @Bean(name="semanticAnalysisForOrchaCompiler")
-    public SemanticAnalysis semanticAnalysis()  {
-        return new SemanticAnalysisImpl();
-    }
-
-    @Bean(name="postprocessingForOrchaCompiler")
-    public Postprocessing postprocessing() {
-        return new PostprocessingImpl();
-    }
-    @Bean(name="lexicalAnalysisForOrchaCompiler")
-    @DependsOn({"whenInstruction", "sendInstruction"})
-    public LexicalAnalysis lexicalAnalysis() {
-        return new LexicalAnalysisImpl();
-    }
-
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
