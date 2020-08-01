@@ -10,7 +10,9 @@ dependencies {
 
 	//compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 	compile 'com.helger:jcodemodel:3.4.0'
-
+	compile "org.springframework.integration:spring-integration-jpa:5.2.1.RELEASE"
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	runtime("com.h2database:h2")
 	compile 'org.springframework.integration:spring-integration-file:5.3.1.RELEASE'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core

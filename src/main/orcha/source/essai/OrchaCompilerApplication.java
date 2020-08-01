@@ -28,10 +28,6 @@ public class OrchaCompilerApplication {
         return IntegrationFlows.from(Files.inboundAdapter(new File("./files")).patternFilter("*.orcha"), a -> a.poller(Pollers.fixedDelay(1000))).enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()")).channel("preprocessingChannel.input").get();
     }
 
-    public static void main(String[] args) {
-        new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
-    }
-
     @Bean(name = "preprocessingForOrchaCompiler")
     PreprocessingImpl preprocessing() {
         return new PreprocessingImpl();
@@ -49,19 +45,12 @@ public class OrchaCompilerApplication {
 
     @Bean
     public IntegrationFlow preprocessingChannel() {
-        return f -> f.handle("preprocessingForOrchaCompiler", "process")
-                .handle(preprocessingMessageToApplication(), "transform")
-                .channel("aggregatePreprocessingChannel.input");
+        return f -> f.handle("preprocessingForOrchaCompiler", "process").handle(preprocessingMessageToApplication(), "transform").channel("aggregatePreprocessingChannel.input");
     }
 
     @Bean
     public IntegrationFlow aggregatePreprocessingChannel() {
-        return f -> f.aggregate(a -> a
-                .releaseExpression("size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))")
-                .correlationStrategy("headers['messageID']"))
-                .transform("payload.?[name=='preprocessing']")
-                .handle(applicationToMessage(), "transform")
-                .channel("lexicalAnalysisChannel.input");
+        return f -> f.aggregate(a -> a.releaseExpression("size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))").correlationStrategy("headers['messageID']")).transform("payload.?[name=='preprocessing']").handle(applicationToMessage(), "transform").channel("lexicalAnalysisChannel.input");
     }
 
     @Bean(name = "lexicalAnalysisForOrchaCompiler")

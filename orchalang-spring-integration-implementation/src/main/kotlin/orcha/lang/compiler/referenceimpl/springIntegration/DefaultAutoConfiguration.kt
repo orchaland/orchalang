@@ -50,6 +50,11 @@ class DefaultAutoConfiguration {
         return OutputCodeGenerationToSpringIntegrationJavaDSLImpl()
     }
 
+    @ConditionalOnMissingBean
+    @Bean("outputGenerationToSpringIntegrationJavaDSLJPA")
+    internal fun outputGenerationToSpringIntegrationJavaDSLJPA():OutputCodeGenerationToSpringIntegrationJavaDSLJpaImpl  {
+        return OutputCodeGenerationToSpringIntegrationJavaDSLJpaImpl ()
+    }
 
     @ConditionalOnMissingBean
     @DependsOn("outputGenerationToSpringIntegrationJavaDSL")

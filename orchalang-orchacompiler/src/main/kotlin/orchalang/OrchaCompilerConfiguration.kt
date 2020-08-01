@@ -8,6 +8,8 @@ import java.io.File
 @Configuration
 class OrchaCompilerConfiguration {
 
+
+
     @Bean
     fun orchaProgramSource(): EventHandler {
         val eventHandler = EventHandler("orchaProgramSource")
@@ -15,39 +17,6 @@ class OrchaCompilerConfiguration {
         eventHandler.input = Input(fileAdapter, "java.lang.String")
         return eventHandler;
     }
-    //@Bean
-    //    fun studentBase(): EventHandler {
-    //        val eventHandler = EventHandler("studentBase")
-    //        val databaseAdapter = DatabaseAdapter()
-    //        eventHandler.input = Input(databaseAdapter,"service.school.Student")
-    //        return eventHandler
-    //    }
-   // @Bean
-    //    fun studentBase(): EventHandler {
-    //        val eventHandler = EventHandler("studentBase")
-    //        val outputFileAdapter = OutputFileAdapter(
-    //                "." + File.separator + "output", "welcomeFile.json")
-    //        eventHandler.output = Output( outputFileAdapter, "service.school.Student")
-    //        return eventHandler
-    //    }
-    //@Bean
-    //    fun studentBase(): EventHandler {
-    //        val eventHandler = EventHandler("orchaProgramSource")
-    //        val outputFileAdapter = OutputFileAdapter("./file1", "orchaProgramDestination.java")
-    //        eventHandler.output = Output(outputFileAdapter, "application/java-archive")
-    //        return eventHandler
-    //    }
-
-   /* @Bean
-    fun enrollStudent(): Application {
-        val application = Application("enrollStudent", "Kotlin")
-        val javaAdapter = JavaServiceAdapter("transactionJpa.EnrollStudent", "enroll")
-        application.input = Input(javaAdapter, "java.lang.String")
-        application.output = Output(javaAdapter, "java.util.List<java.lang.String>")
-        return application
-    }*/
-
-
     @Bean
     fun preprocessing(): Application {
         val application = Application("preprocessing", "Kotlin")
