@@ -5,24 +5,17 @@ import org.springframework.context.annotation.Bean
 
 class DatabaseConnection{
 
-    @Value("\${database-driver}")
+    @Value("\${spring-datasource-driverClassName}")
     lateinit var driver: String
 
-    @Value("\${database-url}")
+    @Value("\${spring-datasource-url}")
     lateinit var url: String
 
-    @Value("\${database-login}")
+    @Value("\${spring-datasource-username}")
     lateinit var login: String
 
-    @Value("\${database-password}")
+    @Value("\${spring-datasource-password}")
     lateinit var password: String
 
-    @Bean
-    fun databaseConnection() : DatabaseConnection {
-        val connection: DatabaseConnection = DatabaseConnection()
-        if(connection.driver==null||connection.url==null||connection.login==null||
-                connection.password==null)throw Exception("driver, url, login and password should not be null.Consider initialization in a property file.")
-        return connection
-    }
 
 }

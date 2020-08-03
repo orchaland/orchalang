@@ -16,7 +16,6 @@ class EnrollStudentConfiguration {
         eventHandler.input= Input(databaseAdapter,"com.example.jpa.EnrollStudent.StudentDomain")
         return eventHandler
     }
-
     @Bean
     fun enrollStudent(): Application {
         val application = Application("enrollStudent", "Kotlin")
@@ -25,8 +24,6 @@ class EnrollStudentConfiguration {
         application.output = Output(javaAdapter, "com.example.jpa.EnrollStudent.StudentDomain")
         return application
     }
-
-
 
     @Bean
     fun studentOutputDatabase(): EventHandler {

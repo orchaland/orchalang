@@ -92,7 +92,6 @@ public class JPAApplication {
         ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
 
         PopulateDatabase populateDatabase = (PopulateDatabase) context.getBean("populateDatabase");
-        //List<?> results = populateDatabase.readDatabase();
         List<?> results;
 
         System.out.println("\nmanyStudentsInValideTransaction is starting\n");

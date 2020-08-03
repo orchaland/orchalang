@@ -1,7 +1,8 @@
-title:"enrollStudent"
-authors:"Ben Orcha"
+title:enrollStudent
+authors:Ben Orcha
 
 receive student from studentDatabase
 enrollStudent with student
 when "enrollStudent terminates"
 send enrollStudent.result to studentOutputDatabase
+

@@ -8,8 +8,6 @@ import java.io.File
 @Configuration
 class OrchaCompilerConfiguration {
 
-
-
     @Bean
     fun orchaProgramSource(): EventHandler {
         val eventHandler = EventHandler("orchaProgramSource")
@@ -25,7 +23,6 @@ class OrchaCompilerConfiguration {
         application.output = Output(javaAdapter, "java.util.List<java.lang.String>")
         return application
     }
-
     @Bean
     fun lexicalAnalysis(): Application {
         val application = Application("lexicalAnalysis", "Kotlin")
@@ -34,7 +31,6 @@ class OrchaCompilerConfiguration {
         application.output = Output(javaAdapter, "orcha.lang.compiler.OrchaProgram")
         return application
     }
-
     @Bean
     fun syntaxAnalysis(): Application {
         val application = Application("syntaxAnalysis", "Kotlin")
@@ -43,7 +39,6 @@ class OrchaCompilerConfiguration {
         application.output = Output(javaAdapter, "orcha.lang.compiler.OrchaProgram")
         return application
     }
-
     @Bean
     fun semanticAnalysis(): Application {
         val application = Application("semanticAnalysis", "Kotlin")

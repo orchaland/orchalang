@@ -1,6 +1,8 @@
 package orcha.lang.compiler.referenceimpl.springIntegration.javaDSLgenerator
 
 import com.example.jpa.EnrollStudent
+import com.example.jpa.PopulateDatabase
+import com.example.jpa.StudentDomain
 import com.helger.jcodemodel.*
 import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage
 import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication
@@ -10,51 +12,33 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.integration.dsl.IntegrationFlow
 import org.springframework.integration.dsl.IntegrationFlows
-import org.springframework.integration.dsl.Pollers
 import org.springframework.orm.jpa.EntityManagerFactoryInfo
+import org.springframework.util.Assert
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class essaiGeneration {
     fun generate() {
-
-        // @Bean
-        //    public IntegrationFlow studentDatabaseFlow() {
-        //        return IntegrationFlows
-        //                .from(Jpa.inboundAdapter(this.entityManagerFactory)
-        //                                .entityClass(StudentDomain.class)
-        //                                .maxResults(1)
-        //                                .expectSingleResult(true),
-        //                        e -> e.poller(p -> p.fixedDelay(5000)))
-        //                .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
-        //                .channel("enrollStudentChannel.input")
-        //                .log()
-        //                .get();
-        //    }
         val codeModel = JCodeModel()
         val className = "com.example.generationessai." + "OrchaCompilerApplication"
         val generatedClass = codeModel._class(JMod.PUBLIC, className, EClassType.CLASS)
         generatedClass.annotate(SpringBootApplication::class.java)
-
         val entityManagerFactory: JFieldVar = generatedClass.field(JMod.PRIVATE,EntityManagerFactoryInfo::class.java, "entityManagerFactory")
         entityManagerFactory.annotate(Autowired::class.java)
         var method = generatedClass.method(JMod.PUBLIC, IntegrationFlow::class.java, "studentDatabaseFlow")
         method.annotate(Bean::class.java)
         var body =method.body()
-
      val fromInvoke = codeModel.ref(IntegrationFlows::class.java).staticInvoke("from")
         val inboundAdapterInvoke: JInvocation = codeModel.ref(org.springframework.integration.jpa.dsl.Jpa::class.java).staticInvoke("inboundAdapter")
         val thisInvoke = JExpr.ref( "this")
         val entityManagerFactoryInvoke = JExpr.ref( thisInvoke,"entityManagerFactory")
         inboundAdapterInvoke.arg(entityManagerFactoryInvoke)
-
         val entityClassinvoke=JExpr.invoke(inboundAdapterInvoke,"entityClass")
         val studentdomainref=JExpr.ref("StudentDomain")
         val classref=JExpr.ref(studentdomainref,"class")
         entityClassinvoke.arg(classref)
-      //.maxResults(1)
-        //.expectSingleResult(true),
-
         val maxResultsinvoke=JExpr.invoke(entityClassinvoke,"maxResults")
         val valinref=JExpr.ref("1")
         maxResultsinvoke.arg(valinref)
@@ -67,7 +51,6 @@ class essaiGeneration {
         val arr = aLambda.addParam("e")
         val setBody: JBlock = aLambda.body()
         val pollerinvoke= JExpr.invoke(codeModel, holder, "poller")
-
         setBody.add(pollerinvoke)
         fromInvoke.arg(aLambda)
         val holder11 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "p", null)
@@ -77,7 +60,6 @@ class essaiGeneration {
         val fixedDelayInvoke=JExpr.invoke(codeModel, holder11,"fixedDelay").arg(5000)
         pollerinvoke.arg(aLambda11)
         setBody11.add(fixedDelayInvoke)
-
         val enrichHeadersInvoke =JExpr.invoke(codeModel,fromInvoke,"enrichHeaders")
         val holder2 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "h", null)
         val aLambda2 = JLambda()
@@ -87,8 +69,6 @@ class essaiGeneration {
         val channelInvoke = JExpr.invoke(enrichHeadersInvoke.arg(aLambda2), "channel").arg("enrollStudentChannel.input")
         val logInvoke = JExpr.invoke(channelInvoke, "log")
         val getInvoke = JExpr.invoke(logInvoke, "get")
-        //.log()
-        // .get();
         body._return(getInvoke)
 
         /*  @Bean(name = "enrollStudent")
@@ -172,14 +152,12 @@ class essaiGeneration {
         //                        e -> e.transactional())
         //                .log();
         //    }
-
         method = generatedClass.method(JMod.PUBLIC, IntegrationFlow::class.java, "studentOutputDatabaseChannel")
         method.annotate(Bean::class.java)
         body =method.body()
         val holder5 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "f", null)
         val aLambda5 = JLambda()
         val arr5= aLambda5.addParam("f")
-
         val setBody5: JBlock = aLambda5.body()
         val handleInvoke1 =JExpr.invoke(codeModel,holder5,"handle")
         setBody5.add(handleInvoke1)
@@ -200,20 +178,14 @@ class essaiGeneration {
        val aLambda6 = JLambda()
        val arr6 = aLambda6.addParam("e")
       val setBody6: JBlock = aLambda6.body()
-    //setBody6.add(JExpr.invoke(codeModel, holder6, "transactional"))
         val transactionInvoke=JExpr.invoke(codeModel, holder6,"transactional")
-        //handleInvoke1.arg(transactionInvoke)
         handleInvoke1.arg(aLambda6)
         setBody6.add(transactionInvoke)
-
         val logInvoke1 = JExpr.invoke(codeModel,aLambda5,"log")
                body._return(logInvoke1 )
-
-
 /* public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
         PopulateDatabase populateDatabase = (PopulateDatabase) context.getBean("populateDatabase");
-        //List<?> results = populateDatabase.readDatabase();
         List<?> results;
         System.out.println("\nmanyStudentsInValideTransaction is starting\n");
         try {
@@ -224,27 +196,45 @@ class essaiGeneration {
         } catch (Exception e) {
             System.out.println(">>>>>> Caught exception: " + e);
         }
-        //results = populateDatabase.readDatabase();
-        //System.out.println("database: " + results);
-        //List<?> results = populateDatabase.readDatabase();
     }*/
-        method = generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+        method = generatedClass.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
 
-        val springRef = codeModel.ref("String")
-        method.param(JMod.NONE, springRef.array(), "args")
+        val stringRef = codeModel.ref("String")
+        method.param(JMod.NONE, stringRef.array(), "args")
          body = method.body()
-//ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
         val configurableApplicationContextinvoker: JFieldVar = generatedClass.field(JMod.NONE,ConfigurableApplicationContext::class.java, "context")
         val springApplicationinvoke1=JExpr.ref("SpringApplication")
         val orchaInvoke = JExpr.ref("JPAApplication")
-        val classInvoke = JExpr.refthis(orchaInvoke, "class")
+        val classInvoke = JExpr.ref(orchaInvoke, "class")
         val argsref1=JExpr.ref("args")
         val runinvok = JExpr.invoke(springApplicationinvoke1,"run").arg(classInvoke).arg(argsref1)
         val equll= configurableApplicationContextinvoker.assign(runinvok)
-        body._return(equll)
+        val populateDatabaseinvoker: JFieldVar = generatedClass.field(JMod.NONE, PopulateDatabase::class.java, "populateDatabase")
+        val  contextInvoke = JExpr.ref(" context")
+        val getBeaninvok = JExpr.invoke(contextInvoke,"getBean").arg("populateDatabase")
+        val  assingval =populateDatabaseinvoker.assign(getBeaninvok)
+
+        val resultsfilde: JFieldVar = generatedClass.field(JMod.NONE, List::class.java, "results")
 
 
-
+        try {
+            val  studentDomaintinvoker: JFieldVar = generatedClass.field(JMod.NONE, StudentDomain::class.java, "student")
+            val studentinvoke1= JExpr._new(codeModel.ref(StudentDomain::class.java)).arg("Morgane").arg(21).arg(-1)
+            val invokeeg= studentDomaintinvoker.assign(studentinvoke1)
+            val saveinvoke=JExpr.invoke(populateDatabaseinvoker,"saveStudent").arg(studentDomaintinvoker)
+            val readDatainvoke=JExpr.invoke(populateDatabaseinvoker,"readDatabase")
+            val invokeegal=  resultsfilde.assign(readDatainvoke)
+            val systeminvoker=JExpr.ref("System")
+            val outinvoker=JExpr.ref(systeminvoker,"out")
+            val printinvoker=JExpr.invoke(outinvoker,"println").arg("database:+").arg(resultsfilde)
+        }
+        catch (e: Exception) {
+            // System.out.println(">>>>>> Caught exception: " + e);
+            val systeminvoker=JExpr.ref("System")
+            val outinvoker=JExpr.ref(systeminvoker,"out")
+            val printinvoker=JExpr.invoke(outinvoker,"println").arg(">>>>>> Caught exception:" + e)
+            //body._return(printinvoker)
+        }
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source")
         codeModel.build(file)
 
