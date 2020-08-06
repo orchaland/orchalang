@@ -56,9 +56,9 @@
           "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "state" : null,
+        "error$orchalang_spring_integration_implementation" : null,
         "specifications$orchalang_spring_integration_implementation" : null,
-        "description$orchalang_spring_integration_implementation" : null,
-        "error$orchalang_spring_integration_implementation" : null
+        "description$orchalang_spring_integration_implementation" : null
       },
       "application" : "enrollStudent",
       "parameters" : [ "student" ]
@@ -99,9 +99,9 @@
         "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "state" : null,
+      "error$orchalang_spring_integration_implementation" : null,
       "specifications$orchalang_spring_integration_implementation" : null,
-      "description$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null
+      "description$orchalang_spring_integration_implementation" : null
     },
     "application" : "enrollStudent",
     "parameters" : [ "student" ]

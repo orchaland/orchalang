@@ -28,13 +28,13 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         log.info("Generated class name: " + className)
         generatedClass = codeModel._class(JMod.PUBLIC, className , EClassType.CLASS)
       generatedClass!!.annotate(SpringBootApplication::class.java)
-       val entityManagerFactory: JFieldVar = generatedClass!!.field(JMod.PRIVATE, EntityManagerFactory::class.java, "entityManagerFactory")
-      entityManagerFactory.annotate(Autowired::class.java)
     }
     override fun inputAdapter(eventHandler: EventHandler, nextIntegrationNodes: List<IntegrationNode>) {
         val adapter = eventHandler.input!!.adapter
         when(adapter){
             is DatabaseAdapter -> {
+                val entityManagerFactory: JFieldVar = generatedClass!!.field(JMod.PRIVATE, EntityManagerFactory::class.java, "entityManagerFactory")
+                entityManagerFactory.annotate(Autowired::class.java)
                 val inputAdapter: DatabaseAdapter = adapter as DatabaseAdapter
                 log.info("Generation of the output code for " + inputAdapter)
                 var method = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, eventHandler.name +"Flow")
@@ -87,6 +87,47 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 }
                 val logInvoke = JExpr.invoke(channelInvoke, "log")
                 val getInvoke = JExpr.invoke(logInvoke, "get")
+                body._return(getInvoke)
+            }
+            is InputFileAdapter -> {
+                val inputFileAdapter: InputFileAdapter = adapter as InputFileAdapter
+                log.info("Generation of the output code for " + inputFileAdapter)
+                var method: JMethod = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, eventHandler.name + "Flow")
+                method.annotate(Bean::class.java)
+                var body = method.body()
+                val fromInvoke: JInvocation = codeModel.ref(IntegrationFlows::class.java).staticInvoke("from")
+                val inboundAdapterInvoke: JInvocation = codeModel.ref(org.springframework.integration.file.dsl.Files::class.java).staticInvoke("inboundAdapter")
+                inboundAdapterInvoke.arg(JExpr._new(codeModel.ref(File::class.java)).arg(inputFileAdapter.directory))
+                val patternFilterInvoke = JExpr.invoke(inboundAdapterInvoke, "patternFilter").arg(inputFileAdapter.filenamePattern)
+                fromInvoke.arg(patternFilterInvoke)
+                val holder = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "a", null)
+                val aLambda = JLambda()
+                val arr = aLambda.addParam("a")
+                val setBody: JBlock = aLambda.body()
+                val fixedDelayInvoke: JInvocation = codeModel.ref(Pollers::class.java).staticInvoke("fixedDelay")
+                fixedDelayInvoke.arg(1000)
+                setBody.add(JExpr.invoke(codeModel, holder, "poller").arg(fixedDelayInvoke))
+                fromInvoke.arg(aLambda)
+
+                val enrichHeadersInvoke =JExpr.invoke(codeModel,fromInvoke,"enrichHeaders")
+                val holder2 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "h", null)
+                val aLambda2 = JLambda()
+                val arr2= aLambda2.addParam("h")
+                val setBody2: JBlock = aLambda2.body()
+                setBody2.add(JExpr.invoke(codeModel,holder2,"headerExpression").arg("messageID").arg("headers['id'].toString()"))
+
+                var channelInvoke: JInvocation? =null
+
+                val nextIntegrationNode = nextIntegrationNodes[0]
+                when(nextIntegrationNode.instruction){
+                    is ComputeInstruction -> {
+                        val compute: ComputeInstruction = nextIntegrationNode.instruction as ComputeInstruction
+                        val application: Application = compute.configuration as Application
+                        channelInvoke = JExpr.invoke(enrichHeadersInvoke.arg(aLambda2), "channel").arg(application.name + "Channel.input")
+                    }
+                }
+
+                val getInvoke = JExpr.invoke(channelInvoke, "get")
                 body._return(getInvoke)
             }
         }
@@ -217,24 +258,24 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
     }
     override fun export() {
 
-        val method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+                val method = generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
 
-        val springRef = codeModel.ref("String")
+                val springRef = codeModel.ref("String")
 
-        method.param(JMod.NONE,springRef.array(),"args")
-       val body = method.body()
-        val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
-        val orchaInvoke=JExpr.ref("OrchaCompilerApplication")
-        val classInvoke=JExpr.refthis(orchaInvoke,"class")
-        springInvoke.arg(classInvoke)
-        val webInvoke=JExpr.invoke(springInvoke,"web")
-        val WebApplicationTypeInvoke=JExpr.ref("WebApplicationType")
-        val NONEInvoke=JExpr.refthis(WebApplicationTypeInvoke,"NONE")
-        webInvoke.arg(NONEInvoke)
-        val runInvoke=JExpr.invoke(webInvoke,"run")
-        val argsInvoke=JExpr.ref("args")
-        runInvoke.arg(argsInvoke)
-        body.add(runInvoke)
+                method.param(JMod.NONE, springRef.array(), "args")
+                val body = method.body()
+                val springInvoke = JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
+                val orchaInvoke = JExpr.ref("OrchaCompilerApplication")
+                val classInvoke = JExpr.refthis(orchaInvoke, "class")
+                springInvoke.arg(classInvoke)
+                val webInvoke = JExpr.invoke(springInvoke, "web")
+                val WebApplicationTypeInvoke = JExpr.ref("WebApplicationType")
+                val NONEInvoke = JExpr.refthis(WebApplicationTypeInvoke, "NONE")
+                webInvoke.arg(NONEInvoke)
+                val runInvoke = JExpr.invoke(webInvoke, "run")
+                val argsInvoke = JExpr.ref("args")
+                runInvoke.arg(argsInvoke)
+                body.add(runInvoke)
 
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
         log.info("Export generated class to: " + file.absolutePath)
