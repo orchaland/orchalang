@@ -11,31 +11,35 @@ import org.springframework.context.annotation.DependsOn;
 public class SpringIntegrationAutoConfiguration {
 
     @ConditionalOnMissingBean
-    @Bean(name="preprocessingForOrchaCompiler")
+    //@Bean(name="preprocessingForOrchaCompiler")
+    @Bean
     public Preprocessing preprocessing() {
         return new PreprocessingImpl();
     }
 
     @ConditionalOnMissingBean
-    @Bean(name="syntaxAnalysisForOrchaCompiler")
+    //@Bean(name="syntaxAnalysisForOrchaCompiler")
+    @Bean
     public SyntaxAnalysis syntaxAnalysis() {
         return new SyntaxAnalysisImpl();
     }
 
     @ConditionalOnMissingBean
-    @Bean(name="semanticAnalysisForOrchaCompiler")
+    //@Bean(name="semanticAnalysisForOrchaCompiler")
+    @Bean
     public SemanticAnalysis semanticAnalysis()  {
         return new SemanticAnalysisImpl();
     }
 
     @ConditionalOnMissingBean
-    @Bean(name="postprocessingForOrchaCompiler")
+    //@Bean(name="postprocessingForOrchaCompiler")
+    @Bean
     public Postprocessing postprocessing() {
         return new PostprocessingImpl();
     }
 
-    //@ConditionalOnMissingBean
-    @Bean(name="lexicalAnalysisForOrchaCompiler")
+    @ConditionalOnMissingBean
+    //@Bean(name="lexicalAnalysisForOrchaCompiler")
     @DependsOn({"whenInstruction", "sendInstruction"})
     public LexicalAnalysis lexicalAnalysis() {
         return new LexicalAnalysisImpl();

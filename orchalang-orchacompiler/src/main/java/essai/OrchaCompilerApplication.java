@@ -9,6 +9,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
@@ -18,6 +19,7 @@ import org.springframework.integration.file.dsl.Files;
 import java.io.File;
 
 @SpringBootApplication(scanBasePackages = {"orchalang"})
+//@Configuration
 public class OrchaCompilerApplication {
 
     @Bean
@@ -29,8 +31,9 @@ public class OrchaCompilerApplication {
                 .get();
     }
 
-    @Bean(name = "preprocessingForOrchaCompiler")
-    Preprocessing preprocessing(){
+    //@Bean(name = "preprocessingForOrchaCompiler")
+    @Bean
+    PreprocessingImpl preprocessingImpl(){
         return new PreprocessingImpl();
     }
 
@@ -51,7 +54,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication preprocessingMessageToApplication() {
-        return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
+        return new MessageToApplication(Application.State.TERMINATED, "preProcessing");
     }
 
     @Bean
@@ -63,10 +66,10 @@ public class OrchaCompilerApplication {
     public IntegrationFlow preprocessingChannel() {
         return f -> f
                 .enrichHeaders(h -> h.headerExpression("messageID", "headers['id'].toString()"))
-                .handle("preprocessingForOrchaCompiler", "process")
+                .handle("preprocessingImpl", "process")
                 .handle(preprocessingMessageToApplication(), "transform")
                 .aggregate(a -> a.releaseExpression("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )").correlationExpression("headers['messageID']"))
-                .transform("payload.?[name=='preprocessing']")
+                .transform("payload.?[name=='preProcessing']")
                 .handle(applicationToMessage(), "transform")
                 .channel("lexicalAnalysisChannel.input");
     }

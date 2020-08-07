@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 
 class OutputExportationImpl : OutputExportation {
 
-    @Qualifier("outputGenerationToSpringIntegrationJavaDSL")
+    //@Qualifier("outputGenerationToSpringIntegrationJavaDSL")
     @Autowired
     private lateinit var outputCodeGenerationToSpringIntegrationJavaDSL: OutputCodeGenerationToSpringIntegrationJavaDSL
 

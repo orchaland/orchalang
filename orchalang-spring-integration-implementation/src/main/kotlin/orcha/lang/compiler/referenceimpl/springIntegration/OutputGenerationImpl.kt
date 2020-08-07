@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 
 class OutputGenerationImpl : OutputGeneration {
 
-    @Qualifier("outputGenerationToSpringIntegrationJavaDSL")
+    //@Qualifier("outputGenerationToSpringIntegrationJavaDSL")
     @Autowired
     private lateinit var outputCodeGenerationToSpringIntegrationJavaDSL: OutputCodeGenerationToSpringIntegrationJavaDSL
 

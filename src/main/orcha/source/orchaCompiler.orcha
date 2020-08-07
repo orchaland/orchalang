@@ -4,27 +4,30 @@ domain: essai
 
 receive orchaProgram from orchaProgramSource
 
-preprocessing with orchaProgram
-when "preprocessing terminates"
+pre_processing with orchaProgram
+when "pre_processing terminates"
 
-lexicalAnalysis with preprocessing.result
-when "lexicalAnalysis terminates"
+lexical_analysis with pre_processing.result
+when "lexical_analysis terminates"
 
-syntaxAnalysis with lexicalAnalysis.result
-when "syntaxAnalysis terminates"
+syntax_analysis with lexical_analysis.result
+when "syntax_analysis terminates"
 
-semanticAnalysis with syntaxAnalysis.result
-when "semanticAnalysis terminates"
+semantic_analysis with syntax_analysis.result
+when "semantic_analysis terminates"
 
-postprocessing with semanticAnalysis.result
-when "postprocessing terminates"
+post_processing with semantic_analysis.result
+when "post_processing terminates"
 
-linkEditor with postprocessing.result
-when "linkEditor terminates"
+link_editor with post_processing.result
+when "link_editor terminates"
 
-outputGeneration with postprocessing.result
-when "outputGeneration terminates"
-send outputGeneration.result to orchaProgramDestination
+output_generation with link_editor.result
+when "output_generation terminates"
+
+output_exportation with output_generation.result
+
+//send outputGeneration.result to orchaProgramDestination
 
 //----------- outputGeneration -------
 

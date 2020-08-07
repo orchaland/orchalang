@@ -11,55 +11,60 @@ import org.springframework.context.annotation.DependsOn
 @Configuration
 class DefaultAutoConfiguration {
 
-    @Qualifier("preprocessingForOrchaCompiler")
+    //@Qualifier("preprocessingForOrchaCompiler")
     @Autowired
     private lateinit var preprocessing: Preprocessing
 
-    @Qualifier("lexicalAnalysisForOrchaCompiler")
+    //@Qualifier("lexicalAnalysisForOrchaCompiler")
     @Autowired
     private lateinit var lexicalAnalysis: LexicalAnalysis
 
-    @Qualifier("syntaxAnalysisForOrchaCompiler")
+    //@Qualifier("syntaxAnalysisForOrchaCompiler")
     @Autowired
     private lateinit var syntaxAnalysis: SyntaxAnalysis
 
-    @Qualifier("semanticAnalysisForOrchaCompiler")
+    //@Qualifier("semanticAnalysisForOrchaCompiler")
     @Autowired
     private lateinit var semanticAnalysis: SemanticAnalysis
 
-    @Qualifier("postprocessingForOrchaCompiler")
+    //@Qualifier("postprocessingForOrchaCompiler")
     @Autowired
     private lateinit var postprocessing: Postprocessing
 
     @ConditionalOnMissingBean
-    @DependsOn("preprocessingForOrchaCompiler", "lexicalAnalysisForOrchaCompiler", "syntaxAnalysisForOrchaCompiler", "semanticAnalysisForOrchaCompiler", "postprocessingForOrchaCompiler")
+    //@DependsOn("preprocessingForOrchaCompiler", "lexicalAnalysisForOrchaCompiler", "syntaxAnalysisForOrchaCompiler", "semanticAnalysisForOrchaCompiler", "postprocessingForOrchaCompiler")
     @Bean
     fun orchaCompiler(): OrchaCompiler {
+        //return OrchaCompiler(preprocessing, lexicalAnalysis, syntaxAnalysis, semanticAnalysis, postprocessing, linkEditor(), outputGeneration(), outputExportation())
         return OrchaCompiler(preprocessing, lexicalAnalysis, syntaxAnalysis, semanticAnalysis, postprocessing, linkEditor(), outputGeneration(), outputExportation())
     }
 
     @ConditionalOnMissingBean
-    @Bean("linkEditorForOrchaCompiler")
+    //@Bean("linkEditorForOrchaCompiler")
+    @Bean
     internal fun linkEditor(): LinkEditor {
         return LinkEditorImpl()
     }
 
     @ConditionalOnMissingBean
-    @Bean("outputGenerationToSpringIntegrationJavaDSL")
+    //@Bean("outputGenerationToSpringIntegrationJavaDSL")
+    @Bean
     internal fun outputGenerationToSpringIntegrationJavaDSL(): OutputCodeGenerationToSpringIntegrationJavaDSLImpl {
         return OutputCodeGenerationToSpringIntegrationJavaDSLImpl()
     }
 
     @ConditionalOnMissingBean
-    @DependsOn("outputGenerationToSpringIntegrationJavaDSL")
-    @Bean("outputGenerationForOrchaCompiler")
+    //@DependsOn("outputGenerationToSpringIntegrationJavaDSL")
+    //@Bean("outputGenerationForOrchaCompiler")
+    @Bean
     internal fun outputGeneration(): OutputGeneration {
         return OutputGenerationImpl()
     }
 
     @ConditionalOnMissingBean
-    @DependsOn("outputGenerationToSpringIntegrationJavaDSL")
-    @Bean("outputExportationForOrchaCompiler")
+    //@DependsOn("outputGenerationToSpringIntegrationJavaDSL")
+    //@Bean("outputExportationForOrchaCompiler")
+    @Bean
     internal fun outputExportation(): OutputExportation {
         return OutputExportationImpl()
     }

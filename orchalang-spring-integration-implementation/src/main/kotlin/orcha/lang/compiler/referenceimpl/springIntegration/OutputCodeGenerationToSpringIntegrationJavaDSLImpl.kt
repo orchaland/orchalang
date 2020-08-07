@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import java.io.File
 import org.springframework.integration.dsl.IntegrationFlow
 import org.springframework.integration.dsl.IntegrationFlows
@@ -19,6 +18,7 @@ import org.springframework.integration.dsl.Pollers
 
 class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationToSpringIntegrationJavaDSL {
 
+    private var applicationToMessageGenerated: Boolean = false
     var generatedClass : JDefinedClass ? = null
     val codeModel = JCodeModel()
 
@@ -125,8 +125,12 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 log.info("Generation of a service activator for " + javaServiceAdapter)
 
                 val classe = Class.forName(javaServiceAdapter.javaClass)
-                var method = generatedClass!!.method(JMod.NONE, classe, application.name)
-                method.annotate(Bean::class.java).param("name","preprocessingForOrchaCompiler")
+
+                val strings: List<String> = javaServiceAdapter.javaClass.split(".")
+                val serviceBeanName = strings[strings.lastIndex].decapitalize()
+
+                var method = generatedClass!!.method(JMod.NONE, classe, serviceBeanName)
+                method.annotate(Bean::class.java)   //.param("name","preprocessingForOrchaCompiler")
                 var body = method.body()
                 val serviceInvoque = JExpr._new(codeModel.ref(classe))
                 body._return(serviceInvoque)
@@ -136,19 +140,25 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 body = method.body()
 
 
-                val newapreprocessingMessageInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg("Application.State.TERMINATED").arg(application.name)
+                val messageToApplicationInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg("Application.State.TERMINATED").arg(application.name)
                 //.arg(Application.State.TERMINATED).arg(postprocessing.name)??????????????????????????????????mech narj3elha
 
                 //  @Bean
                 //    MessageToApplication preprocessingMessageToApplication() {
                 //        return new MessageToApplication(Application.State.TERMINATED, "preprocessing");
                 //    }
-                body._return(newapreprocessingMessageInvoque)
-                method = generatedClass!!.method(JMod.NONE,  ApplicationToMessage::class.java, "applicationToMessage")
-                method.annotate(Bean::class.java)
-                body = method.body()
-                val newapplicationToMessageInvoque = JExpr._new(codeModel.ref( ApplicationToMessage::class.java))
-                body._return(newapplicationToMessageInvoque)
+                body._return(messageToApplicationInvoque)
+
+
+                if(applicationToMessageGenerated == false){
+                    method = generatedClass!!.method(JMod.NONE,  ApplicationToMessage::class.java, "applicationToMessage")
+                    method.annotate(Bean::class.java)
+                    body = method.body()
+                    val newapplicationToMessageInvoque = JExpr._new(codeModel.ref( ApplicationToMessage::class.java))
+                    body._return(newapplicationToMessageInvoque)
+                    applicationToMessageGenerated = true
+                }
+
 
                 method = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, application.name + "Channel")
                 method.annotate(Bean::class.java)
@@ -170,21 +180,31 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
                 val messageToApplicationInvoke=JExpr.invoke(application.name + "MessageToApplication")
 
-                val handlerInvoke1=JExpr.invoke(codeModel,holder1,"handle").arg(application.name+"ForOrchaCompiler").arg(javaServiceAdapter.method)
+                val handlerInvoke1=JExpr.invoke(codeModel,holder1,"handle").arg(serviceBeanName).arg(javaServiceAdapter.method)
                 setBody1.add(handlerInvoke1)
                 val handleInvoke2=JExpr.invoke(codeModel,aLambda1,"handle").arg(messageToApplicationInvoke).arg("transform")
 
                 var channelInvoke: JInvocation? = null
 
-                val nextIntegrationNode = nextIntegrationNodes[0]
-                when(nextIntegrationNode.instruction){
-                    is WhenInstruction -> {
-                        val whenInstruction: WhenInstruction = nextIntegrationNode.instruction as WhenInstruction
-                        channelInvoke = JExpr.invoke(handleInvoke2, "channel").arg("aggregate" + whenInstruction.applicationsOrEventsAsCapitalizedConcatainedString + "Channel.input")
+                if(nextIntegrationNodes.size > 0){
+
+                    val nextIntegrationNode = nextIntegrationNodes[0]
+                    when(nextIntegrationNode.instruction){
+                        is WhenInstruction -> {
+                            val whenInstruction: WhenInstruction = nextIntegrationNode.instruction as WhenInstruction
+                            channelInvoke = JExpr.invoke(handleInvoke2, "channel").arg("aggregate" + whenInstruction.applicationsOrEventsAsCapitalizedConcatainedString + "Channel.input")
+                        }
                     }
+
+                    body._return(channelInvoke)
+
+                } else {
+                    body._return(JExpr.invoke(codeModel,aLambda1,"handle"))//.arg(messageToApplicationInvoke).arg("transform"))
                 }
 
-                body._return(channelInvoke)
+
+
+
             }
         }
     }

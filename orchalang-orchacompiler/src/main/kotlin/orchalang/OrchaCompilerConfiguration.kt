@@ -1,6 +1,7 @@
 package orchalang
 
 import orcha.lang.configuration.*
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -16,8 +17,8 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun preprocessing(): Application {
-        val application = Application("preprocessing", "Kotlin")
+    fun pre_processing(): Application {
+        val application = Application("pre_processing", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.PreprocessingImpl", "process")
         application.input = Input(javaAdapter, "java.lang.String")
         application.output = Output(javaAdapter, "java.util.List<java.lang.String>")
@@ -25,8 +26,8 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun lexicalAnalysis(): Application {
-        val application = Application("lexicalAnalysis", "Kotlin")
+    fun lexical_analysis(): Application {
+        val application = Application("lexical_analysis", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.LexicalAnalysisImpl", "analysis")
         application.input = Input(javaAdapter, "java.util.List<java.lang.String>")
         application.output = Output(javaAdapter, "orcha.lang.compiler.OrchaProgram")
@@ -34,8 +35,8 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun syntaxAnalysis(): Application {
-        val application = Application("syntaxAnalysis", "Kotlin")
+    fun syntax_analysis(): Application {
+        val application = Application("syntax_analysis", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.SyntaxAnalysisImpl", "analysis")
         application.input = Input(javaAdapter,"orcha.lang.compiler.OrchaProgram")
         application.output = Output(javaAdapter, "orcha.lang.compiler.OrchaProgram")
@@ -43,8 +44,8 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun semanticAnalysis(): Application {
-        val application = Application("semanticAnalysis", "Kotlin")
+    fun semantic_analysis(): Application {
+        val application = Application("semantic_analysis", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.SemanticAnalysisImpl", "analysis")
         application.input = Input(javaAdapter,"orcha.lang.compiler.OrchaProgram")
         application.output = Output(javaAdapter,"orcha.lang.compiler.OrchaProgram")
@@ -52,8 +53,8 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun postprocessing(): Application {
-        val application = Application("postprocessing", "Kotlin")
+    fun post_processing(): Application {
+        val application = Application("post_processing", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.PostprocessingImpl", "process")
         application.input = Input(javaAdapter,"orcha.lang.compiler.OrchaProgram")
         application.output = Output(javaAdapter, "orcha.lang.compiler.OrchaProgram")
@@ -61,8 +62,8 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun linkEditor(): Application {
-        val application = Application("linkEditor", "Kotlin")
+    fun link_editor(): Application {
+        val application = Application("link_editor", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.springIntegration.LinkEditorImpl", "link")
         application.input = Input(javaAdapter,"orcha.lang.compiler.OrchaProgram")
         application.output = Output(javaAdapter, "orcha.lang.compiler.OrchaProgram")
@@ -70,18 +71,26 @@ class OrchaCompilerConfiguration {
     }
 
     @Bean
-    fun outputGeneration(): Application {
-        val application = Application("outputGeneration", "Kotlin")
+    fun output_generation(): Application {
+        val application = Application("output_generation", "Kotlin")
         val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.springIntegration.OutputGenerationImpl", "generation")
         application.input = Input(javaAdapter, "orcha.lang.compiler.OrchaProgram")
         return application
     }
 
     @Bean
+    fun output_exportation(): Application {
+        val application = Application("output_exportation", "Kotlin")
+        val javaAdapter = JavaServiceAdapter("orcha.lang.compiler.referenceimpl.springIntegration.OutputExportationImpl", "export")
+        application.input = Input(javaAdapter, "kotlin.Any")
+        return application
+    }
+
+    /*@Bean
     fun orchaProgramDestination(): EventHandler {
         val eventHandler = EventHandler("orchaProgramDestination")
         val fileAdapter = OutputFileAdapter("data/output", "orchaCompiler.java")
         eventHandler.output = Output(fileAdapter, "application/java-archive")
         return eventHandler
-    }
+    }*/
 }
