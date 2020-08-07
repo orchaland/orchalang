@@ -24,7 +24,7 @@ import org.springframework.integration.file.dsl.Files;
 })
 public class OrchaCompilerApplication {
 
-    public static void main() {
+    public static void main(String[] args) {
         new SpringApplicationBuilder(OrchaCompilerApplication.class).web(WebApplicationType.NONE).run(args);
     }
 
@@ -40,7 +40,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication pre_processingMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "pre_processing");
+        return new MessageToApplication(Application.State.TERMINATED, "pre_processing");
     }
 
     @Bean
@@ -65,7 +65,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication lexical_analysisMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "lexical_analysis");
+        return new MessageToApplication(Application.State.TERMINATED, "lexical_analysis");
     }
 
     @Bean
@@ -85,7 +85,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication syntax_analysisMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "syntax_analysis");
+        return new MessageToApplication(Application.State.TERMINATED, "syntax_analysis");
     }
 
     @Bean
@@ -105,7 +105,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication semantic_analysisMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "semantic_analysis");
+        return new MessageToApplication(Application.State.TERMINATED, "semantic_analysis");
     }
 
     @Bean
@@ -125,7 +125,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication post_processingMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "post_processing");
+        return new MessageToApplication(Application.State.TERMINATED, "post_processing");
     }
 
     @Bean
@@ -145,7 +145,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication link_editorMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "link_editor");
+        return new MessageToApplication(Application.State.TERMINATED, "link_editor");
     }
 
     @Bean
@@ -165,7 +165,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication output_generationMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "output_generation");
+        return new MessageToApplication(Application.State.TERMINATED, "output_generation");
     }
 
     @Bean
@@ -185,7 +185,7 @@ public class OrchaCompilerApplication {
 
     @Bean
     MessageToApplication output_exportationMessageToApplication() {
-        return new MessageToApplication("Application.State.TERMINATED", "output_exportation");
+        return new MessageToApplication(Application.State.TERMINATED, "output_exportation");
     }
 
     @Bean

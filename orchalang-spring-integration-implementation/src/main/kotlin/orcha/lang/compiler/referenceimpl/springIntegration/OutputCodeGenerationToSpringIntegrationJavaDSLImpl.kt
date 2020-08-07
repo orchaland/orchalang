@@ -36,6 +36,11 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         log.info("Generation of the main program")
 
         val method= generatedClass!!.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+
+        val springRef = codeModel.ref("String")
+
+        method.param(JMod.NONE, springRef.array(), "args")
+
         //val myValueClass = codeModel._class(JMod.NONE, "String")
         //method.param(JMod.NONE,myValueClass.array(),"args")
         val body = method.body()
@@ -140,7 +145,12 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 body = method.body()
 
 
-                val messageToApplicationInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg("Application.State.TERMINATED").arg(application.name)
+                val applicationInvoke=JExpr.ref("Application")
+                val stateInvoke=JExpr.refthis(applicationInvoke,"State")
+                val terminatedInvoke=JExpr.refthis(stateInvoke,"TERMINATED")
+
+                //val newapreprocessingMessageInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg(TERMINATEDInvoke).arg(application.name)
+                val messageToApplicationInvoque = JExpr._new(codeModel.ref( MessageToApplication::class.java)).arg(terminatedInvoke).arg(application.name)
                 //.arg(Application.State.TERMINATED).arg(postprocessing.name)??????????????????????????????????mech narj3elha
 
                 //  @Bean
