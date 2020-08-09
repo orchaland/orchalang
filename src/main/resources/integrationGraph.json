@@ -1,0 +1,289 @@
+[ {
+  "instruction" : {
+    "instruction" : "receive student from studentDatabase",
+    "lineNumber" : 5,
+    "command" : "receive",
+    "configuration" : {
+      "output" : null,
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "Database",
+          "connection" : {
+            "driver" : "org.h2.Driver",
+            "url" : "jdbc:h2:mem:datajpa",
+            "username" : "sa",
+            "password" : "",
+            "entityScanPackage" : "school"
+          },
+          "hibernateConfig" : {
+            "dialect" : "org.hibernate.dialect.H2Dialect",
+            "hbm2ddlAuto" : "create-drop",
+            "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+            "showSql" : false,
+            "formatSql" : true
+          }
+        },
+        "type" : "school.StudentDomain",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "name" : "studentDatabase",
+      "usersRole$orchalang_spring_integration_implementation" : null
+    },
+    "event" : "student",
+    "source" : "studentDatabase",
+    "condition" : null
+  },
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ {
+    "instruction" : {
+      "instruction" : "compute enrollStudent with student",
+      "lineNumber" : 6,
+      "command" : "compute",
+      "configuration" : {
+        "name" : "enrollStudent",
+        "language" : "Kotlin",
+        "input" : {
+          "adapter" : {
+            "properties" : [ ],
+            "javaClass" : "school.EnrollStudent",
+            "method" : "enroll",
+            "adapter" : "JavaApplication"
+          },
+          "type" : "school.StudentDomain",
+          "mimeType" : null,
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "output" : {
+          "adapter" : {
+            "properties" : [ ],
+            "javaClass" : "school.EnrollStudent",
+            "method" : "enroll",
+            "adapter" : "JavaApplication"
+          },
+          "type" : "school.StudentDomain",
+          "mimeType" : null,
+          "value" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "state" : null,
+        "specifications$orchalang_spring_integration_implementation" : null,
+        "description$orchalang_spring_integration_implementation" : null,
+        "error$orchalang_spring_integration_implementation" : null
+      },
+      "application" : "enrollStudent",
+      "parameters" : [ "student" ]
+    },
+    "integrationPattern" : null,
+    "nextIntegrationNodes" : [ ]
+  } ]
+}, {
+  "instruction" : {
+    "instruction" : "compute enrollStudent with student",
+    "lineNumber" : 6,
+    "command" : "compute",
+    "configuration" : {
+      "name" : "enrollStudent",
+      "language" : "Kotlin",
+      "input" : {
+        "adapter" : {
+          "properties" : [ ],
+          "javaClass" : "school.EnrollStudent",
+          "method" : "enroll",
+          "adapter" : "JavaApplication"
+        },
+        "type" : "school.StudentDomain",
+        "mimeType" : null,
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "javaClass" : "school.EnrollStudent",
+          "method" : "enroll",
+          "adapter" : "JavaApplication"
+        },
+        "type" : "school.StudentDomain",
+        "mimeType" : null,
+        "value" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
+      },
+      "state" : null,
+      "specifications$orchalang_spring_integration_implementation" : null,
+      "description$orchalang_spring_integration_implementation" : null,
+      "error$orchalang_spring_integration_implementation" : null
+    },
+    "application" : "enrollStudent",
+    "parameters" : [ "student" ]
+  },
+  "integrationPattern" : "SERVICE_ACTIVATOR",
+  "nextIntegrationNodes" : [ {
+    "instruction" : {
+      "instruction" : "when \"enrollStudent terminates\"",
+      "lineNumber" : 7,
+      "command" : "when",
+      "configuration" : null,
+      "indexInInInstruction" : 0,
+      "numberOfBrackets" : 0,
+      "applicationsOrEvents" : [ {
+        "state" : "TERMINATES",
+        "name" : "enrollStudent",
+        "condition" : null,
+        "order" : 1
+      } ],
+      "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))",
+      "applicationsOrEventsAsCapitalizedConcatainedString" : "EnrollStudent"
+    },
+    "integrationPattern" : "AGGREGATOR",
+    "nextIntegrationNodes" : [ {
+      "instruction" : {
+        "instruction" : "send enrollStudent.result to studentOutputDatabase",
+        "lineNumber" : 8,
+        "command" : "send",
+        "configuration" : {
+          "studentOutputDatabase" : {
+            "output" : {
+              "adapter" : {
+                "properties" : [ ],
+                "adapter" : "Database",
+                "connection" : {
+                  "driver" : "org.h2.Driver",
+                  "url" : "jdbc:h2:mem:datajpa",
+                  "username" : "sa",
+                  "password" : "",
+                  "entityScanPackage" : "school"
+                },
+                "hibernateConfig" : {
+                  "dialect" : "org.hibernate.dialect.H2Dialect",
+                  "hbm2ddlAuto" : "create-drop",
+                  "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+                  "showSql" : false,
+                  "formatSql" : true
+                }
+              },
+              "type" : "school.StudentDomain",
+              "mimeType" : null,
+              "value" : null,
+              "autoStartup$orchalang_spring_integration_implementation" : true
+            },
+            "input" : null,
+            "name" : "studentOutputDatabase",
+            "usersRole$orchalang_spring_integration_implementation" : null
+          }
+        },
+        "data" : "enrollStudent",
+        "variables" : "payload.result",
+        "destinations" : [ "studentOutputDatabase" ]
+      },
+      "integrationPattern" : "CHANNEL_ADAPTER",
+      "nextIntegrationNodes" : [ ]
+    } ]
+  } ]
+}, {
+  "instruction" : {
+    "instruction" : "when \"enrollStudent terminates\"",
+    "lineNumber" : 7,
+    "command" : "when",
+    "configuration" : null,
+    "indexInInInstruction" : 0,
+    "numberOfBrackets" : 0,
+    "applicationsOrEvents" : [ {
+      "state" : "TERMINATES",
+      "name" : "enrollStudent",
+      "condition" : null,
+      "order" : 1
+    } ],
+    "aggregationExpression" : "size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))",
+    "applicationsOrEventsAsCapitalizedConcatainedString" : "EnrollStudent"
+  },
+  "integrationPattern" : "AGGREGATOR",
+  "nextIntegrationNodes" : [ {
+    "instruction" : {
+      "instruction" : "send enrollStudent.result to studentOutputDatabase",
+      "lineNumber" : 8,
+      "command" : "send",
+      "configuration" : {
+        "studentOutputDatabase" : {
+          "output" : {
+            "adapter" : {
+              "properties" : [ ],
+              "adapter" : "Database",
+              "connection" : {
+                "driver" : "org.h2.Driver",
+                "url" : "jdbc:h2:mem:datajpa",
+                "username" : "sa",
+                "password" : "",
+                "entityScanPackage" : "school"
+              },
+              "hibernateConfig" : {
+                "dialect" : "org.hibernate.dialect.H2Dialect",
+                "hbm2ddlAuto" : "create-drop",
+                "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+                "showSql" : false,
+                "formatSql" : true
+              }
+            },
+            "type" : "school.StudentDomain",
+            "mimeType" : null,
+            "value" : null,
+            "autoStartup$orchalang_spring_integration_implementation" : true
+          },
+          "input" : null,
+          "name" : "studentOutputDatabase",
+          "usersRole$orchalang_spring_integration_implementation" : null
+        }
+      },
+      "data" : "enrollStudent",
+      "variables" : "payload.result",
+      "destinations" : [ "studentOutputDatabase" ]
+    },
+    "integrationPattern" : "CHANNEL_ADAPTER",
+    "nextIntegrationNodes" : [ ]
+  } ]
+}, {
+  "instruction" : {
+    "instruction" : "send enrollStudent.result to studentOutputDatabase",
+    "lineNumber" : 8,
+    "command" : "send",
+    "configuration" : {
+      "studentOutputDatabase" : {
+        "output" : {
+          "adapter" : {
+            "properties" : [ ],
+            "adapter" : "Database",
+            "connection" : {
+              "driver" : "org.h2.Driver",
+              "url" : "jdbc:h2:mem:datajpa",
+              "username" : "sa",
+              "password" : "",
+              "entityScanPackage" : "school"
+            },
+            "hibernateConfig" : {
+              "dialect" : "org.hibernate.dialect.H2Dialect",
+              "hbm2ddlAuto" : "create-drop",
+              "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+              "showSql" : false,
+              "formatSql" : true
+            }
+          },
+          "type" : "school.StudentDomain",
+          "mimeType" : null,
+          "value" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
+        },
+        "input" : null,
+        "name" : "studentOutputDatabase",
+        "usersRole$orchalang_spring_integration_implementation" : null
+      }
+    },
+    "data" : "enrollStudent",
+    "variables" : "payload.result",
+    "destinations" : [ "studentOutputDatabase" ]
+  },
+  "integrationPattern" : "CHANNEL_ADAPTER",
+  "nextIntegrationNodes" : [ ]
+} ]

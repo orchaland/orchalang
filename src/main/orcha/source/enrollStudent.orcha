@@ -1,0 +1,8 @@
+title:enrollStudent
+authors:Ben Orcha
+domain: school
+
+receive student from studentDatabase
+enrollStudent with student
+when "enrollStudent terminates"
+send enrollStudent.result to studentOutputDatabase
