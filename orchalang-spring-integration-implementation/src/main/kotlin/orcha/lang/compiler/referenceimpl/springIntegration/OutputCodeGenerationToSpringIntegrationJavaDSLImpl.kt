@@ -2,6 +2,7 @@ package orcha.lang.compiler.referenceimpl.springIntegration
 
 import com.helger.jcodemodel.*
 import com.helger.jcodemodel.writer.FileCodeWriter
+import com.helger.jcodemodel.writer.JCMWriter
 import orcha.lang.compiler.IntegrationNode
 import orcha.lang.compiler.OrchaMetadata
 import orcha.lang.compiler.syntax.ComputeInstruction
@@ -15,6 +16,7 @@ import java.io.File
 import org.springframework.integration.dsl.IntegrationFlow
 import org.springframework.integration.dsl.IntegrationFlows
 import org.springframework.integration.dsl.Pollers
+import java.nio.charset.StandardCharsets
 
 class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationToSpringIntegrationJavaDSL {
 
@@ -285,7 +287,13 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
         val file = File("." + File.separator + "src" + File.separator + "main" + File.separator + "orcha" + File.separator + "source" )
         log.info("Export generated class to: " + file.absolutePath)
-        codeModel.build(FileCodeWriter(file))
+        //codeModel.build(FileCodeWriter(file))
+
+        val writer: JCMWriter =  JCMWriter(codeModel)
+        writer.setNewLine("\n");
+        writer.setCharset(StandardCharsets.UTF_8);
+
+        writer.build(file);
 
     }
 
