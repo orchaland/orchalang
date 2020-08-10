@@ -9,7 +9,7 @@ import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.*
-import orcha.lang.configurationl.EventHandler
+import orcha.lang.configuration.EventHandler
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication

@@ -4,7 +4,7 @@ import orcha.lang.compiler.IntegrationNode
 import orcha.lang.compiler.OrchaMetadata
 import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.*
-import orcha.lang.configurationl.EventHandler
+import orcha.lang.configuration.EventHandler
 
 interface OutputCodeGenerationToSpringIntegrationJavaDSL {
 

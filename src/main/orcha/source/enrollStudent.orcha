@@ -5,4 +5,4 @@ domain: school
 receive student from studentDatabase
 enrollStudent with student
 when "enrollStudent terminates"
-send enrollStudent.result to studentOutputDatabase
+send enrollStudent.result to studentDatabase

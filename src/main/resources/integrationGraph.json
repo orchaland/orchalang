@@ -26,10 +26,33 @@
         },
         "type" : "school.StudentDomain",
         "mimeType" : null,
-        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true,
+        "value$orchalang_spring_integration_implementation" : null
+      },
+      "output" : {
+        "adapter" : {
+          "properties" : [ ],
+          "adapter" : "Database",
+          "connection" : {
+            "driver" : "org.h2.Driver",
+            "url" : "jdbc:h2:mem:datajpa",
+            "username" : "sa",
+            "password" : "",
+            "entityScanPackage" : "school"
+          },
+          "hibernateConfig" : {
+            "dialect" : "org.hibernate.dialect.H2Dialect",
+            "hbm2ddlAuto" : "create-drop",
+            "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+            "showSql" : false,
+            "formatSql" : true
+          }
+        },
+        "type" : "school.StudentDomain",
+        "mimeType" : null,
+        "value" : null,
         "autoStartup$orchalang_spring_integration_implementation" : true
       },
-      "output" : null,
       "usersRole$orchalang_spring_integration_implementation" : null
     },
     "event" : "student",
@@ -54,8 +77,8 @@
           },
           "type" : "school.StudentDomain",
           "mimeType" : null,
-          "value$orchalang_spring_integration_implementation" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true
+          "autoStartup$orchalang_spring_integration_implementation" : true,
+          "value$orchalang_spring_integration_implementation" : null
         },
         "output" : {
           "adapter" : {
@@ -97,8 +120,8 @@
         },
         "type" : "school.StudentDomain",
         "mimeType" : null,
-        "value$orchalang_spring_integration_implementation" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true
+        "autoStartup$orchalang_spring_integration_implementation" : true,
+        "value$orchalang_spring_integration_implementation" : null
       },
       "output" : {
         "adapter" : {
@@ -141,13 +164,36 @@
     "integrationPattern" : "AGGREGATOR",
     "nextIntegrationNodes" : [ {
       "instruction" : {
-        "instruction" : "send enrollStudent.result to studentOutputDatabase",
+        "instruction" : "send enrollStudent.result to studentDatabase",
         "lineNumber" : 8,
         "command" : "send",
         "configuration" : {
-          "studentOutputDatabase" : {
-            "name" : "studentOutputDatabase",
-            "input" : null,
+          "studentDatabase" : {
+            "name" : "studentDatabase",
+            "input" : {
+              "adapter" : {
+                "properties" : [ ],
+                "adapter" : "Database",
+                "connection" : {
+                  "driver" : "org.h2.Driver",
+                  "url" : "jdbc:h2:mem:datajpa",
+                  "username" : "sa",
+                  "password" : "",
+                  "entityScanPackage" : "school"
+                },
+                "hibernateConfig" : {
+                  "dialect" : "org.hibernate.dialect.H2Dialect",
+                  "hbm2ddlAuto" : "create-drop",
+                  "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+                  "showSql" : false,
+                  "formatSql" : true
+                }
+              },
+              "type" : "school.StudentDomain",
+              "mimeType" : null,
+              "autoStartup$orchalang_spring_integration_implementation" : true,
+              "value$orchalang_spring_integration_implementation" : null
+            },
             "output" : {
               "adapter" : {
                 "properties" : [ ],
@@ -177,7 +223,7 @@
         },
         "data" : "enrollStudent",
         "variables" : "payload.result",
-        "destinations" : [ "studentOutputDatabase" ]
+        "destinations" : [ "studentDatabase" ]
       },
       "integrationPattern" : "CHANNEL_ADAPTER",
       "nextIntegrationNodes" : [ ]
@@ -203,13 +249,36 @@
   "integrationPattern" : "AGGREGATOR",
   "nextIntegrationNodes" : [ {
     "instruction" : {
-      "instruction" : "send enrollStudent.result to studentOutputDatabase",
+      "instruction" : "send enrollStudent.result to studentDatabase",
       "lineNumber" : 8,
       "command" : "send",
       "configuration" : {
-        "studentOutputDatabase" : {
-          "name" : "studentOutputDatabase",
-          "input" : null,
+        "studentDatabase" : {
+          "name" : "studentDatabase",
+          "input" : {
+            "adapter" : {
+              "properties" : [ ],
+              "adapter" : "Database",
+              "connection" : {
+                "driver" : "org.h2.Driver",
+                "url" : "jdbc:h2:mem:datajpa",
+                "username" : "sa",
+                "password" : "",
+                "entityScanPackage" : "school"
+              },
+              "hibernateConfig" : {
+                "dialect" : "org.hibernate.dialect.H2Dialect",
+                "hbm2ddlAuto" : "create-drop",
+                "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+                "showSql" : false,
+                "formatSql" : true
+              }
+            },
+            "type" : "school.StudentDomain",
+            "mimeType" : null,
+            "autoStartup$orchalang_spring_integration_implementation" : true,
+            "value$orchalang_spring_integration_implementation" : null
+          },
           "output" : {
             "adapter" : {
               "properties" : [ ],
@@ -239,20 +308,43 @@
       },
       "data" : "enrollStudent",
       "variables" : "payload.result",
-      "destinations" : [ "studentOutputDatabase" ]
+      "destinations" : [ "studentDatabase" ]
     },
     "integrationPattern" : "CHANNEL_ADAPTER",
     "nextIntegrationNodes" : [ ]
   } ]
 }, {
   "instruction" : {
-    "instruction" : "send enrollStudent.result to studentOutputDatabase",
+    "instruction" : "send enrollStudent.result to studentDatabase",
     "lineNumber" : 8,
     "command" : "send",
     "configuration" : {
-      "studentOutputDatabase" : {
-        "name" : "studentOutputDatabase",
-        "input" : null,
+      "studentDatabase" : {
+        "name" : "studentDatabase",
+        "input" : {
+          "adapter" : {
+            "properties" : [ ],
+            "adapter" : "Database",
+            "connection" : {
+              "driver" : "org.h2.Driver",
+              "url" : "jdbc:h2:mem:datajpa",
+              "username" : "sa",
+              "password" : "",
+              "entityScanPackage" : "school"
+            },
+            "hibernateConfig" : {
+              "dialect" : "org.hibernate.dialect.H2Dialect",
+              "hbm2ddlAuto" : "create-drop",
+              "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
+              "showSql" : false,
+              "formatSql" : true
+            }
+          },
+          "type" : "school.StudentDomain",
+          "mimeType" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true,
+          "value$orchalang_spring_integration_implementation" : null
+        },
         "output" : {
           "adapter" : {
             "properties" : [ ],
@@ -282,7 +374,7 @@
     },
     "data" : "enrollStudent",
     "variables" : "payload.result",
-    "destinations" : [ "studentOutputDatabase" ]
+    "destinations" : [ "studentDatabase" ]
   },
   "integrationPattern" : "CHANNEL_ADAPTER",
   "nextIntegrationNodes" : [ ]

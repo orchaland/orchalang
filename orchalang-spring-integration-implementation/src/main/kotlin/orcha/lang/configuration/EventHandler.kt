@@ -1,4 +1,4 @@
-package orcha.lang.configurationl
+package orcha.lang.configuration
 
 import orcha.lang.configuration.Input
 import orcha.lang.configuration.Output

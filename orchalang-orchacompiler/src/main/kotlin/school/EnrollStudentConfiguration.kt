@@ -1,7 +1,7 @@
 package school
 
 import orcha.lang.configuration.*
-import orcha.lang.configurationl.EventHandler
+import orcha.lang.configuration.EventHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -13,6 +13,7 @@ class EnrollStudentConfiguration {
         val eventHandler = EventHandler("studentDatabase")
         val databaseAdapter = DatabaseAdapter(connection = DatabaseConnection(entityScanPackage = "school"))
         eventHandler.input= Input(databaseAdapter,"school.StudentDomain")
+        eventHandler.output = Output(databaseAdapter, "school.StudentDomain")
         return eventHandler
     }
     @Bean
@@ -24,11 +25,11 @@ class EnrollStudentConfiguration {
         return application
     }
 
-    @Bean
+    /*@Bean
     fun studentOutputDatabase(): EventHandler {
         val eventHandler = EventHandler("studentOutputDatabase")
         val databaseAdapter = DatabaseAdapter(connection = DatabaseConnection(entityScanPackage = "school"))
         eventHandler.output = Output(databaseAdapter, "school.StudentDomain")
         return eventHandler
-    }
+    }*/
 }
