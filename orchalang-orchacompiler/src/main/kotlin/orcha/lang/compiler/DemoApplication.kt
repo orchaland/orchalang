@@ -18,7 +18,6 @@ class DemoApplication{
 			println("Orcha program is required as argument")
 			exitProcess(-1)
 		}
-		//orchaCompiler . compile("enrollStudent.orcha")
 		orchaCompiler . compile(it[0])
 	}
 
