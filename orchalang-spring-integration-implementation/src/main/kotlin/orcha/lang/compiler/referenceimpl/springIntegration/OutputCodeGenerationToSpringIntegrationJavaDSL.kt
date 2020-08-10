@@ -9,7 +9,7 @@ interface OutputCodeGenerationToSpringIntegrationJavaDSL {
 
     fun orchaMetadata(orchaMetadata: OrchaMetadata)
     fun inputAdapter(eventHandler: EventHandler, nextIntegrationNodes: List<IntegrationNode>)
-    fun outputAdapter(adapter: ConfigurableProperties)
+    fun outputAdapter(eventHandler: EventHandler)
     fun filter(expression: String)
     fun serviceActivator(application: Application, nextIntegrationNodes: List<IntegrationNode>)
     fun aggregator(instruction : WhenInstruction, nextIntegrationNodes: List<IntegrationNode>)

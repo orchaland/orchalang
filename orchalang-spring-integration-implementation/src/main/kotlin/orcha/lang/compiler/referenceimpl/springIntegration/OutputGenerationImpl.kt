@@ -70,7 +70,7 @@ class OutputGenerationImpl : OutputGeneration {
                             val eventHandler = send.configuration as? EventHandler
                             val adapter = eventHandler?.output?.adapter
                             if (adapter != null) {
-                                outputCodeGenerationToSpringIntegrationJavaDSL.outputAdapter(adapter)
+                                outputCodeGenerationToSpringIntegrationJavaDSL.outputAdapter(eventHandler)
                             }
                         }
                     }
