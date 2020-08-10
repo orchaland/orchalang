@@ -1,9 +1,12 @@
-package orcha.lang.configuration
+package orcha.lang.configurationl
 
-class EventHandler(val name: String) {
+import orcha.lang.configuration.Input
+import orcha.lang.configuration.Output
 
-    var output: Output? = null
-    var input: Input? = null
+data class EventHandler(val name: String, var input: Input? = null, var output: Output? = null) {
+
+    //var output: Output? = null
+    //var input: Input? = null
     internal var usersRole: String? = null
 
 }

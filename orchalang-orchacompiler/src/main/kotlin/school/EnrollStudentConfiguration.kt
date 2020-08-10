@@ -1,6 +1,7 @@
 package school
 
 import orcha.lang.configuration.*
+import orcha.lang.configurationl.EventHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

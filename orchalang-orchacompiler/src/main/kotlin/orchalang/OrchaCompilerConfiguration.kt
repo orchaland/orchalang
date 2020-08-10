@@ -1,6 +1,7 @@
 package orchalang
 
 import orcha.lang.configuration.*
+import orcha.lang.configurationl.EventHandler
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

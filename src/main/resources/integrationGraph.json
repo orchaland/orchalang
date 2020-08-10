@@ -4,7 +4,7 @@
     "lineNumber" : 5,
     "command" : "receive",
     "configuration" : {
-      "output" : null,
+      "name" : "studentDatabase",
       "input" : {
         "adapter" : {
           "properties" : [ ],
@@ -29,7 +29,7 @@
         "value$orchalang_spring_integration_implementation" : null,
         "autoStartup$orchalang_spring_integration_implementation" : true
       },
-      "name" : "studentDatabase",
+      "output" : null,
       "usersRole$orchalang_spring_integration_implementation" : null
     },
     "event" : "student",
@@ -146,6 +146,8 @@
         "command" : "send",
         "configuration" : {
           "studentOutputDatabase" : {
+            "name" : "studentOutputDatabase",
+            "input" : null,
             "output" : {
               "adapter" : {
                 "properties" : [ ],
@@ -170,8 +172,6 @@
               "value" : null,
               "autoStartup$orchalang_spring_integration_implementation" : true
             },
-            "input" : null,
-            "name" : "studentOutputDatabase",
             "usersRole$orchalang_spring_integration_implementation" : null
           }
         },
@@ -208,6 +208,8 @@
       "command" : "send",
       "configuration" : {
         "studentOutputDatabase" : {
+          "name" : "studentOutputDatabase",
+          "input" : null,
           "output" : {
             "adapter" : {
               "properties" : [ ],
@@ -232,8 +234,6 @@
             "value" : null,
             "autoStartup$orchalang_spring_integration_implementation" : true
           },
-          "input" : null,
-          "name" : "studentOutputDatabase",
           "usersRole$orchalang_spring_integration_implementation" : null
         }
       },
@@ -251,6 +251,8 @@
     "command" : "send",
     "configuration" : {
       "studentOutputDatabase" : {
+        "name" : "studentOutputDatabase",
+        "input" : null,
         "output" : {
           "adapter" : {
             "properties" : [ ],
@@ -275,8 +277,6 @@
           "value" : null,
           "autoStartup$orchalang_spring_integration_implementation" : true
         },
-        "input" : null,
-        "name" : "studentOutputDatabase",
         "usersRole$orchalang_spring_integration_implementation" : null
       }
     },

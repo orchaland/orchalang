@@ -6,8 +6,8 @@ import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.Application
-import orcha.lang.configuration.EventHandler
 import orcha.lang.configuration.JavaServiceAdapter
+import orcha.lang.configurationl.EventHandler
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -56,7 +56,6 @@ class OutputGenerationImpl : OutputGeneration {
 
             when(node.integrationPattern) {
                 IntegrationNode.IntegrationPattern.CHANNEL_ADAPTER -> {
-
                     when(node.instruction){
                         is ReceiveInstruction -> {
                             val receive: ReceiveInstruction = node.instruction as ReceiveInstruction
@@ -67,10 +66,9 @@ class OutputGenerationImpl : OutputGeneration {
                         }
                         is SendInstruction -> {
                             val send: SendInstruction = node.instruction as SendInstruction
-                            val eventHandler = send.configuration as? EventHandler
-                            val adapter = eventHandler?.output?.adapter
-                            if (adapter != null) {
-                                outputCodeGenerationToSpringIntegrationJavaDSL.outputAdapter(adapter)
+                            val eventHandlers = send.configuration as? MutableMap<String,EventHandler>
+                            if (eventHandlers != null) {
+                                outputCodeGenerationToSpringIntegrationJavaDSL.outputAdapter(eventHandlers.values.first(), node.nextIntegrationNodes)
                             }
                         }
                     }
