@@ -14,7 +14,7 @@
             "url" : "jdbc:h2:mem:datajpa",
             "username" : "sa",
             "password" : "",
-            "entityScanPackage" : "school"
+            "entityScanPackage" : "orcha.school"
           },
           "hibernateConfig" : {
             "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -24,10 +24,10 @@
             "formatSql" : true
           }
         },
-        "type" : "school.StudentDomain",
+        "type" : "orcha.school.StudentDomain",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -38,7 +38,7 @@
             "url" : "jdbc:h2:mem:datajpa",
             "username" : "sa",
             "password" : "",
-            "entityScanPackage" : "school"
+            "entityScanPackage" : "orcha.school"
           },
           "hibernateConfig" : {
             "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -48,7 +48,7 @@
             "formatSql" : true
           }
         },
-        "type" : "school.StudentDomain",
+        "type" : "orcha.school.StudentDomain",
         "mimeType" : null,
         "value" : null,
         "autoStartup$orchalang_spring_integration_implementation" : true
@@ -71,31 +71,31 @@
         "input" : {
           "adapter" : {
             "properties" : [ ],
-            "javaClass" : "school.EnrollStudent",
+            "javaClass" : "orcha.school.EnrollStudent",
             "method" : "enroll",
             "adapter" : "JavaApplication"
           },
-          "type" : "school.StudentDomain",
+          "type" : "orcha.school.StudentDomain",
           "mimeType" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true,
-          "value$orchalang_spring_integration_implementation" : null
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "output" : {
           "adapter" : {
             "properties" : [ ],
-            "javaClass" : "school.EnrollStudent",
+            "javaClass" : "orcha.school.EnrollStudent",
             "method" : "enroll",
             "adapter" : "JavaApplication"
           },
-          "type" : "school.StudentDomain",
+          "type" : "orcha.school.StudentDomain",
           "mimeType" : null,
           "value" : null,
           "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "state" : null,
-        "specifications$orchalang_spring_integration_implementation" : null,
         "description$orchalang_spring_integration_implementation" : null,
-        "error$orchalang_spring_integration_implementation" : null
+        "error$orchalang_spring_integration_implementation" : null,
+        "specifications$orchalang_spring_integration_implementation" : null
       },
       "application" : "enrollStudent",
       "parameters" : [ "student" ]
@@ -114,31 +114,31 @@
       "input" : {
         "adapter" : {
           "properties" : [ ],
-          "javaClass" : "school.EnrollStudent",
+          "javaClass" : "orcha.school.EnrollStudent",
           "method" : "enroll",
           "adapter" : "JavaApplication"
         },
-        "type" : "school.StudentDomain",
+        "type" : "orcha.school.StudentDomain",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
           "properties" : [ ],
-          "javaClass" : "school.EnrollStudent",
+          "javaClass" : "orcha.school.EnrollStudent",
           "method" : "enroll",
           "adapter" : "JavaApplication"
         },
-        "type" : "school.StudentDomain",
+        "type" : "orcha.school.StudentDomain",
         "mimeType" : null,
         "value" : null,
         "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "state" : null,
-      "specifications$orchalang_spring_integration_implementation" : null,
       "description$orchalang_spring_integration_implementation" : null,
-      "error$orchalang_spring_integration_implementation" : null
+      "error$orchalang_spring_integration_implementation" : null,
+      "specifications$orchalang_spring_integration_implementation" : null
     },
     "application" : "enrollStudent",
     "parameters" : [ "student" ]
@@ -179,7 +179,7 @@
                   "url" : "jdbc:h2:mem:datajpa",
                   "username" : "sa",
                   "password" : "",
-                  "entityScanPackage" : "school"
+                  "entityScanPackage" : "orcha.school"
                 },
                 "hibernateConfig" : {
                   "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -189,10 +189,10 @@
                   "formatSql" : true
                 }
               },
-              "type" : "school.StudentDomain",
+              "type" : "orcha.school.StudentDomain",
               "mimeType" : null,
-              "autoStartup$orchalang_spring_integration_implementation" : true,
-              "value$orchalang_spring_integration_implementation" : null
+              "value$orchalang_spring_integration_implementation" : null,
+              "autoStartup$orchalang_spring_integration_implementation" : true
             },
             "output" : {
               "adapter" : {
@@ -203,7 +203,7 @@
                   "url" : "jdbc:h2:mem:datajpa",
                   "username" : "sa",
                   "password" : "",
-                  "entityScanPackage" : "school"
+                  "entityScanPackage" : "orcha.school"
                 },
                 "hibernateConfig" : {
                   "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -213,7 +213,7 @@
                   "formatSql" : true
                 }
               },
-              "type" : "school.StudentDomain",
+              "type" : "orcha.school.StudentDomain",
               "mimeType" : null,
               "value" : null,
               "autoStartup$orchalang_spring_integration_implementation" : true
@@ -264,7 +264,7 @@
                 "url" : "jdbc:h2:mem:datajpa",
                 "username" : "sa",
                 "password" : "",
-                "entityScanPackage" : "school"
+                "entityScanPackage" : "orcha.school"
               },
               "hibernateConfig" : {
                 "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -274,10 +274,10 @@
                 "formatSql" : true
               }
             },
-            "type" : "school.StudentDomain",
+            "type" : "orcha.school.StudentDomain",
             "mimeType" : null,
-            "autoStartup$orchalang_spring_integration_implementation" : true,
-            "value$orchalang_spring_integration_implementation" : null
+            "value$orchalang_spring_integration_implementation" : null,
+            "autoStartup$orchalang_spring_integration_implementation" : true
           },
           "output" : {
             "adapter" : {
@@ -288,7 +288,7 @@
                 "url" : "jdbc:h2:mem:datajpa",
                 "username" : "sa",
                 "password" : "",
-                "entityScanPackage" : "school"
+                "entityScanPackage" : "orcha.school"
               },
               "hibernateConfig" : {
                 "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -298,7 +298,7 @@
                 "formatSql" : true
               }
             },
-            "type" : "school.StudentDomain",
+            "type" : "orcha.school.StudentDomain",
             "mimeType" : null,
             "value" : null,
             "autoStartup$orchalang_spring_integration_implementation" : true
@@ -330,7 +330,7 @@
               "url" : "jdbc:h2:mem:datajpa",
               "username" : "sa",
               "password" : "",
-              "entityScanPackage" : "school"
+              "entityScanPackage" : "orcha.school"
             },
             "hibernateConfig" : {
               "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -340,10 +340,10 @@
               "formatSql" : true
             }
           },
-          "type" : "school.StudentDomain",
+          "type" : "orcha.school.StudentDomain",
           "mimeType" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true,
-          "value$orchalang_spring_integration_implementation" : null
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "output" : {
           "adapter" : {
@@ -354,7 +354,7 @@
               "url" : "jdbc:h2:mem:datajpa",
               "username" : "sa",
               "password" : "",
-              "entityScanPackage" : "school"
+              "entityScanPackage" : "orcha.school"
             },
             "hibernateConfig" : {
               "dialect" : "org.hibernate.dialect.H2Dialect",
@@ -364,7 +364,7 @@
               "formatSql" : true
             }
           },
-          "type" : "school.StudentDomain",
+          "type" : "orcha.school.StudentDomain",
           "mimeType" : null,
           "value" : null,
           "autoStartup$orchalang_spring_integration_implementation" : true

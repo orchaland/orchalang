@@ -26,8 +26,8 @@ data class OrchaMetadata(var metadata: MutableList<Instruction?> = ArrayList()) 
     var domainAsCapitalizedConcatainedString: String? = null
         get() {
             val domainInstruction = metadata.stream().filter { instruction: Instruction? -> instruction is DomainInstruction }.findAny().orElse(null) as DomainInstruction?
-            return domainInstruction!!.domain.split(" ").joinToString(""){ it.toString().capitalize() }
-            return domainInstruction?.domain
+            val domain = domainInstruction!!.domain.split(" ").joinToString(""){ it.toString().capitalize() }
+            return domain
         }
 
     var title: String? = null

@@ -1,4 +1,4 @@
-package school
+package orcha.school
 
 class EnrollStudent {
     fun enroll(student: StudentDomain): StudentDomain {

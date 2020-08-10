@@ -1,4 +1,4 @@
-package school
+package orcha.school
 
 import javax.persistence.*
 
