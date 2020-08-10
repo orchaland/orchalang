@@ -33,7 +33,7 @@ public class StudentDatabasePersistenceContext {
             dataSourceConfig.setDriverClassName(databaseAdapter.getConnection().getDriver());
             dataSourceConfig.setJdbcUrl(databaseAdapter.getConnection().getUrl());
             dataSourceConfig.setUsername(databaseAdapter.getConnection().getUsername());
-            dataSourceConfig.setUsername(databaseAdapter.getConnection().getPassword());
+            dataSourceConfig.setPassword(databaseAdapter.getConnection().getPassword());
         }
         return new HikariDataSource(dataSourceConfig);
     }
@@ -45,13 +45,9 @@ public class StudentDatabasePersistenceContext {
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         ConfigurableProperties configurableProperties = studentDatabase.getInput().getAdapter();
         if(configurableProperties instanceof DatabaseAdapter) {
-
             DatabaseAdapter databaseAdapter = (DatabaseAdapter) configurableProperties;
-
             entityManagerFactoryBean.setPackagesToScan(databaseAdapter.getConnection().getEntityScanPackage());
-
             Properties jpaProperties = new Properties();
-
             jpaProperties.put("hibernate.dialect", databaseAdapter.getHibernateConfig().getDialect());
             jpaProperties.put("hibernate.hbm2ddl.auto", databaseAdapter.getHibernateConfig().getHbm2ddlAuto());
             jpaProperties.put("hibernate.ejb.naming_strategy", databaseAdapter.getHibernateConfig().getEjbNamingStrategy());

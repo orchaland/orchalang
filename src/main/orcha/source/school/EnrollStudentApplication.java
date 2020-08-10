@@ -49,11 +49,20 @@ public class EnrollStudentApplication {
 
     @Bean
     public IntegrationFlow aggregateEnrollStudentChannel() {
-        return f -> f.aggregate(a -> a.releaseExpression("size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))").correlationStrategy("headers['messageID']")).transform("payload.?[name=='enrollStudent']").handle(applicationToMessage(), "transform").channel("studentDatabaseChannel.input");
+        return f -> f.aggregate(
+                a -> a.releaseExpression("size()==1 AND (((getMessages().toArray())[0].payload instanceof Transpiler(orcha.lang.App) AND (getMessages().toArray())[0].payload.state==Transpiler(orcha.lang.configuration.State).TERMINATED))")
+                        .correlationStrategy("headers['messageID']"))
+                .transform("payload.?[name=='enrollStudent']")
+                .handle(applicationToMessage(), "transform")
+                .channel("studentDatabaseChannel.input");
     }
 
     @Bean
     public IntegrationFlow studentDatabaseChannel() {
-        return f -> f.handle(Jpa.outboundAdapter(this.entityManagerFactory).entityClass(StudentDomain.class).persistMode(PersistMode.PERSIST), e -> e.transactional()).log();
+        return f -> f.handle(Jpa.outboundAdapter(this.entityManagerFactory)
+                .entityClass(StudentDomain.class)
+                .persistMode(PersistMode.PERSIST),
+                e -> e.transactional())
+                .log();
     }
 }

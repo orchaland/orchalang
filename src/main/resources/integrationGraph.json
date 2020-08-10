@@ -26,8 +26,8 @@
         },
         "type" : "school.StudentDomain",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -77,8 +77,8 @@
           },
           "type" : "school.StudentDomain",
           "mimeType" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true,
-          "value$orchalang_spring_integration_implementation" : null
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "output" : {
           "adapter" : {
@@ -120,8 +120,8 @@
         },
         "type" : "school.StudentDomain",
         "mimeType" : null,
-        "autoStartup$orchalang_spring_integration_implementation" : true,
-        "value$orchalang_spring_integration_implementation" : null
+        "value$orchalang_spring_integration_implementation" : null,
+        "autoStartup$orchalang_spring_integration_implementation" : true
       },
       "output" : {
         "adapter" : {
@@ -191,8 +191,8 @@
               },
               "type" : "school.StudentDomain",
               "mimeType" : null,
-              "autoStartup$orchalang_spring_integration_implementation" : true,
-              "value$orchalang_spring_integration_implementation" : null
+              "value$orchalang_spring_integration_implementation" : null,
+              "autoStartup$orchalang_spring_integration_implementation" : true
             },
             "output" : {
               "adapter" : {
@@ -276,8 +276,8 @@
             },
             "type" : "school.StudentDomain",
             "mimeType" : null,
-            "autoStartup$orchalang_spring_integration_implementation" : true,
-            "value$orchalang_spring_integration_implementation" : null
+            "value$orchalang_spring_integration_implementation" : null,
+            "autoStartup$orchalang_spring_integration_implementation" : true
           },
           "output" : {
             "adapter" : {
@@ -342,8 +342,8 @@
           },
           "type" : "school.StudentDomain",
           "mimeType" : null,
-          "autoStartup$orchalang_spring_integration_implementation" : true,
-          "value$orchalang_spring_integration_implementation" : null
+          "value$orchalang_spring_integration_implementation" : null,
+          "autoStartup$orchalang_spring_integration_implementation" : true
         },
         "output" : {
           "adapter" : {
