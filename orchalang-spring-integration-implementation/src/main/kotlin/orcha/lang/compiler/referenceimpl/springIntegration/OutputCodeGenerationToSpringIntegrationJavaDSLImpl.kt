@@ -166,6 +166,9 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 val logInvoke = JExpr.invoke(channelInvoke, "log")
                 val getInvoke = JExpr.invoke(logInvoke, "get")
                 body._return(getInvoke)
+
+
+
             }
         }
     }

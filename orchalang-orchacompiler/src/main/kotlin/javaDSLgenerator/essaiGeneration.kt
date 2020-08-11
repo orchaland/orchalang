@@ -50,6 +50,10 @@ class essaiGeneration {
         val newHikariConfig =JExpr._new(codeModel.ref(HikariConfig::class.java))
          val ligne1 = hikariConfigField.assign(newHikariConfig)
         body.add(ligne1)
+        /*  val dataSourceConfig = codeModel.directClass("com.zaxxer.hikari.HikariConfig")
+        val newHikariConfig =JExpr._new(codeModel.ref(HikariConfig::class.java))
+        val block = method.body()
+        val lhs: JVar = block.decl(dataSourceConfig , "dataSourceConfig",newHikariConfig)*/
         val configurablePropertiesfield : JFieldVar = generatedClass.field(JMod.NONE, ConfigurableProperties::class.java, "configurableProperties")
         val studentDatabaseinvok=JExpr.ref("studentDatabase")
         val getInputinvok=JExpr.invoke(studentDatabaseinvok,"getInput")
