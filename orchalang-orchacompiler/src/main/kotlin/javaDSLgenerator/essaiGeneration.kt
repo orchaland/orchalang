@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Configurable
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
-import org.springframework.ejb.config.JeeNamespaceHandler
 import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
@@ -153,6 +152,9 @@ class essaiGeneration {
         val setJpaPropertiesinvoke=JExpr.invoke(entityManagerFactoryBeaninvok,"setJpaProperties").arg(jpaPropertiesField)
         condition1._then().add( setJpaPropertiesinvoke)
         body._return(entityManagerFactoryBeaninvok)
+
+
+
 
 
 

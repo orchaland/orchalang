@@ -1,4 +1,4 @@
-package javaDSLgenerator
+package javaDatabase
 
 import orcha.lang.compiler.referenceimpl.springIntegration.javaDSLgenerator.dataGeneration
 import org.springframework.boot.WebApplicationType

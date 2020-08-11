@@ -17,53 +17,46 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configurable
-public class StudentDatabasePersistenceContext {
+public class studentDatabasePersistenceContext {
     @Autowired
     EventHandler studentDatabase;
-    HikariConfig dataSourceConfig;
-    ConfigurableProperties configurableProperties;
-    DatabaseAdapter databaseAdapter;
-    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean;
-    Properties jpaProperties;
-    JpaTransactionManager transactionManager;
 
     @Bean(destroyMethod = "close")
     DataSource dataSource(Environment env) {
-        dataSourceConfig = new HikariConfig();
-        configurableProperties = studentDatabase.getInput().getAdapter();
+        HikariConfig dataSourceConfig = new HikariConfig();
+        ConfigurableProperties configurableProperties = studentDatabase.getInput().getAdapter();
         if (configurableProperties instanceof DatabaseAdapter) {
-            databaseAdapter = configurableProperties;
-            configurableProperties.setDriverClassName(databaseAdapter.getConnection().getDriver());
-            configurableProperties.setJdbcUrl(databaseAdapter.getConnection().getUrl());
-            configurableProperties.setUsername(databaseAdapter.getConnection().getUsername());
-            configurableProperties.setPassword(databaseAdapter.getConnection().getPassword());
+            DatabaseAdapter databaseAdapter = configurableProperties;
+            dataSourceConfig.setDriverClassName(databaseAdapter.getConnection().getDriver());
+            dataSourceConfig.setJdbcUrl(databaseAdapter.getConnection().getUrl());
+            dataSourceConfig.setUsername(databaseAdapter.getConnection().getUsername());
+            dataSourceConfig.setPassword(databaseAdapter.getConnection().getPassword());
         }
         return new HikariDataSource(dataSourceConfig);
     }
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Environment env) {
-        entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-         entityManagerFactoryBean.setDataSource(dataSource);
-         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        configurableProperties = studentDatabase.getInput().getAdapter();
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource);
+        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        ConfigurableProperties configurableProperties = studentDatabase.getInput().getAdapter();
         if (configurableProperties instanceof DatabaseAdapter) {
-            databaseAdapter = configurableProperties;
-             entityManagerFactoryBean.setPackagesToScan(databaseAdapter.getConnection().getEntityScanPackage());
-            jpaProperties = new Properties();
+            DatabaseAdapter databaseAdapter = configurableProperties;
+            entityManagerFactoryBean.setPackagesToScan(databaseAdapter.getConnection().getEntityScanPackage());
+            Properties jpaProperties = new Properties();
             jpaProperties.put("hibernate.dialect", databaseAdapter.getHibernateConfig().getDialect());
             jpaProperties.put("hibernate.hbm2ddl.auto", databaseAdapter.getHibernateConfig().getHbm2ddlAuto());
             jpaProperties.put("hibernate.ejb.naming_strategy", databaseAdapter.getHibernateConfig().getEjbNamingStrategy());
             jpaProperties.put("hibernate.show_sql", databaseAdapter.getHibernateConfig().getShowSql());
             jpaProperties.put("hibernate.format_sql", databaseAdapter.getHibernateConfig().getFormatSql());
-             entityManagerFactoryBean.setJpaProperties(jpaProperties);
+            entityManagerFactoryBean.setJpaProperties(jpaProperties);
         }
-        return  entityManagerFactoryBean;
     }
 
     @Bean
     JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        transactionManager = new JpaTransactionManager();
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
