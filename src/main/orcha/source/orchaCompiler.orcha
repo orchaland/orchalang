@@ -3,13 +3,10 @@ authors: Ben Orcha
 domain: essai
 
 receive orchaProgram from orchaProgramSource
-
 pre_processing with orchaProgram
 when "pre_processing terminates"
-
 lexical_analysis with pre_processing.result
 when "lexical_analysis terminates"
-
 syntax_analysis with lexical_analysis.result
 when "syntax_analysis terminates"
 

@@ -97,16 +97,13 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 fixedDelayInvoke.arg(1000)
                 setBody.add(JExpr.invoke(codeModel, holder, "poller").arg(fixedDelayInvoke))
                 fromInvoke.arg(aLambda)
-
                 val enrichHeadersInvoke =JExpr.invoke(codeModel,fromInvoke,"enrichHeaders")
                 val holder2 = JVar(JMods.forVar(0), codeModel.ref(Any::class.java), "h", null)
                 val aLambda2 = JLambda()
                 val arr2= aLambda2.addParam("h")
                 val setBody2: JBlock = aLambda2.body()
                 setBody2.add(JExpr.invoke(codeModel,holder2,"headerExpression").arg("messageID").arg("headers['id'].toString()"))
-
                 var channelInvoke: JInvocation? =null
-
                 val nextIntegrationNode = nextIntegrationNodes[0]
                 when(nextIntegrationNode.instruction){
                     is ComputeInstruction -> {
@@ -442,7 +439,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
         //val relationIdExceptionInvoke=JExpr.invoke(codeModel,holder3,"releaseExpression").arg("size()==1 and ( ((getMessages().toArray())[0].payload instanceof T(orcha.lang.configuration.Application) AND (getMessages().toArray())[0].payload.state==T(orcha.lang.configuration.Application.State).TERMINATED) )")
         val relationIdExceptionInvoke=JExpr.invoke(codeModel,holder3,"releaseExpression").arg(whenInstruction.aggregationExpression)
-        val correlationStrategyInvoke=JExpr.invoke(relationIdExceptionInvoke,"correlationStrategy").arg("headers['messageID']")
+        val correlationStrategyInvoke=JExpr.invoke(relationIdExceptionInvoke,"correlationExpression").arg("headers['messageID']")
         setBody3.add(correlationStrategyInvoke)
         aggregateInvoke1.arg(aLambda3)
 
