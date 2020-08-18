@@ -1,6 +1,7 @@
 package orcha.lang.compiler.referenceimpl.springIntegration
 
 import com.helger.jcodemodel.*
+
 import com.helger.jcodemodel.writer.FileCodeWriter
 import com.helger.jcodemodel.writer.JCMWriter
 import com.zaxxer.hikari.HikariConfig
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Configurable
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
 import java.io.File
@@ -55,10 +57,8 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
         method.param(JMod.NONE, springRef.array(), "args")
 
-        //val myValueClass = codeModel._class(JMod.NONE, "String")
-        //method.param(JMod.NONE,myValueClass.array(),"args")
         val body = method.body()
-        val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
+       /* val springInvoke=JExpr._new(codeModel.ref(SpringApplicationBuilder::class.java))
 
         className = orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
 
@@ -72,7 +72,42 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         val runInvoke=JExpr.invoke(webInvoke,"run")
         val argsInvoke=JExpr.ref("args")
         runInvoke.arg(argsInvoke)
-        body.add(runInvoke)
+        body.add(runInvoke)*/
+       /*  val method = generatedClass.method(JMod.PUBLIC or JMod.STATIC, codeModel.VOID, "main")
+
+        val stringRef = codeModel.ref("String")
+        method.param(JMod.NONE, stringRef.array(), "args")
+        val  body = method.body()*/
+        val springApplicationinvoke1=JExpr.ref("SpringApplication")
+        val orchaInvoke = JExpr.ref("JPAApplication")
+        val classInvoke = JExpr.ref(orchaInvoke, "class")
+        val argsref1=JExpr.ref("args")
+        val runinvok = JExpr.invoke(springApplicationinvoke1,"run").arg(classInvoke).arg(argsref1)
+        val ConfigurableApplicationContextType = codeModel._ref(ConfigurableApplicationContext::class.java)
+        val configdecl= body.decl(ConfigurableApplicationContextType, "context", runinvok)
+       val PopulateDatabaseType = codeModel.ref("PopulateDatabase")
+        val  contextInvoke = JExpr.ref(" context")
+        val getBeaninvok = JExpr.invoke(contextInvoke,"getBean").arg("populateDatabase")
+        val populateDatabasecl= body.decl(PopulateDatabaseType, "populateDatabase", getBeaninvok)
+
+        val ListeType = codeModel._ref(List::class.java)
+        val resultsfilde=body.decl(ListeType, "results")
+        val bloc1= body._try()
+              val bloc =bloc1.body()
+        val studentinvoke1= JExpr._new(codeModel.ref("StudentDomain")).arg("Morgane").arg(21).arg(-1)
+        val StudentDomainType = codeModel.ref("StudentDomain")
+        val StudentDomainfilde=bloc.decl(StudentDomainType, "student",studentinvoke1)
+        val saveinvoke=JExpr.invoke(populateDatabasecl,"saveStudent").arg(StudentDomainfilde)
+        bloc.add(saveinvoke)
+        val systeminvoker=JExpr.ref("System")
+        val outinvoker=JExpr.ref(systeminvoker,"out")
+        val printinvoker=JExpr.invoke(outinvoker,"println").arg("database:").arg(resultsfilde)
+        bloc.add(printinvoker)
+        val catchTry : JCatchBlock=bloc1._catch(codeModel.ref(Exception::class.java))
+        val exception =catchTry.param("e")
+        val printinvoker1=JExpr.invoke(outinvoker,"println").arg(">>>>>> Caught exception:" + exception)
+        catchTry.body().add(printinvoker1)
+
     }
 
     override fun inputAdapter(eventHandler: EventHandler, nextIntegrationNodes: List<IntegrationNode>) {
@@ -117,14 +152,16 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
                 body._return(getInvoke)
             }
             is DatabaseAdapter -> {
-                val entityManagerFactory: JFieldVar = generatedClass!!.field(JMod.PRIVATE, EntityManagerFactory::class.java, "entityManagerFactory")
+                val entityManagerFactory: JFieldVar = generatedClass!!
+                        .field(JMod.PRIVATE, EntityManagerFactory::class.java, "entityManagerFactory")
                 entityManagerFactory.annotate(Autowired::class.java)
                 val inputAdapter: DatabaseAdapter = adapter as DatabaseAdapter
                 var method = generatedClass!!.method(JMod.PUBLIC, IntegrationFlow::class.java, eventHandler.name +"Flow")
                 method.annotate(Bean::class.java)
                 var body =method.body()
                 val fromInvoke = codeModel.ref(IntegrationFlows::class.java).staticInvoke("from")
-                val inboundAdapterInvoke: JInvocation = codeModel.ref(org.springframework.integration.jpa.dsl.Jpa::class.java).staticInvoke("inboundAdapter")
+                val inboundAdapterInvoke: JInvocation = codeModel.ref(org.springframework.integration.jpa.dsl.Jpa::class.java)
+                        .staticInvoke("inboundAdapter")
                 val thisInvoke = JExpr.ref( "this")
                 val entityManagerFactoryInvoke = JExpr.ref( thisInvoke,"entityManagerFactory")
                 inboundAdapterInvoke.arg(entityManagerFactoryInvoke)

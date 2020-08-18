@@ -1,11 +1,12 @@
 package school;
 
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage;
 import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
@@ -19,7 +20,16 @@ public class EnrollStudentApplication {
     private EntityManagerFactory entityManagerFactory;
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(EnrollStudentApplication.class).web(WebApplicationType.NONE).run(args);
+        ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
+        PopulateDatabase populateDatabase =  context.getBean("populateDatabase");
+        List results;
+        try {
+            StudentDomain student = new StudentDomain("Morgane", 21, -1);
+            populateDatabase.saveStudent(student);
+            System.out.println("database:", results);
+        } catch (final Exception e) {
+            System.out.println(">>>>>> Caught exception:com.helger.jcodemodel.JVar@9304c419");
+        }
     }
 
     @Bean
