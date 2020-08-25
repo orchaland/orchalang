@@ -1,4 +1,4 @@
-package mongodb
+package schoolMongodb
 
 class EnrollStudent {
     fun enroll(student: StudentDomain): StudentDomain {
@@ -7,7 +7,7 @@ class EnrollStudent {
         return student
     }
     fun get(): StudentDomain {
-        println("ooooookkkkkkkk")
-        return StudentDomain(firstName = "Lineda", age = 40)
+        println("ok")
+        return StudentDomain("Marwa", 40)
     }
 }

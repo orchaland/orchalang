@@ -99,13 +99,18 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         val StudentDomainfilde=bloc.decl(StudentDomainType, "student",studentinvoke1)
         val saveinvoke=JExpr.invoke(populateDatabasecl,"saveStudent").arg(StudentDomainfilde)
         bloc.add(saveinvoke)
+         //results = populateDatabase.readDatabase();
+       val readDatabaseinvoke =JExpr.invoke(populateDatabasecl,"readDatabase")
+       val assignaa= resultsfilde.assign(readDatabaseinvoke)
+        bloc.add(assignaa)
         val systeminvoker=JExpr.ref("System")
         val outinvoker=JExpr.ref(systeminvoker,"out")
         val printinvoker=JExpr.invoke(outinvoker,"println").arg("database:").arg(resultsfilde)
         bloc.add(printinvoker)
         val catchTry : JCatchBlock=bloc1._catch(codeModel.ref(Exception::class.java))
         val exception =catchTry.param("e")
-        val printinvoker1=JExpr.invoke(outinvoker,"println").arg(">>>>>> Caught exception:" + exception)
+        val eeee=JExpr.ref("e")
+        val printinvoker1=JExpr.invoke(outinvoker,"println").arg(">>>>>> Caught exception:+").arg(eeee)
         catchTry.body().add(printinvoker1)
 
     }
@@ -397,7 +402,6 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
 
 
                 if(applicationToMessageGenerated == false){
-                    method = generatedClass!!.method(JMod.NONE,  ApplicationToMessage::class.java, "applicationToMessage")
                     method.annotate(Bean::class.java)
                     body = method.body()
                     val newapplicationToMessageInvoque = JExpr._new(codeModel.ref( ApplicationToMessage::class.java))

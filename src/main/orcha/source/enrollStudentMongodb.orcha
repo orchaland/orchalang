@@ -1,0 +1,7 @@
+title:enrollStudent
+authors:Ben Orcha
+domain: schoolMongodb
+
+receive student from studentDatabase
+enrollStudent with student
+when "enrollStudent terminates"

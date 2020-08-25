@@ -11,7 +11,7 @@ class EnrollStudentConfiguration {
     @Bean
     fun studentDatabase(): EventHandler {
         val eventHandler = EventHandler("studentDatabase")
-        val databaseAdapter = DatabaseAdapter(connection = DatabaseConnection(entityScanPackage = "school"))
+        val databaseAdapter = DatabaseAdapter(connection = DatabaseConnection(entityScanPackage = "schoolMongodb"))
         eventHandler.input= Input(databaseAdapter,"school.StudentDomain")
         eventHandler.output = Output(databaseAdapter, "school.StudentDomain")
         return eventHandler

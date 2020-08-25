@@ -12,7 +12,11 @@ dependencies {
 	compile 'com.helger:jcodemodel:3.4.0'
 
 	compile 'org.springframework.integration:spring-integration-file:5.3.1.RELEASE'
+	compile "org.mongodb:mongodb-driver-reactivestreams"
+	compile "org.mongodb:mongodb-driver-sync:4.1.0"
+	compile "org.springframework.integration:spring-integration-mongodb:5.3.2.RELEASE"
 
+	implementation("org.springframework.data:spring-data-mongodb:3.0.3.RELEASE")
 	implementation("org.springframework.integration:spring-integration-jpa:5.2.1.RELEASE")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 

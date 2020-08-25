@@ -1,4 +1,4 @@
-package mongodb
+package schoolMongodb
 
 class StudentDomain {
     constructor(firstName: String?, age: Int) {

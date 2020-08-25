@@ -26,9 +26,10 @@ public class EnrollStudentApplication {
         try {
             StudentDomain student = new StudentDomain("Morgane", 21, -1);
             populateDatabase.saveStudent(student);
+            results = populateDatabase.readDatabase();
             System.out.println("database:", results);
         } catch (final Exception e) {
-            System.out.println(">>>>>> Caught exception:com.helger.jcodemodel.JVar@9304c419");
+            System.out.println(">>>>>> Caught exception:+", e);
         }
     }
 
@@ -43,12 +44,9 @@ public class EnrollStudentApplication {
     }
 
     @Bean
+    @Bean
     MessageToApplication enrollStudentMessageToApplication() {
         return new MessageToApplication(Application.State.TERMINATED, "enrollStudent");
-    }
-
-    @Bean
-    ApplicationToMessage applicationToMessage() {
         return new ApplicationToMessage();
     }
 
