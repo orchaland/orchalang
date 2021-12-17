@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+orcha.lang.compiler.kafka.KafkaAutoConfiguration,\
+orcha.lang.compiler.kafka.DefaultAutoConfiguration
