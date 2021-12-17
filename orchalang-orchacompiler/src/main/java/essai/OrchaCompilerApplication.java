@@ -2,8 +2,8 @@ package essai;
 
 import orcha.lang.compiler.*;
 import orcha.lang.compiler.referenceimpl.*;
-import orcha.lang.compiler.referenceimpl.springIntegration.ApplicationToMessage;
-import orcha.lang.compiler.referenceimpl.springIntegration.MessageToApplication;
+import orcha.lang.compiler.referenceimpl.ApplicationToMessage;
+import orcha.lang.compiler.referenceimpl.MessageToApplication;
 import orcha.lang.configuration.Application;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

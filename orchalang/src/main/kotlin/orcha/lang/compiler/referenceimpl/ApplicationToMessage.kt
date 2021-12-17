@@ -1,4 +1,4 @@
-package orcha.lang.compiler.referenceimpl.springIntegration
+package orcha.lang.compiler.referenceimpl
 
 import orcha.lang.configuration.Application
 import org.slf4j.LoggerFactory

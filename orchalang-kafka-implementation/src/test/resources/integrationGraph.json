@@ -14,8 +14,8 @@
         },
         "type" : "java.lang.String",
         "mimeType" : null,
-        "autoStartup$orchalang" : true,
-        "value$orchalang" : null
+        "value$orchalang" : null,
+        "autoStartup$orchalang" : true
       },
       "output" : null,
       "usersRole$orchalang" : null
@@ -42,8 +42,8 @@
           },
           "type" : "java.lang.String",
           "mimeType" : null,
-          "autoStartup$orchalang" : true,
-          "value$orchalang" : null
+          "value$orchalang" : null,
+          "autoStartup$orchalang" : true
         },
         "output" : {
           "adapter" : {
@@ -85,8 +85,8 @@
         },
         "type" : "java.lang.String",
         "mimeType" : null,
-        "autoStartup$orchalang" : true,
-        "value$orchalang" : null
+        "value$orchalang" : null,
+        "autoStartup$orchalang" : true
       },
       "output" : {
         "adapter" : {
@@ -138,22 +138,13 @@
             "input" : null,
             "output" : {
               "adapter" : {
-                "properties" : [ ],
-                "adapter" : "Database",
-                "connection" : {
-                  "driver" : "org.h2.Driver",
-                  "url" : "jdbc:h2:mem:datajpa",
-                  "username" : "sa",
-                  "password" : "",
-                  "entityScanPackage" : "com.example.jpa"
-                },
-                "hibernateConfig" : {
-                  "dialect" : "org.hibernate.dialect.H2Dialect",
-                  "hbm2ddlAuto" : "create-drop",
-                  "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
-                  "showSql" : false,
-                  "formatSql" : true
-                }
+                "properties" : [ "directory", "filename" ],
+                "adapter" : "File",
+                "directory" : "data/output",
+                "filename" : "orchaCompiler.java",
+                "appendNewLine" : true,
+                "createDirectory" : true,
+                "writingMode" : "APPEND"
               },
               "type" : "application/java-archive",
               "mimeType" : null,
@@ -200,22 +191,13 @@
           "input" : null,
           "output" : {
             "adapter" : {
-              "properties" : [ ],
-              "adapter" : "Database",
-              "connection" : {
-                "driver" : "org.h2.Driver",
-                "url" : "jdbc:h2:mem:datajpa",
-                "username" : "sa",
-                "password" : "",
-                "entityScanPackage" : "com.example.jpa"
-              },
-              "hibernateConfig" : {
-                "dialect" : "org.hibernate.dialect.H2Dialect",
-                "hbm2ddlAuto" : "create-drop",
-                "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
-                "showSql" : false,
-                "formatSql" : true
-              }
+              "properties" : [ "directory", "filename" ],
+              "adapter" : "File",
+              "directory" : "data/output",
+              "filename" : "orchaCompiler.java",
+              "appendNewLine" : true,
+              "createDirectory" : true,
+              "writingMode" : "APPEND"
             },
             "type" : "application/java-archive",
             "mimeType" : null,
@@ -243,22 +225,13 @@
         "input" : null,
         "output" : {
           "adapter" : {
-            "properties" : [ ],
-            "adapter" : "Database",
-            "connection" : {
-              "driver" : "org.h2.Driver",
-              "url" : "jdbc:h2:mem:datajpa",
-              "username" : "sa",
-              "password" : "",
-              "entityScanPackage" : "com.example.jpa"
-            },
-            "hibernateConfig" : {
-              "dialect" : "org.hibernate.dialect.H2Dialect",
-              "hbm2ddlAuto" : "create-drop",
-              "ejbNamingStrategy" : "org.hibernate.cfg.ImprovedNamingStrategy",
-              "showSql" : false,
-              "formatSql" : true
-            }
+            "properties" : [ "directory", "filename" ],
+            "adapter" : "File",
+            "directory" : "data/output",
+            "filename" : "orchaCompiler.java",
+            "appendNewLine" : true,
+            "createDirectory" : true,
+            "writingMode" : "APPEND"
           },
           "type" : "application/java-archive",
           "mimeType" : null,

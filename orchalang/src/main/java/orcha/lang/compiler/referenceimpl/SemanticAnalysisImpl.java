@@ -367,7 +367,13 @@ public class SemanticAnalysisImpl implements SemanticAnalysis {
                 // search for the node right after the when
                 IntegrationNode nodeAfterWhen = orchaProgram.getIntegrationGraph().stream().filter(node -> node.getInstruction().getLineNumber() > when.getLineNumber()).findFirst().orElse(null);
 
-                System.out.println(nodeAfterWhen);
+                if(nodeAfterWhen == null){
+                    String message = "when instruction should be followed by a send or a compute.";
+                    OrchaCompilationException exception = new OrchaCompilationException(message, when.getLineNumber(), when.getInstruction());
+                    log.error("Error at line " + when.getLineNumber() + " for the instruction (" + when.getInstruction() + ") cause by: " + message, exception);
+                    exceptions.add(exception);
+                }
+                //System.out.println(nodeAfterWhen);
 
                 //List<Instruction> instructions = orchaProgram.getIntegrationGraph().stream().map(node -> node.getInstruction()).collect(Collectors.toList());
 

@@ -1,4 +1,4 @@
-package orcha.lang.compiler.referenceimpl.springIntegration
+package orcha.lang.compiler.kafka
 
 import orcha.lang.compiler.referenceimpl.OutputCodeGenerator
 import orcha.lang.compiler.syntax.SendInstruction
@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConditionalOnClass(WhenInstructionForSpringIntegration::class, SendInstructionForSpringIntegration::class, OutputCodeGenerationToSpringIntegrationJavaDSL::class)
-class SpringIntegrationAutoConfiguration {
+@ConditionalOnClass(WhenInstructionForSpringIntegration::class, SendInstructionForSpringIntegration::class, OutputCodeGenerationToKafka::class)
+class KafkaAutoConfiguration {
 
     @Bean(name = ["whenInstruction"])
     fun whenInstructionFactory(): WhenInstructionFactory {
@@ -43,4 +43,5 @@ class SpringIntegrationAutoConfiguration {
     fun outputCodeGenerator(): OutputCodeGenerator? {
         return outputCodeGeneratorFactory().getObject()
     }
+
 }

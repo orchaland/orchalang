@@ -3,8 +3,6 @@ package orcha.lang.compiler.referenceimpl
 import com.helger.jcodemodel.JCodeModel
 import com.helger.jcodemodel.JDefinedClass
 import orcha.lang.compiler.*
-import orcha.lang.compiler.referenceimpl.*
-import orcha.lang.compiler.referenceimpl.springIntegration.OutputCodeGenerationToSpringIntegrationJavaDSL
 import orcha.lang.compiler.referenceimpl.springIntegration.OutputCodeGeneratorFactory
 import orcha.lang.compiler.referenceimpl.springIntegration.SendInstructionFactory
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
@@ -12,7 +10,6 @@ import orcha.lang.compiler.syntax.*
 import orcha.lang.configuration.*
 import org.junit.Assert
 import org.junit.Test
-import org.slf4j.LoggerFactory
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -26,20 +23,21 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(classes = [OutputGenerationTest.CompilerReferenceImplTestConfiguration::class, Properties::class])
+@SpringBootTest(classes = [OutputExportationTest.CompilerReferenceImplTestConfiguration::class, Properties::class])
+//@SpringBootTest(classes = [OutputExportationTest.CompilerReferenceImplTestConfiguration::class])
 //@EnableConfigurationProperties(value = [Properties::class])
-//@ContextConfiguration(classes = [OutputGenerationTest.CompilerReferenceImplTestConfiguration::class])
-@ActiveProfiles("test")
-class OutputGenerationTest {
+//@ContextConfiguration(classes = [OutputExportationTest.CompilerReferenceImplTestConfiguration::class, Properties::class])
+//@ActiveProfiles("test")
+class OutputExportationTest {
 
     @TestConfiguration
     internal class CompilerReferenceImplTestConfiguration {
 
         @Autowired
-        private lateinit var properties: java.util.Properties
+        internal var properties: Properties? = null
 
-        @Value("\${orcha.pathToBinaryCode:build/resources/main}")
-        var pathToBinaryCode: String? = null
+        //@Value("\${orcha.pathToBinaryCode:build/resources/main}")
+        //var pathToBinaryCode: String? = null
 
         @Bean
         @DependsOn("whenInstruction", "sendInstruction")
@@ -96,7 +94,8 @@ class OutputGenerationTest {
 
         //@ConditionalOnMissingBean
         //@DependsOn("outputCodeGenerator")
-        fun outputExportation(): OutputExportation? {
+        @Bean
+        fun outputExportationForTest(): OutputExportation? {
             return OutputExportationImpl()
         }
 
@@ -128,6 +127,7 @@ class OutputGenerationTest {
 
     }
 
+
     @Autowired
     internal var semanticAnalysisForTest: SemanticAnalysis? = null
 
@@ -137,8 +137,11 @@ class OutputGenerationTest {
     @Autowired
     internal var outputGenerationForTest: OutputGeneration? = null
 
+    @Autowired
+    internal var outputExportationForTest: OutputExportation? = null
+
     @Test
-    fun springIntegrationCodeGeneration() {
+    fun springIntegrationCodeExportation() {
 
         try {
             val titleInstruction: Instruction = TitleInstruction("title: check order")
@@ -146,7 +149,7 @@ class OutputGenerationTest {
             titleInstruction.analysis()
             val orchaMetadata = OrchaMetadata()
             orchaMetadata.add(titleInstruction)
-            val domainInstruction : DomainInstruction = DomainInstruction("domain: travel")
+            val domainInstruction: DomainInstruction = DomainInstruction("domain: travel")
             domainInstruction.analysis()
             domainInstruction.lineNumber = 2
             orchaMetadata.add(domainInstruction)
@@ -189,22 +192,12 @@ class OutputGenerationTest {
             orchaProgram = linkEditorForTest!!.link(orchaProgram)
 
             val codeGeneratedModel = outputGenerationForTest!!.generation(orchaProgram)
-            Assert.assertTrue(codeGeneratedModel is JCodeModel)
 
-            val codeModel = codeGeneratedModel as JCodeModel
-            val jClass = codeModel._getClass("travel.CheckOrderApplication")
-            Assert.assertTrue(jClass is JDefinedClass)
-            val methods = jClass?.methods()
-            Assert.assertNotNull(methods!!.first { it.name().equals("aggregateCheckOrderChannel") })
-            Assert.assertNotNull(methods!!.first { it.name().equals("travelAgencyFlow") })
-            Assert.assertNotNull(methods!!.first { it.name().equals("preprocessingImpl") })
-            Assert.assertNotNull(methods!!.first { it.name().equals("checkOrderChannel") })
+            outputExportationForTest!!.export(codeGeneratedModel)
 
-        } catch (e: OrchaCompilationException){
+        } catch (e: OrchaCompilationException) {
             Assert.fail(e.message)
         }
 
-
     }
-
 }

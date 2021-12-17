@@ -1,34 +1,42 @@
-package orcha.lang.compiler.referenceimpl.springIntegration
+package orcha.lang.compiler.kafka
 
 import com.helger.jcodemodel.*
-import com.helger.jcodemodel.writer.FileCodeWriter
 import com.helger.jcodemodel.writer.JCMWriter
 import orcha.lang.compiler.IntegrationNode
+import orcha.lang.compiler.OrchaCompilationException
 import orcha.lang.compiler.OrchaMetadata
+import orcha.lang.compiler.referenceimpl.ApplicationToMessage
+import orcha.lang.compiler.referenceimpl.MessageToApplication
+import orcha.lang.compiler.referenceimpl.OutputCodeGenerator
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.*
-import orcha.lang.configuration.EventHandler
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.annotation.Bean
-import java.io.File
 import org.springframework.integration.dsl.IntegrationFlow
 import org.springframework.integration.dsl.IntegrationFlows
 import org.springframework.integration.dsl.Pollers
+import java.io.File
 import java.nio.charset.StandardCharsets
 import javax.persistence.EntityManagerFactory
 
-class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationToSpringIntegrationJavaDSL {
+class OutputCodeGenerationToKafka : OutputCodeGenerator {
 
     private var applicationToMessageGenerated: Boolean = false
     var generatedClass : JDefinedClass ? = null
     val codeModel = JCodeModel()
 
     override fun orchaMetadata(orchaMetadata: OrchaMetadata) {
+
+        if(orchaMetadata.domain == null){
+            val message = "domain is required for an Orcha program"
+            val exception = OrchaCompilationException(message)
+            log.error(message, exception)
+        }
 
         var className = orchaMetadata.domainAsCapitalizedConcatainedString!!.decapitalize() + "." + orchaMetadata.titleAsCapitalizedConcatainedString + "Application"
 
@@ -215,8 +223,8 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         }
     }
 
-    override fun filter(expression: String) {
-        log.info("Generation of a filter for the expression " + expression)
+    override fun filter(condition: String?) {
+        log.info("Generation of a filter for the expression " + condition)
     }
 
     override fun serviceActivator(application: Application, nextIntegrationNodes: List<IntegrationNode>) {
@@ -382,7 +390,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
         codeModel.build(FileCodeWriter(file))
     }*/
 
-    override fun export(generatedCode: Any) {
+    override fun export(generatedCode: Any, pathToGeneratedCode: String) {
 
         val codeModel: JCodeModel = generatedCode as JCodeModel
 
@@ -399,7 +407,7 @@ class OutputCodeGenerationToSpringIntegrationJavaDSLImpl : OutputCodeGenerationT
     }
 
     companion object {
-        private val log = LoggerFactory.getLogger(OutputCodeGenerationToSpringIntegrationJavaDSLImpl::class.java)
+        private val log = LoggerFactory.getLogger(OutputCodeGenerationToKafka::class.java)
     }
 
 }

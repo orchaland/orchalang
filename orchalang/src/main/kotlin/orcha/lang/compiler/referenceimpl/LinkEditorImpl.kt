@@ -1,4 +1,4 @@
-package orcha.lang.compiler.referenceimpl.springIntegration
+package orcha.lang.compiler.referenceimpl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import orcha.lang.compiler.IntegrationNode
@@ -86,7 +86,7 @@ class LinkEditorImpl : LinkEditor {
 
         log.info("Json configuration file for Spring Integration has been generated: " + file.canonicalPath)
 
-        log.info("Linf edition of the orcha program \"" + orchaProgram.orchaMetadata!!.title + "\" complete successfuly.")
+        log.info("Link edition of the orcha program \"" + orchaProgram.orchaMetadata!!.title + "\" complete successfuly.")
         return orchaProgram
     }
 

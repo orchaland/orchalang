@@ -1,24 +1,37 @@
-package orcha.lang.compiler.referenceimpl.springIntegration
+package orcha.lang.compiler.referenceimpl
 
-import orcha.lang.compiler.*
+import orcha.lang.compiler.IntegrationNode
+import orcha.lang.compiler.OrchaMetadata
+import orcha.lang.compiler.OrchaProgram
+import orcha.lang.compiler.OutputGeneration
 import orcha.lang.compiler.syntax.ComputeInstruction
 import orcha.lang.compiler.syntax.ReceiveInstruction
 import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
 import orcha.lang.configuration.Application
-import orcha.lang.configuration.JavaServiceAdapter
 import orcha.lang.configuration.EventHandler
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.config.AbstractFactoryBean
+import javax.annotation.Resource
 
 class OutputGenerationImpl : OutputGeneration {
 
+    @Resource(name = "&outputCodeGenerator")
+    var outputCodeGenerator: AbstractFactoryBean<*>? = null
+
+    var codeGenerator : OutputCodeGenerator? = null
+
     //@Qualifier("outputGenerationToSpringIntegrationJavaDSL")
-    @Autowired
-    private lateinit var outputCodeGenerationToSpringIntegrationJavaDSL: OutputCodeGenerationToSpringIntegrationJavaDSL
+    //@Autowired
+    //private lateinit var outputCodeGenerationToSpringIntegrationJavaDSL: OutputCodeGenerationToSpringIntegrationJavaDSL
 
     override fun generation(orchaProgram: OrchaProgram): Any? {
+
+        //log.info(outputCodeGenerator?.getObject().toString())
+
+        if(codeGenerator == null){
+            codeGenerator = outputCodeGenerator?.getObject() as OutputCodeGenerator
+        }
 
         val orchaMetadata = orchaProgram.orchaMetadata
 
@@ -29,7 +42,7 @@ class OutputGenerationImpl : OutputGeneration {
         val graphOfInstructions = orchaProgram.integrationGraph
 
         if (orchaMetadata != null) {
-            outputCodeGenerationToSpringIntegrationJavaDSL.orchaMetadata(orchaMetadata)
+            codeGenerator!!.orchaMetadata(orchaMetadata)
             if (graphOfInstructions != null) {
                 this.generate(orchaMetadata, graphOfInstructions)
             }
@@ -43,11 +56,16 @@ class OutputGenerationImpl : OutputGeneration {
             log.info("Output generation for the orcha program \"" + orchaMetadata.title + "\" complete successfully.")
         }
 
-        return outputCodeGenerationToSpringIntegrationJavaDSL.getGeneratedCode()
+        return codeGenerator!!.getGeneratedCode()
 
     }
 
     private fun generate(orchaMetadata: OrchaMetadata, graphOfInstructions: List<IntegrationNode>) {
+
+        //val codeGenerator : OutputCodeGenerator = outputCodeGenerator?.getObject() as OutputCodeGenerator
+        if(codeGenerator == null){
+            codeGenerator = outputCodeGenerator?.getObject() as OutputCodeGenerator
+        }
 
         for (node in graphOfInstructions) {
 
@@ -61,14 +79,14 @@ class OutputGenerationImpl : OutputGeneration {
                             val receive: ReceiveInstruction = node.instruction as ReceiveInstruction
                             val eventHandler = receive.configuration as? EventHandler
                             if (eventHandler != null) {
-                                outputCodeGenerationToSpringIntegrationJavaDSL.inputAdapter(eventHandler, node.nextIntegrationNodes)
+                                codeGenerator!!.inputAdapter(eventHandler, node.nextIntegrationNodes)
                             }
                         }
                         is SendInstruction -> {
                             val send: SendInstruction = node.instruction as SendInstruction
                             val eventHandlers = send.configuration as? MutableMap<String,EventHandler>
                             if (eventHandlers != null) {
-                                outputCodeGenerationToSpringIntegrationJavaDSL.outputAdapter(eventHandlers.values.first(), node.nextIntegrationNodes)
+                                codeGenerator!!.outputAdapter(eventHandlers.values.first(), node.nextIntegrationNodes)
                             }
                         }
                     }
@@ -78,7 +96,7 @@ class OutputGenerationImpl : OutputGeneration {
                         is ReceiveInstruction -> {
                             val receive: ReceiveInstruction = node.instruction as ReceiveInstruction
                             val condition = receive.condition
-                            outputCodeGenerationToSpringIntegrationJavaDSL.filter(condition)
+                            codeGenerator!!.filter(condition)
                         }
                     }
                 }
@@ -88,7 +106,7 @@ class OutputGenerationImpl : OutputGeneration {
                             val compute: ComputeInstruction = node.instruction as ComputeInstruction
                             val application: Application = compute.configuration as Application
                             //val adapter: JavaServiceAdapter = application.input?.adapter as JavaServiceAdapter
-                            outputCodeGenerationToSpringIntegrationJavaDSL.serviceActivator(application, node.nextIntegrationNodes)
+                            codeGenerator!!.serviceActivator(application, node.nextIntegrationNodes)
                         }
                     }
                 }
@@ -96,7 +114,7 @@ class OutputGenerationImpl : OutputGeneration {
                     when(node.instruction){
                         is WhenInstruction -> {
                             val whenInstruction: WhenInstruction = node.instruction as WhenInstruction
-                            outputCodeGenerationToSpringIntegrationJavaDSL.aggregator(whenInstruction, node.nextIntegrationNodes)
+                            codeGenerator!!.aggregator(whenInstruction, node.nextIntegrationNodes)
                         }
                     }
                 }

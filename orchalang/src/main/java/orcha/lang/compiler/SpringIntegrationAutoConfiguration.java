@@ -44,4 +44,20 @@ public class SpringIntegrationAutoConfiguration {
     public LexicalAnalysis lexicalAnalysis() {
         return new LexicalAnalysisImpl();
     }
+
+    @ConditionalOnMissingBean
+    @Bean
+    public LinkEditor linkEditor() { return new LinkEditorImpl(); }
+
+    @ConditionalOnMissingBean
+    @DependsOn({"outputCodeGenerator"})
+    public OutputGeneration outputGeneration() { return new OutputGenerationImpl(); }
+
+    @ConditionalOnMissingBean
+    @DependsOn({"outputCodeGenerator"})
+    public OutputExportation outputExportation() {
+        return new OutputExportationImpl();
+    }
+
+
 }

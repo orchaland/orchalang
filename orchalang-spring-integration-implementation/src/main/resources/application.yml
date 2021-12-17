@@ -1,2 +1,3 @@
 orchalang:
   pathToIntegrationGraph: ./src/main/resources/integrationGraph.json
+  pathToGeneratedCode: ./src/main/orcha/source

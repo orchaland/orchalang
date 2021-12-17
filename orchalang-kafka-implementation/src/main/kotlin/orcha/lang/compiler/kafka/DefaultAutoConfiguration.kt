@@ -1,10 +1,12 @@
-package orcha.lang.compiler.referenceimpl.springIntegration
+package orcha.lang.compiler.kafka
 
 import orcha.lang.compiler.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.DependsOn
 
 @Configuration
 class DefaultAutoConfiguration {
@@ -37,21 +39,22 @@ class DefaultAutoConfiguration {
         return OrchaCompiler(preprocessing, lexicalAnalysis, syntaxAnalysis, semanticAnalysis, postprocessing, linkEditor, outputGeneration, outputExportation)
     }
 
-    /*@ConditionalOnMissingBean
+    //@ConditionalOnMissingBean
     //@Bean("linkEditorForOrchaCompiler")
-    @Bean
-    internal fun linkEditor(): LinkEditor {
-        return LinkEditorImpl()
-    }*/
+    //@Bean
+    //internal fun linkEditor(): LinkEditor {
+      //  return LinkEditorImpl()
+    //}
 
     @Autowired
     private lateinit var linkEditor: LinkEditor
 
+
     /*@ConditionalOnMissingBean
     //@Bean("outputGenerationToSpringIntegrationJavaDSL")
     @Bean
-    internal fun outputGenerationToSpringIntegrationJavaDSL(): OutputCodeGenerationToSpringIntegrationJavaDSL {
-        return OutputCodeGenerationToSpringIntegrationJavaDSL()
+    internal fun outputGenerationToSpringIntegrationJavaDSL(): OutputCodeGenerationToSpringIntegrationJavaDSLImpl {
+        return OutputCodeGenerationToSpringIntegrationJavaDSLImpl()
     }*/
 
     /*@ConditionalOnMissingBean

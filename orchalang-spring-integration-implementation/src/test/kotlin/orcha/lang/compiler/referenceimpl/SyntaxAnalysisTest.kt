@@ -1,20 +1,67 @@
 package orcha.lang.compiler.referenceimpl
 
-import orcha.lang.compiler.SyntaxAnalysis
+import orcha.lang.compiler.*
+import orcha.lang.compiler.referenceimpl.springIntegration.OutputCodeGeneratorFactory
+import orcha.lang.compiler.referenceimpl.springIntegration.SendInstructionFactory
+import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionFactory
 import orcha.lang.compiler.referenceimpl.springIntegration.WhenInstructionForSpringIntegration
+import orcha.lang.compiler.syntax.SendInstruction
 import orcha.lang.compiler.syntax.WhenInstruction
+import orcha.lang.configuration.*
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.DependsOn
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
-@SpringBootTest
-@ContextConfiguration(classes = [CompilerReferenceImplTestConfiguration::class])
+//@SpringBootTest
+@ContextConfiguration(classes = [SyntaxAnalysisTest.CompilerReferenceImplTestConfiguration::class])
 class SyntaxAnalysisTest {
+
+    @TestConfiguration
+    internal class CompilerReferenceImplTestConfiguration {
+
+        @Bean
+        @DependsOn("whenInstruction", "sendInstruction")
+        internal fun lexicalAnalysisForTest(): LexicalAnalysis {
+            return LexicalAnalysisImpl()
+        }
+
+        @Bean(name = ["whenInstruction"])
+        fun whenInstructionFactory(): WhenInstructionFactory {
+            return WhenInstructionFactory()
+        }
+
+        @Bean
+        @Throws(Exception::class)
+        fun whenInstruction(): WhenInstruction? {
+            return whenInstructionFactory().getObject()
+        }
+
+        @Bean(name = ["sendInstruction"])
+        fun sendInstructionFactory(): SendInstructionFactory {
+            return SendInstructionFactory()
+        }
+
+        @Bean
+        @Throws(Exception::class)
+        fun sendInstruction(): SendInstruction? {
+            return sendInstructionFactory().getObject()
+        }
+
+        @Bean
+        internal fun syntaxAnalysisForTest(): SyntaxAnalysis {
+            return SyntaxAnalysisImpl()
+        }
+
+    }
 
     @Autowired
     internal var syntaxAnalysisForTest: SyntaxAnalysis? = null

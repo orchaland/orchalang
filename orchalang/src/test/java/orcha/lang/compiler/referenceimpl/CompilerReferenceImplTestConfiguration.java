@@ -60,4 +60,11 @@ public class CompilerReferenceImplTestConfiguration {
         return new SemanticAnalysisImpl();
     }
 
+    //@Bean
+    //LinkEditor linkEditorForTest() { return new LinkEditorImpl(); }
+
+    /*internal fun linkEditorForTest(): LinkEditor {
+        return LinkEditorImpl()
+    }*/
+
 }

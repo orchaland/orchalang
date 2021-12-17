@@ -1,0 +1,7 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+enabled: true
+orchalang:
+  pathToIntegrationGraph: ./src/test/resources/integrationGraph.json

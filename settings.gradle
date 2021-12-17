@@ -6,6 +6,9 @@ include 'orchalang'
 // the Spring Integration extension of orchalang
 include 'orchalang-spring-integration-implementation'
 
+// the Kafka extension of orchalang
+include 'orchalang-kafka-implementation'
+
 // ----------------------------------
 // include 'orchalang-spring-boot-autoconfigure'
 include 'orchalang-spring-boot-starter'
